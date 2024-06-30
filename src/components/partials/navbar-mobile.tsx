@@ -10,7 +10,7 @@ const NavbarMobile = () => {
             <SearchDialog/>
 
             <div className="inline-flex md:hidden"><NavSheetSide side='left' /></div>
-            <div className="inline-flex md:hidden"><ChatbotSheetSide side='right' /></div>
+            <div className="inline-flex md:hidden"><ChatbotSheetSide side='bottom' /></div>
             <div className="inline-flex md:hidden"><CartSheetSide side='right' /></div>
         </div>
     );

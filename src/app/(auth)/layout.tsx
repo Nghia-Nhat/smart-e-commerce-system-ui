@@ -1,5 +1,4 @@
 import Footer from '@/components/partials/footer';
-import Link from 'next/link';
 
 export default function Layout({
     children,
@@ -8,14 +7,7 @@ export default function Layout({
 }>) {
     return (
         <>
-            <div className="p-4 border-b h-[10vh]">
-                <div className="max-w-8xl mx-auto flex justify-between items-center">
-                    <div className="text-2xl font-black md:ml-5">
-                        <Link href="/">Triplee 🛒</Link>
-                    </div>
-                </div>
-            </div>
-            <main className="h-fit min-h-[90vh] pt-10">{children}</main>
+            <main className='min-h-[100vh] flex items-center'>{children}</main>
             <Footer />
         </>
     );

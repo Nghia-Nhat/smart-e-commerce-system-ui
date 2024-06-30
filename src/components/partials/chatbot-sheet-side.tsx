@@ -20,6 +20,7 @@ import { ScrollArea } from '../ui/scroll-area';
 import { Textarea } from '../ui/textarea';
 import { useEffect, useRef, useState } from 'react';
 import Message from './chat/message';
+import Link from 'next/link';
 
 const SHEET_SIDES = ['top', 'right', 'bottom', 'left'] as const;
 
@@ -42,8 +43,10 @@ export function ChatbotSheetSide({ side }: SheetSideProps) {
     const scrollRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         if (scrollRef.current) {
-            scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-            console.log(scrollRef.current.scrollHeight);
+            scrollRef.current.scrollTo({
+                top: scrollRef.current.scrollHeight,
+                behavior: 'smooth',
+            });
         }
     }, [messageArray]);
 
@@ -59,7 +62,7 @@ export function ChatbotSheetSide({ side }: SheetSideProps) {
             setMessage(textarea.value);
 
             // Send message
-            handleSendMessage()
+            handleSendMessage();
         }
     };
 
@@ -103,15 +106,24 @@ export function ChatbotSheetSide({ side }: SheetSideProps) {
                     <Separator />
 
                     {/* Content of messages */}
-                    <ScrollArea ref={scrollRef} className="h-[80vh] md:h-[75vh] p-4 pb-9">
-                        <div className="text-center py-5">Welcome message</div>
-                        {messageArray.map((msg, index) => (
-                            <Message key={index} msg={msg} />
-                        ))}
-                    </ScrollArea>
+                    <div className="h-[80vh] md:h-[75vh]">
+                        <div
+                            ref={scrollRef}
+                            className="max-h-[80vh] md:max-h-[75vh] overflow-y-auto p-4 pb-9 scrollbar-hide"
+                        >
+                            <div className="text-center py-5">
+                                <div className="text-xl font-black md:ml-5">
+                                    <Link href="/">Triplee 🛒</Link>
+                                </div>
+                            </div>
+                            {messageArray.map((msg, index) => (
+                                <Message key={index} msg={msg} />
+                            ))}
+                        </div>
+                    </div>
 
                     <SheetFooter>
-                        <div className="flex w-full items-end space-x-2 px-4">
+                        <div className="mb-5 md:mb-0 flex w-full items-end space-x-2 px-4">
                             <Textarea
                                 className="scrollbar-hide resize-none"
                                 placeholder="Ctrl + Enter to send..."
@@ -126,7 +138,7 @@ export function ChatbotSheetSide({ side }: SheetSideProps) {
                                     variant="ghost"
                                     className="aspect-square"
                                     onClick={handleSendMessage}
-                                    title='Ctrl+ Enter'
+                                    title="Ctrl+ Enter"
                                 >
                                     <PaperPlaneIcon className="h-5 w-5" />
                                 </Button>
