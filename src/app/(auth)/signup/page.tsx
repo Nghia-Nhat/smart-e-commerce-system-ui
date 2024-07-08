@@ -1,65 +1,171 @@
-import Link from "next/link"
+'use client';
 
-import { Button } from "@/components/ui/button"
+import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { GoogleIcon } from "@/components/icons/common"
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@/components/ui/form';
 
-export default function LoginForm() {
-  return (
-    <Card className="mx-auto max-w-sm">
-      <CardHeader>
-        <CardTitle className="text-xl">Sign Up</CardTitle>
-        <CardDescription>
-          Enter your information to create an account
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="grid gap-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="first-name">First name</Label>
-              <Input id="first-name" placeholder="Max" required />
+const loginSchema = z
+    .object({
+        full_name: z
+            .string()
+            .min(1, 'Full name is required')
+            .max(30, 'Full name must not be at greater 30 characters'),
+        username: z
+            .string()
+            .min(1, 'Username is required')
+            .max(30, 'Username must not be at greater 30 characters'),
+        password: z.string().min(6, 'Password must be at least 6 characters'),
+        confirmPassword: z
+            .string()
+            .min(6, 'Confirm password must be at least 6 characters'),
+    })
+    .refine(
+        (values) => {
+            return values.password === values.confirmPassword;
+        },
+        {
+            message: 'Passwords must match!',
+            path: ['confirmPassword'],
+        }
+    );
+
+function SignUpPage() {
+    const form = useForm<z.infer<typeof loginSchema>>({
+        resolver: zodResolver(loginSchema),
+        defaultValues: {
+            full_name: '',
+            username: '',
+            password: '',
+            confirmPassword: '',
+        },
+    });
+
+    const { watch, control, handleSubmit } = form;
+
+    function onSubmit(values: z.infer<typeof loginSchema>) {
+        console.log(values);
+    }
+
+    return (
+        <>
+            <div className="w-full lg:grid lg:grid-cols-2 lg:min-h-screen">
+                <div className="hidden lg:flex bg-orange-100 items-center p-10 pt-0 relative">
+                    <Image
+                        src="/svg/shopping-bag-bro.svg"
+                        alt="Image"
+                        width="1080"
+                        height="1080"
+                        className="dark:brightness-[0.2] dark:grayscale"
+                        priority
+                    />
+                </div>
+                <div className="flex items-center justify-center py-10 lg:pt-0">
+                    <div className="mx-auto grid w-[350px] gap-6">
+                        <div className="grid gap-2 text-center">
+                            <h1 className="text-2xl lg:text-3xl font-bold">
+                                Sign up
+                            </h1>
+                        </div>
+                        <Form {...form}>
+                            <form
+                                onSubmit={handleSubmit(onSubmit)}
+                                className="grid gap-2"
+                            >
+                                <FormField
+                                    control={control}
+                                    name="full_name"
+                                    render={({ field }) => (
+                                        <FormItem className="grid gap-2 mb-2">
+                                            <FormLabel>Full name</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="text"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={control}
+                                    name="username"
+                                    render={({ field }) => (
+                                        <FormItem className="grid gap-2 mb-2">
+                                            <FormLabel>Username</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="text"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={control}
+                                    name="password"
+                                    render={({ field }) => (
+                                        <FormItem className="grid gap-2 mb-2">
+                                            <FormLabel>Password</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="password"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={control}
+                                    name="confirmPassword"
+                                    render={({ field }) => (
+                                        <FormItem className="grid gap-2 mb-2">
+                                            <FormLabel>
+                                                Confirm Password
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="password"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <Button className="w-full" type="submit">
+                                    Sign up
+                                </Button>
+                                <Button variant={'outline'}>
+                                    <Link href="/login">
+                                        Back to login
+                                    </Link>
+                                </Button>
+                            </form>
+                        </Form>
+                    </div>
+                </div>
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="last-name">Last name</Label>
-              <Input id="last-name" placeholder="Robinson" required />
-            </div>
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="m@example.com"
-              required
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" />
-          </div>
-          <Button type="submit" className="w-full">
-            Create an account
-          </Button>
-          <Button variant="outline" className="w-full">
-          <GoogleIcon className="mr-2 h-4 w-4" /> Sign up with Google
-          </Button>
-        </div>
-        <div className="mt-4 text-center text-sm">
-          Already have an account?{" "}
-          <Link href="/login" className="underline">
-            Log in
-          </Link>
-        </div>
-      </CardContent>
-    </Card>
-  )
+        </>
+    );
 }
+
+export default SignUpPage;

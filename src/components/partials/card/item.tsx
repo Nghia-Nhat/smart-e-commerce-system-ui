@@ -1,34 +1,36 @@
-import { ToastSimple } from '@/components/common/toast';
 import {
     LocationIcon,
     StarIcon,
 } from '@/components/icons/common';
+import { ItemProps } from '@/types/product.type';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
 export const Item: React.FC<ItemProps> = ({ product }) => {
-    const price = Math.round(product.price * (1-(product.discountPercentage)/100))
+    const discount = product.discount
+    const price = Math.round(product.price * (1- (discount/100)))
     // const slug = product.title.replaceAll(" ", "-").toLowerCase();
+    
     return (
         <div className="relative flex w-full max-w-[230px] flex-col overflow-hidden rounded-lg border-gray-100 bg-white shadow-md border-2 hover:border-orange-400 hover:-translate-y-0.5">
-            <Link href={`/${product.id}`}>
+            <Link href={`/${product.productID}`}>
                 <div className="relative flex h-48 overflow-hidden">
                     <Image
-                        src={product.thumbnail}
+                        src={product.imageURL}
                         alt="thumbnail"
                         width={500}
                         height={500}
-                        object-fit="cover"
+                        className='object-cover'
                         priority
                     />
                     <span className="absolute top-0 left-0 m-2 rounded-full bg-destructive px-2 text-center text-sm font-medium text-white">
-                        {product.discountPercentage}% OFF
+                        {discount}% OFF
                     </span>
                 </div>
                 <div className="px-3 pb-3">
-                    <h5 className="text-sm tracking-tight text-wrap text-slate-900 truncate line-clamp-2 mt-1">
-                        {product.title}
+                    <h5 className="text-sm tracking-tight text-wrap text-slate-900 truncate line-clamp-2 mt-1 min-h-10">
+                        {product.productTitle}
                     </h5>
                     <div className="mt-2 flex flex-col">
                         <div className="flex items-center justify-between">

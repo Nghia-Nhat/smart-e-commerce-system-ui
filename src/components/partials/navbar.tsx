@@ -2,10 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '../ui/button';
-import { SearchDialog } from './search-dialog';
+import { SearchDialog } from './search/search-dialog';
 import { ChatbotSheetSide } from './chatbot-sheet-side';
 import { CartSheetSide } from './cart-sheet-side';
 import { SubNavbar } from './sub-navbar';
+import Logo from '../common/logo';
 
 export default function Navbar() {
     const [isVisible, setIsVisible] = useState(false);
@@ -34,10 +35,7 @@ export default function Navbar() {
             </div>
             <div className={`p-4 border-b ${stickNav}`}>
                 <div className="max-w-8xl mx-auto flex justify-between items-center">
-                    <div className="text-2xl font-black md:ml-5">
-                        <Link href="/">Triplee 🛒</Link>
-                        {/* Exclusive E-commerce Ecosystem */}
-                    </div>
+                    <Logo/>
                     <div className="flex items-center space-x-2">
                         <div className="hidden md:inline-flex">
                             <SearchDialog />

@@ -24,13 +24,12 @@ import {
 } from '@/components/ui/drawer';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { SearchIcon } from '../icons/common';
+import { SearchIcon } from '../../icons/common';
 import { Badge } from '@/components/ui/badge';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
-import Image from 'next/image';
-
+import ImageSearch from './image-search';
 type SearchDialogProps = {
     textColor?: string;
 };
@@ -47,8 +46,9 @@ export function SearchDialog({ textColor }: SearchDialogProps) {
                         <SearchIcon className={`h-[1.2rem] w-[1.2rem] ${textColor??'text-light'}`} />
                     </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                    <ProfileForm />
+                <DialogContent className="sm:max-w-[425px]" aria-describedby={undefined}>
+                    <DialogTitle>Search product</DialogTitle>
+                    <SearchComponents setOpen={setOpen}/>
                 </DialogContent>
             </Dialog>
         );
@@ -61,9 +61,10 @@ export function SearchDialog({ textColor }: SearchDialogProps) {
                     <SearchIcon className={`h-[1.2rem] w-[1.2rem] ${textColor??'text-light'}`} />
                 </Button>
             </DrawerTrigger>
-            <DrawerContent>
-                <ProfileForm className="px-4" />
-                <DrawerFooter className="pt-2">
+            <DrawerContent aria-describedby={undefined} className="px-4">
+                <DrawerTitle >Search product</DrawerTitle>
+                <SearchComponents  setOpen={setOpen}/>
+                <DrawerFooter className="pt-2 px-0">
                     <DrawerClose asChild>
                         <Button variant="outline">Cancel</Button>
                     </DrawerClose>
@@ -73,11 +74,11 @@ export function SearchDialog({ textColor }: SearchDialogProps) {
     );
 }
 
-function ProfileForm({ className }: React.ComponentProps<'form'>) {
+function SearchComponents({ className, setOpen }: { className?: string, setOpen: any}) {
     return (
         <>
             <Tabs defaultValue="common">
-                <TabsList className="m-4 md:ml-0">
+                <TabsList className="m-4 ml-0 md:ml-0">
                     <TabsTrigger value="common">Search</TabsTrigger>
                     <TabsTrigger value="description">Description</TabsTrigger>
                     <TabsTrigger value="image">Image</TabsTrigger>
@@ -107,23 +108,7 @@ function ProfileForm({ className }: React.ComponentProps<'form'>) {
                     </form>
                 </TabsContent>
                 <TabsContent value="image">
-                    <form className={cn('grid items-start gap-4', className)}>
-                        <div className="grid min-h-[250px] h-fit border-4 border-dashed rounded-lg">
-                            <div className="grid items-end w-full gap-1.5 p-2">
-                                {/* <Image
-                                    className="preview"
-                                    src="/images/banner.jpg"
-                                    height={500}
-                                    width={500}
-                                    alt="Image"
-                                ></Image> */}
-                                <Input id="picture" type="file" className="" />
-                            </div>
-                        </div>
-                        <Button>
-                            <SearchIcon className="mr-2 h-4 w-4" /> Search
-                        </Button>
-                    </form>
+                    <ImageSearch setOpen={setOpen}/>
                 </TabsContent>
             </Tabs>
         </>

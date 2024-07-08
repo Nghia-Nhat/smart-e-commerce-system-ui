@@ -41,12 +41,12 @@ export const Catalog = () => {
     return (
         <div className="flex w-full h-fit items-center space-x-4 text-sm my-6 md:mx-10">
             {list.map((item) => (
-                <>
-                    <div
-                        key={item.id}
-                        className="flex-1 h-20 p-1 md:p-2 text-center"
-                    >
-                        <Link href="#" className='inline-block hover:text-primary hover:-translate-y-1'>
+                <div key={item.id} className='w-full flex justify-evenly items-center'>
+                    <div className="flex-1 h-20 p-1 md:p-2 text-center">
+                        <Link
+                            href="#"
+                            className="inline-block hover:text-primary hover:-translate-y-1"
+                        >
                             <Image
                                 className="mx-auto"
                                 src={item.src} // Using dynamic src
@@ -60,7 +60,7 @@ export const Catalog = () => {
                     {item.nextItem && (
                         <Separator className="h-10" orientation="vertical" />
                     )}
-                </>
+                </div>
             ))}
         </div>
     );

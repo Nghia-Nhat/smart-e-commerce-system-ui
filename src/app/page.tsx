@@ -1,3 +1,4 @@
+'use client';
 import { WrapSection } from '@/components/utils/wrap-section';
 import { CategoryCarousel } from '@/components/pages/home/category-carousel';
 import Footer from '@/components/partials/footer';
@@ -11,12 +12,12 @@ import Services from '@/components/pages/home/services';
 import KeepInTouch from '@/components/pages/home/keep-in-touch';
 import { Catalog } from '@/components/partials/catalog';
 import ScrollToTop from '@/components/partials/scroll-to-top';
+
 const Home = () => {
     return (
         <>
             <div className="min-h-[100vh] h-fit pb-20">
                 <Navbar />
-
                 {/* BANNER SECTION */}
                 <section className="mt-4 flex gap-1 p-2">
                     <div className="hidden md:flex flex-col md:w-1/3 gap-1">

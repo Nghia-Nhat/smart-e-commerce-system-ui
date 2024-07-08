@@ -1,15 +1,13 @@
+import { MessageType } from '@/types/chatbot';
 import React from 'react';
 
-type msgType = {
-    message: string;
-    isBot: boolean;
-};
 
-const Message = ({ msg }: { msg: msgType }) => {
+
+const Message = ({ msg }: { msg: MessageType }) => {
     if (msg.isBot) {
         return (
             <div>
-                <div className="max-w-[80%] p-2 text-sm border inline-block m-1 rounded-xl">
+                <div className="max-w-[100%] p-3 text-sm border inline-block m-1 rounded-xl text-justify">
                     {msg.message}
                 </div>
             </div>
