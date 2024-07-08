@@ -1,5 +1,5 @@
 import React from 'react';
-import { SearchDialog } from './search-dialog';
+import { SearchDialog } from './search/search-dialog';
 import { ChatbotSheetSide } from './chatbot-sheet-side';
 import { CartSheetSide } from './cart-sheet-side';
 import { NavSheetSide } from './nav-sheet-side';
@@ -10,7 +10,7 @@ const NavbarMobile = () => {
             <SearchDialog/>
 
             <div className="inline-flex md:hidden"><NavSheetSide side='left' /></div>
-            <div className="inline-flex md:hidden"><ChatbotSheetSide side='bottom' /></div>
+            <div className="inline-flex md:hidden"><ChatbotSheetSide side='bottom'/></div>
             <div className="inline-flex md:hidden"><CartSheetSide side='right' /></div>
         </div>
     );

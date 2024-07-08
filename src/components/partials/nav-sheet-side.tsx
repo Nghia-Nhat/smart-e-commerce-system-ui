@@ -35,7 +35,7 @@ export function NavSheetSide({ side }: SheetSideProps) {
         {
             id: 2,
             name: 'Shop',
-            href: '/shop',
+            href: '/hot-deal',
         },
         {
             id: 3,

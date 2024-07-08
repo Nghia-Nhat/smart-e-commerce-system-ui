@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '../ui/button';
-import { SearchDialog } from './search-dialog';
+import { SearchDialog } from './search/search-dialog';
 import { ChatbotSheetSide } from './chatbot-sheet-side';
 import { CartSheetSide } from './cart-sheet-side';
 import { SubNavbar } from './sub-navbar';

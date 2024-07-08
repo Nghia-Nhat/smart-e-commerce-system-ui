@@ -11,8 +11,8 @@ export const SubNavbar = () => {
         },
         {
             id: 2,
-            name: 'Shop',
-            href: '/shop',
+            name: '🔥Hot deals',
+            href: '/hot-deal',
         },
         {
             id: 3,

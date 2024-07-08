@@ -1,16 +1,24 @@
-type ProductType = {
-    id: number;
-    thumbnail: string;
-    title: string;
+export type ProductType = {
+    productID: number;
+    imageURL: string;
+    productTitle: string;
     price: number;
     rating: number;
     stock: number;
-    discountPercentage: number;
+    discount: number;
     images?: Array<string>;
     description? : string;
     category? : string;
 };
 
-type ItemProps = {
+export type ItemProps = {
     product: ProductType;
 };
+
+export type ProductsResponseType = {
+    products: ProductType[];
+    totalPages: number;
+    currentPage: number;
+    lastPage: number;
+    totalProducts: number;
+}
