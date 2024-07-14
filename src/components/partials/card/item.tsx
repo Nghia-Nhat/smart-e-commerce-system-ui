@@ -9,12 +9,11 @@ import React from 'react';
 
 export const Item: React.FC<ItemProps> = ({ product }) => {
     const discount = product.discount
-    const price = Math.round(product.price * (1- (discount/100)))
-    // const slug = product.title.replaceAll(" ", "-").toLowerCase();
-    
+    const price = Math.round(product.price * (1- (discount/100)))   
+
     return (
         <div className="relative flex w-full max-w-[230px] flex-col overflow-hidden rounded-lg border-gray-100 bg-white shadow-md border-2 hover:border-orange-400 hover:-translate-y-0.5">
-            <Link href={`/${product.productID}`}>
+            <Link href={`/${product.category}/${product.productID}`}>
                 <div className="relative flex h-48 overflow-hidden">
                     <Image
                         src={product.imageURL}

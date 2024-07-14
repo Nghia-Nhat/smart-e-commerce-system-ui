@@ -1,5 +1,6 @@
 'use client';
 
+import ProductNotFound from '@/components/pages/error/product-not-found';
 import ItemSkeleton from '@/components/pages/shop/item-skeleton';
 import { MyPagination } from '@/components/pages/shop/pagination';
 import { Item } from '@/components/partials/card/item';
@@ -8,10 +9,18 @@ import useProductStore from '@/store/product.store';
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
 
-const SearchResult = () => {
+const SearchResultPage = () => {
+    const { imageFile } = useProductStore();
+    
+    if (imageFile === null || imageFile.size === 0) {
+        return <ProductNotFound/>;
+    }
+    return <SearchResult imageFile={imageFile} />;
+};
+
+const SearchResult = ({ imageFile }: { imageFile: File }) => {
     const searchParams = useSearchParams();
     const queryParams = searchParams.toString();
-    const { imageFile } = useProductStore();
     const { data, isLoading, isError } = useAllProductsByImage(
         imageFile,
         queryParams
@@ -33,7 +42,7 @@ const SearchResult = () => {
     }
 
     if (isError) {
-        return <h1>Error from server</h1>;
+        return <ProductNotFound/>;
     }
 
     return (
@@ -55,4 +64,4 @@ const SearchResult = () => {
     );
 };
 
-export default SearchResult;
+export default SearchResultPage;

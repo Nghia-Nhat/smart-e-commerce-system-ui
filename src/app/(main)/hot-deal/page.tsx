@@ -3,15 +3,14 @@
 import ItemSkeleton from '@/components/pages/shop/item-skeleton';
 import { MyPagination } from '@/components/pages/shop/pagination';
 import { Item } from '@/components/partials/card/item';
-import { useAllProducts } from '@/hooks/useProduct';
-import useBearsStore from '@/store/product.store';
+import { useAllProductsByDiscount } from '@/hooks/useProduct';
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
 
-const Shop = () => {
+const HotDeal = () => {
     const searchParams = useSearchParams();
     const queryParams = searchParams.toString(); 
-    const { data, isLoading, isError } = useAllProducts(queryParams);
+    const { data, isLoading, isError } = useAllProductsByDiscount(queryParams);
     const products = data?.products
     const currentPage = data?.currentPage
     const lastPage = data?.lastPage
@@ -46,4 +45,4 @@ const Shop = () => {
     );
 };
 
-export default Shop;
+export default HotDeal;
