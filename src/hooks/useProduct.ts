@@ -1,11 +1,19 @@
-import { fetchAllProducts, fetchAllProductsByImage } from '@/apiRequests/product';
+import { fetchAllProducts, fetchAllProductsByImage, fetchAllProductsByDiscount, fetchOneProductByCategoryAndId } from '@/apiRequests/product';
 import { useQuery } from '@tanstack/react-query';
 
-export function useAllProducts(queryParams: string) {
+export function useAllProducts(category: string, queryParams: string) {
+    const defineParams = queryParams? queryParams: 'page=1'
+    return useQuery({
+        queryKey: ['products', defineParams, category],
+        queryFn: () => fetchAllProducts(category, queryParams),
+    });
+}
+
+export function useAllProductsByDiscount(queryParams: string) {
     const defineParams = queryParams? queryParams: 'page=1'
     return useQuery({
         queryKey: ['products', defineParams],
-        queryFn: () => fetchAllProducts(queryParams),
+        queryFn: () => fetchAllProductsByDiscount(queryParams),
     });
 }
 
@@ -14,5 +22,12 @@ export function useAllProductsByImage(file: File , queryParams: string) {
     return useQuery({
         queryKey: ['productsByImage', [file, defineParams]],
         queryFn: () => fetchAllProductsByImage(file, queryParams)
+    });
+}
+
+export function useOneProductByCategoryAndId(category: string, id: string) {
+    return useQuery({
+        queryKey: ['products', category, id],
+        queryFn: () => fetchOneProductByCategoryAndId(category, id),
     });
 }

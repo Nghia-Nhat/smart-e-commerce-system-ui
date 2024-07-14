@@ -79,16 +79,17 @@ export function ChatbotSheetSide({ side }: SheetSideProps) {
         setMessageArray((prev) => [...prev, newMessage]);
         // Reset message input
         setMessage('');
-        setIsLoading(true)
+        setIsLoading(true);
         handleSubmitMessage();
     };
 
     async function handleSubmitMessage() {
+        console.log(message);
         const response = await sendMessage(message);
         if (response) {
-            setIsLoading(false)
-            const message = response.choices[0].message.content as string;
-            console.log(message);
+            setIsLoading(false);
+            const message = `${response.assistantResponse}`;
+
             setMessageArray((prev) => [
                 ...prev,
                 {
@@ -112,16 +113,11 @@ export function ChatbotSheetSide({ side }: SheetSideProps) {
                         <SheetTitle>
                             {/* HEADER */}
                             <div className="flex gap-3 items-center p-4">
-                                <Avatar className="w-8 h-8">
-                                    <AvatarImage
-                                        src="https://github.com/shadcn.png"
-                                        alt="@shadcn"
-                                    />
-                                    <AvatarFallback>CN</AvatarFallback>
-                                </Avatar>
-                                <span className="font-semibold text-sm">
-                                    Spy man
-                                </span>
+                                <div className="text-center">
+                                    <div className="text-xl font-black md:ml-5">
+                                        <Link href="/">Triplee 🛒</Link>
+                                    </div>
+                                </div>
                             </div>
                         </SheetTitle>
                         <SheetDescription></SheetDescription>
@@ -134,11 +130,6 @@ export function ChatbotSheetSide({ side }: SheetSideProps) {
                             ref={scrollRef}
                             className="max-h-[80vh] md:max-h-[75vh] overflow-y-auto p-4 pb-9 scrollbar-hide"
                         >
-                            <div className="text-center py-5">
-                                <div className="text-xl font-black md:ml-5">
-                                    <Link href="/">Triplee 🛒</Link>
-                                </div>
-                            </div>
                             {messageArray.map((msg, index) => (
                                 <Message key={index} msg={msg} />
                             ))}
@@ -150,7 +141,7 @@ export function ChatbotSheetSide({ side }: SheetSideProps) {
                             {!isLoading && (
                                 <Textarea
                                     className="scrollbar-hide resize-none"
-                                    placeholder="Enter to send..."
+                                    placeholder="Typing something..."
                                     value={message}
                                     onChange={handleMessageChange}
                                     onKeyDown={handleKeyDown}

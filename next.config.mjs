@@ -6,6 +6,10 @@ const nextConfig = {
             protocol: 'http',
             hostname: 'assets.myntassets.com',
           },
+          {
+            protocol: 'https',
+            hostname: 'cdn.dummyjson.com',
+          },
         ],
       },
 };
