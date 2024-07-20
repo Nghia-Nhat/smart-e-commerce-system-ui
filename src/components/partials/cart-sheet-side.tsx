@@ -14,6 +14,8 @@ import {
     SheetTrigger,
 } from '@/components/ui/sheet';
 import { ShoppingCartIcon } from '../icons/common';
+import useUserStore from '@/store/user.store';
+import { AlertLogin } from '../common/alert-login';
 
 const SHEET_SIDES = ['top', 'right', 'bottom', 'left'] as const;
 
@@ -24,29 +26,33 @@ type SheetSideProps = {
 };
 
 export function CartSheetSide({ side }: SheetSideProps) {
+    const { isLogin } = useUserStore();
+
+    if (!isLogin) {
+        return <AlertLogin/>;
+    }
+
     return (
-        <div>
-            <Sheet>
-                <SheetTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                        <ShoppingCartIcon className="h-[1.2rem] w-[1.2rem] text-light" />
-                    </Button>
-                </SheetTrigger>
-                <SheetContent side={side}>
-                    <SheetHeader>
-                        <SheetTitle>Cart</SheetTitle>
-                        <SheetDescription>Empty</SheetDescription>
-                    </SheetHeader>
-                    <div className="min-h-[80vh]"></div>
-                    <SheetFooter>
-                        <SheetClose asChild>
-                            <Button type="submit" className="w-full">
-                                Checkout
-                            </Button>
-                        </SheetClose>
-                    </SheetFooter>
-                </SheetContent>
-            </Sheet>
-        </div>
+        <Sheet>
+            <SheetTrigger asChild>
+                <Button variant="ghost" size="icon">
+                    <ShoppingCartIcon className="h-[1.2rem] w-[1.2rem] text-light" />
+                </Button>
+            </SheetTrigger>
+            <SheetContent side={side}>
+                <SheetHeader>
+                    <SheetTitle>Cart</SheetTitle>
+                    <SheetDescription>Empty</SheetDescription>
+                </SheetHeader>
+                <div className="min-h-[80vh]"></div>
+                <SheetFooter>
+                    <SheetClose asChild>
+                        <Button type="submit" className="w-full">
+                            Checkout
+                        </Button>
+                    </SheetClose>
+                </SheetFooter>
+            </SheetContent>
+        </Sheet>
     );
 }

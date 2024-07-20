@@ -23,7 +23,6 @@ export function MyPagination({
     currentPage: number;
     lastPage: number;
 }) {
-    const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const queryString = useQueryString();
@@ -90,8 +89,15 @@ export function MyPagination({
                         </Button>
                     </PaginationItem>
                 )}
-
-                {Array.from({ length: 3 }).map((_, index) => {
+                {lastPage === 1 && <PaginationItem>
+                        <Button
+                            className="cursor-not-allowed text-secondary-foreground"
+                            variant={'ghost'}
+                        >
+                            <span>1</span>
+                        </Button>
+                    </PaginationItem>}
+                {lastPage !== 1 && Array.from({ length: 3 }).map((_, index) => {
                     let numberPage = currentPage;
                     if (currentPage + 2 > lastPage) {
                         numberPage = lastPage - 2

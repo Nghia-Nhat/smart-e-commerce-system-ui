@@ -7,10 +7,22 @@ import { ChatbotSheetSide } from './chatbot-sheet-side';
 import { CartSheetSide } from './cart-sheet-side';
 import { SubNavbar } from './sub-navbar';
 import Logo from '../common/logo';
+import useUserStore from '@/store/user.store';
+import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
+import {
+    DropdownMenu,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+    DropdownMenuContent,
+    DropdownMenuLabel,
+    DropdownMenuItem,
+} from '../ui/dropdown-menu';
+import Cookies from 'js-cookie';
 
 export default function Navbar() {
     const [isVisible, setIsVisible] = useState(false);
     const [stickNav, setStickNav] = useState('');
+    const { isLogin, setIsLogin } = useUserStore();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -28,6 +40,13 @@ export default function Navbar() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, [isVisible]);
 
+    useEffect(() => {
+        const accessToken = Cookies.get('access_token');
+        if (accessToken) {
+            setIsLogin(true);
+        }
+    }, [setIsLogin]);
+
     return (
         <>
             <div className="hidden md:block">
@@ -35,7 +54,7 @@ export default function Navbar() {
             </div>
             <div className={`p-4 border-b ${stickNav}`}>
                 <div className="max-w-8xl mx-auto flex justify-between items-center">
-                    <Logo/>
+                    <Logo />
                     <div className="flex items-center space-x-2">
                         <div className="hidden md:inline-flex">
                             <SearchDialog />
@@ -46,16 +65,63 @@ export default function Navbar() {
                         <div className="hidden md:inline-flex">
                             <CartSheetSide side="right" />
                         </div>
-                        {/* <ThemeController /> */}
-                        <Button asChild variant="secondary">
-                            <Link href="/login">Login</Link>
-                        </Button>
-                        <Button asChild>
-                            <Link href="/signup">Sign up</Link>
-                        </Button>
+                        {isLogin ? <AvatarComponent /> : <AuthComponent />}
                     </div>
                 </div>
             </div>
         </>
     );
 }
+
+export const AuthComponent = () => {
+    return (
+        <>
+            <Button asChild variant="secondary">
+                <Link href="/login">Login</Link>
+            </Button>
+            <Button asChild>
+                <Link href="/signup">Sign up</Link>
+            </Button>
+        </>
+    );
+};
+
+export const AvatarComponent = () => {
+    const { setIsLogin } = useUserStore();
+
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button
+                    variant="outline"
+                    size="icon"
+                    className="overflow-hidden rounded-full"
+                >
+                    <Avatar>
+                        <AvatarImage
+                            src="https://github.com/shadcn.png"
+                            alt="@shadcn"
+                        />
+                        <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+                <DropdownMenuLabel>
+                    <Link href={'profile'}>My Account</Link>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>Settings</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                    onClick={() => {
+                        setIsLogin(false);
+                        Cookies.remove('access_token');
+                    }}
+                >
+                    Logout
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenu>
+    );
+};

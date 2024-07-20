@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
@@ -19,15 +18,18 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import { GoogleIcon } from '@/components/icons/common';
-import Logo from '@/components/common/logo';
+import { useLogin } from '@/hooks/useAuth';
 
 const loginSchema = z.object({
-    username: z.string().min(1, 'Username is required').max(30, 'Username must not be at greater 30 characters'),
+    username: z
+        .string()
+        .min(1, 'Username is required')
+        .max(30, 'Username must not be at greater 30 characters'),
     password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
 function LoginPage() {
-    const [loginError, setLoginError] = useState<string | null>(null);
+    const { mutate: login } = useLogin();
 
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
@@ -37,10 +39,10 @@ function LoginPage() {
         },
     });
 
-    const { watch, control, handleSubmit } = form;
+    const { control, handleSubmit } = form;
 
     function onSubmit(values: z.infer<typeof loginSchema>) {
-        console.log(values);
+        login(values);
     }
 
     return (
@@ -58,8 +60,10 @@ function LoginPage() {
                 </div>
                 <div className="flex items-center justify-center py-10 lg:pt-0">
                     <div className="mx-auto grid w-[350px] gap-6">
-                    <div className="grid gap-2 text-center">
-                            <h1 className="text-2xl lg:text-3xl font-bold">Log in</h1>
+                        <div className="grid gap-2 text-center">
+                            <h1 className="text-2xl lg:text-3xl font-bold">
+                                Log in
+                            </h1>
                         </div>
                         <Form {...form}>
                             <form
@@ -109,11 +113,11 @@ function LoginPage() {
                             Login with Google
                         </Button>
                         <div className="mt-4 text-center text-sm">
-                        Don&apos;t have an account?{" "}
-                        <Link href="/signup" className="underline">
-                          Sign up
-                        </Link>
-                      </div>
+                            Don&apos;t have an account?{' '}
+                            <Link href="/signup" className="underline">
+                                Sign up
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>
