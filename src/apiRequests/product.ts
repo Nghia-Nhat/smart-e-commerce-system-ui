@@ -1,6 +1,7 @@
+import { BACKEND_BASE_URL } from '@/lib/contants';
 import { ProductsResponseType, ProductType } from '@/types/product.type';
 
-const BASE_API_URL = 'http://localhost:5000';
+const BASE_API_URL = BACKEND_BASE_URL;
 export async function fetchAllProducts(
     category: string,
     queryParams: string

@@ -60,9 +60,9 @@ function ImageSearch({ setOpen }: { setOpen: any }) {
     return (
         <form className="grid items-start gap-4" onSubmit={handleSubmit}>
             <div className="relative grid min-h-[250px] h-fit border-4 border-dashed rounded-lg">
-                {!isWebcam && (
+                {!isWebcam && !preview && (
                     <button
-                        className="absolute top-0 left-0 m-2"
+                        className="absolute top-0 left-0 m-2 z-10"
                         onClick={() => setIsWebcam(true)}
                     >
                         <Camera />
@@ -92,7 +92,7 @@ function ImageSearch({ setOpen }: { setOpen: any }) {
                             alt="Preview"
                             width={250}
                             height={250}
-                            className="object-contain"
+                            className="object-contain w-full"
                         />
                     </div>
                 )}

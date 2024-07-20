@@ -12,6 +12,7 @@ import Services from '@/components/pages/home/services';
 import KeepInTouch from '@/components/pages/home/keep-in-touch';
 import { Catalog } from '@/components/partials/catalog';
 import ScrollToTop from '@/components/partials/scroll-to-top';
+import FlashSaleSection from '@/components/pages/home/flash-sale';
 
 const Home = () => {
     return (
@@ -72,10 +73,8 @@ const Home = () => {
                     button={false}
                     countdown={true}
                 >
-                    <div
-                    // className="flex overflow-x-auto w-screen gap-4 scrollbar-hide md:ml-10 pt-2"
-                    >
-                        New section
+                    <div className="flex overflow-x-auto max-w-screen gap-4 scrollbar-hide md:ml-10 pt-2">
+                        <FlashSaleSection />
                     </div>
                 </WrapSection>
 
@@ -85,7 +84,13 @@ const Home = () => {
                     subtitle="✨ New Arrival"
                     button={false}
                 >
-                    <div>New section</div>
+                    <Image
+                        src={`/images/2544919.jpg`}
+                        width={1200}
+                        height={300}
+                        object-fit="cover"
+                        alt="feature"
+                    />
                 </WrapSection>
 
                 <Services />
