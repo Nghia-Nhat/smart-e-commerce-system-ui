@@ -18,6 +18,7 @@ import {
     DropdownMenuItem,
 } from '../ui/dropdown-menu';
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
     const [isVisible, setIsVisible] = useState(false);
@@ -65,7 +66,7 @@ export default function Navbar() {
                         <div className="hidden md:inline-flex">
                             <CartSheetSide side="right" />
                         </div>
-                        {isLogin ? <AvatarComponent /> : <AuthComponent />}
+                        {isLogin ? <AvatarComponent /> : <NotLogin />}
                     </div>
                 </div>
             </div>
@@ -73,7 +74,7 @@ export default function Navbar() {
     );
 }
 
-export const AuthComponent = () => {
+export const NotLogin = () => {
     return (
         <>
             <Button asChild variant="secondary">
@@ -88,6 +89,7 @@ export const AuthComponent = () => {
 
 export const AvatarComponent = () => {
     const { setIsLogin } = useUserStore();
+    const { replace } = useRouter();
 
     return (
         <DropdownMenu>
@@ -116,6 +118,7 @@ export const AvatarComponent = () => {
                 <DropdownMenuItem
                     onClick={() => {
                         setIsLogin(false);
+                        replace('/')
                         Cookies.remove('access_token');
                     }}
                 >

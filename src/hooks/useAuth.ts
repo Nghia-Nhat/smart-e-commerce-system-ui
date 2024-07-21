@@ -1,3 +1,5 @@
+'use client';
+
 import { fetchLogin } from '@/apiRequests/auth';
 import { useToast } from '@/components/ui/use-toast';
 import { MESSAGE } from '@/lib/message';
@@ -6,10 +8,11 @@ import { LoginResponse, LoginRequest } from '@/types/auth.type';
 import { useMutation } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
 import useUserStore from '@/store/user.store';
+import { parseJwt } from '@/lib/jwt.util';
 
 export function useLogin() {
     const { toast } = useToast();
-    const { push } = useRouter();
+    const { back } = useRouter();
     const { setIsLogin } = useUserStore();
 
     return useMutation({
@@ -20,10 +23,17 @@ export function useLogin() {
                 throw new Error(MESSAGE.LOGIN_FAILURE);
             }
             // Login successfully
-            Cookies.set('access_token', access_token, { expires: 1 }); // Expires in 1 day
-            setIsLogin(true)
-            
-            push('/');
+            const parsedToken = parseJwt(access_token);
+            const currentTimestamp = Math.floor(Date.now() / 1000);
+            const expiresIn = parsedToken.exp - currentTimestamp;
+            Cookies.set('access_token', access_token, {
+                expires: expiresIn / 86400,
+            });
+
+            setIsLogin(true);
+
+            // Back to the previous page before going to login
+            back();
         },
         onError: (error) => {
             toast({

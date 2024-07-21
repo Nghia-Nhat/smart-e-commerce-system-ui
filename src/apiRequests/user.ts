@@ -1,4 +1,4 @@
-import { parseJwt } from '@/components/utils/jwt.util';
+import { parseJwt } from '@/lib/jwt.util';
 import { BACKEND_BASE_URL } from '@/lib/contants';
 import Cookies from 'js-cookie';
 
@@ -19,5 +19,10 @@ export async function fetchCurrentUser() {
         headers,
     });
     const res = await response.json();
+    if (!response.ok && res.statusCode === 401) {
+        Cookies.remove('access_token');
+        console.log('Access token expired, please login again')
+        return;
+    }
     return res;
 }

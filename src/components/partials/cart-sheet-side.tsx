@@ -29,7 +29,13 @@ export function CartSheetSide({ side }: SheetSideProps) {
     const { isLogin } = useUserStore();
 
     if (!isLogin) {
-        return <AlertLogin/>;
+        return (
+            <AlertLogin>
+                <Button variant="ghost" size="icon">
+                    <ShoppingCartIcon className="h-[1.2rem] w-[1.2rem] text-light" />
+                </Button>
+            </AlertLogin>
+        );
     }
 
     return (
