@@ -6,7 +6,7 @@ interface ProductState {
 }
 
 const useProductStore = create<ProductState>((set) => ({
-    imageFile: new File([""], "empty") || null,
+    imageFile: null as File | null,
     setImageFile: (file: File) =>
         set(() => ({
             imageFile: file,
