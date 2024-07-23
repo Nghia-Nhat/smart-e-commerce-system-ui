@@ -22,3 +22,9 @@ export type ProductsResponseType = {
     lastPage: number;
     totalProducts: number;
 }
+
+
+export type CartType = {
+    product: ProductType;
+    quantity: number;
+}

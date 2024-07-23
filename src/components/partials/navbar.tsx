@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Button } from '../ui/button';
 import { SearchDialog } from './search/search-dialog';
 import { ChatbotSheetSide } from './chatbot-sheet-side';
-import { CartSheetSide } from './cart-sheet-side';
+import { CartSheetSide } from './cart/cart-sheet-side';
 import { SubNavbar } from './sub-navbar';
 import Logo from '../common/logo';
 import useUserStore from '@/store/user.store';

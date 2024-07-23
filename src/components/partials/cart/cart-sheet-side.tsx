@@ -13,9 +13,10 @@ import {
     SheetTitle,
     SheetTrigger,
 } from '@/components/ui/sheet';
-import { ShoppingCartIcon } from '../icons/common';
+import { ShoppingCartIcon } from '../../icons/common';
 import useUserStore from '@/store/user.store';
-import { AlertLogin } from '../common/alert-login';
+import { AlertLogin } from '../../common/alert-login';
+import CartList from './cart-list';
 
 const SHEET_SIDES = ['top', 'right', 'bottom', 'left'] as const;
 
@@ -45,12 +46,13 @@ export function CartSheetSide({ side }: SheetSideProps) {
                     <ShoppingCartIcon className="h-[1.2rem] w-[1.2rem] text-light" />
                 </Button>
             </SheetTrigger>
-            <SheetContent side={side}>
+            <SheetContent side={side} aria-describedby={undefined}>
                 <SheetHeader>
                     <SheetTitle>Cart</SheetTitle>
-                    <SheetDescription>Empty</SheetDescription>
                 </SheetHeader>
-                <div className="min-h-[80vh]"></div>
+                <div className="min-h-[80vh] pt-5">
+                    <CartList />
+                </div>
                 <SheetFooter>
                     <SheetClose asChild>
                         <Button type="submit" className="w-full">

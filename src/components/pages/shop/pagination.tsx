@@ -38,7 +38,7 @@ export function MyPagination({
         },
         [searchParams]
     );
-    
+
     return (
         <Pagination>
             <PaginationContent>
@@ -67,88 +67,105 @@ export function MyPagination({
                         </Button>
                     </PaginationItem>
                 )}
-                {currentPage !== 1 ? (
+                {currentPage !== 1 && (
                     <PaginationItem>
                         <PaginationLink
-                            isActive
                             href={
                                 pathname + '?' + createQueryString('page', '1')
                             }
-                            className="min-w-12"
                         >
-                            <span>First</span>
+                            <span>1</span>
                         </PaginationLink>
                     </PaginationItem>
-                ) : (
-                    <PaginationItem>
-                        <Button
-                            className="cursor-not-allowed text-secondary-foreground"
-                            variant={'ghost'}
-                        >
-                            <span>First</span>
-                        </Button>
-                    </PaginationItem>
                 )}
-                {lastPage === 1 && <PaginationItem>
+                {lastPage === 1 && (
+                    <PaginationItem>
                         <Button
                             className="cursor-not-allowed text-secondary-foreground"
                             variant={'ghost'}
                         >
                             <span>1</span>
                         </Button>
-                    </PaginationItem>}
-                {lastPage !== 1 && Array.from({ length: 3 }).map((_, index) => {
-                    let numberPage = currentPage;
-                    if (currentPage + 2 > lastPage) {
-                        numberPage = lastPage - 2
-                    }
-                    let pageShow = index + numberPage;
-                    return (
-                        <PaginationItem key={pageShow}>
+                    </PaginationItem>
+                )}
+                {currentPage > 3 && (
+                    <PaginationItem>
+                        <PaginationEllipsis />
+                    </PaginationItem>
+                )}
+                {lastPage !== 1 && (
+                    <>
+                        {currentPage - 1 > 1 && (
+                            <PaginationItem>
+                                <PaginationLink
+                                    href={
+                                        pathname +
+                                        '?' +
+                                        createQueryString(
+                                            'page',
+                                            (currentPage - 1).toString()
+                                        )
+                                    }
+                                >
+                                    {currentPage - 1}
+                                </PaginationLink>
+                            </PaginationItem>
+                        )}
+                        <PaginationItem>
                             <PaginationLink
                                 href={
                                     pathname +
                                     '?' +
                                     createQueryString(
                                         'page',
-                                        pageShow.toString()
+                                        currentPage.toString()
                                     )
                                 }
-                                isActive={pageShow === page}
+                                className={
+                                    currentPage === page
+                                        ? 'bg-primary text-primary-foreground'
+                                        : ''
+                                }
+                                isActive={currentPage === page}
                             >
-                                {pageShow}
+                                {currentPage}
                             </PaginationLink>
                         </PaginationItem>
-                    );
-                })}
+                        {currentPage + 1 < lastPage && (
+                            <PaginationItem>
+                                <PaginationLink
+                                    href={
+                                        pathname +
+                                        '?' +
+                                        createQueryString(
+                                            'page',
+                                            (currentPage + 1).toString()
+                                        )
+                                    }
+                                >
+                                    {currentPage + 1}
+                                </PaginationLink>
+                            </PaginationItem>
+                        )}
+                    </>
+                )}
 
                 {currentPage + 2 < lastPage && (
                     <PaginationItem>
                         <PaginationEllipsis />
                     </PaginationItem>
                 )}
-                {currentPage < lastPage ? (
+                {currentPage < lastPage && (
                     <PaginationItem>
                         <PaginationLink
-                            isActive
                             href={
                                 pathname +
                                 '?' +
                                 createQueryString('page', lastPage.toString())
                             }
-                            className="min-w-12"
                         >
-                            <span>Last</span>
+                            <span>{lastPage}</span>
                         </PaginationLink>
-                    </PaginationItem>
-                ) : (
-                    <PaginationItem>
-                        <Button
-                            className="cursor-not-allowed text-secondary-foreground"
-                            variant={'ghost'}
-                        >
-                            <span>Last</span>
-                        </Button>
                     </PaginationItem>
                 )}
                 {isNextPage ? (
