@@ -1,9 +1,18 @@
 import React from 'react';
 import CartItem from './cart-item';
 import { useCartByUsername } from '@/hooks/useCart';
+import { getCurrentUsername } from '@/lib/user.util';
+import { useLogout } from '@/hooks/useAuth';
 
 export default function CartList() {
-    const { data: cart } = useCartByUsername('nghia');
+    const username = getCurrentUsername();
+    const { logout } = useLogout();
+
+    const { data: cart } = useCartByUsername(username);
+
+    if (!username) {
+        logout()
+    }
 
     if (!cart) {
         return <div>Empty</div>;

@@ -28,3 +28,8 @@ export type CartType = {
     product: ProductType;
     quantity: number;
 }
+
+export type CartRequestType = {
+    productID: string;
+    quantity: string;
+}

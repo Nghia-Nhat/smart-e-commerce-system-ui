@@ -18,7 +18,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useToast } from '@/components/ui/use-toast';
-import { getCurrentUsername } from '@/lib/user.util';
+import { useUpdateCartItemQuantity } from '@/hooks/useCart';
 
 export default function ProductDetailPage() {
     const params = useParams<{ category: string; id: string }>();
@@ -40,13 +40,11 @@ export default function ProductDetailPage() {
 
 const productDetailSchema = z.object({
     productID: z.string(),
-    quantity: z.string().min(1, 'Min quantity is 1'),
-    username: z.string(),
+    quantity: z.string(),
 });
 
 export function ProductDetail({ product }: { product: ProductType }) {
-    const { toast } = useToast();
-    const currentUsername = getCurrentUsername()
+    const {mutate: addToCart} = useUpdateCartItemQuantity()
 
     // After get data
     const price = Math.round(product.price * (1 - product.discount / 100));
@@ -55,48 +53,18 @@ export function ProductDetail({ product }: { product: ProductType }) {
         defaultValues: {
             productID: product.productID,
             quantity: '1',
-            username: currentUsername,
         },
     });
 
-    // const handleChangeImage = (source: string) => {
-    //     setImage(source);
-    // };
 
     function onSubmit(data: z.infer<typeof productDetailSchema>) {
-        toast({
-            title: 'You submitted the following values:',
-            description: (
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                    <code className="text-white">
-                        {JSON.stringify(data, null, 2)}
-                    </code>
-                </pre>
-            ),
-        });
+        addToCart(data)
     }
 
     return (
         <div className="p-6 lg:max-w-6xl max-w-2xl mx-auto">
             <div className="grid items-start grid-cols-1 lg:grid-cols-2 gap-8">
                 <div className="w-full lg:sticky top-0 sm:flex gap-2">
-                    {/* List of images */}
-                    {/* <div className="sm:space-y-3 w-16 max-sm:flex max-sm:mb-4 max-sm:gap-4">
-                        {product.images &&
-                            product.images.map((source, index) => (
-                                <Image
-                                    key={index}
-                                    src={source}
-                                    alt="Product"
-                                    width={500}
-                                    height={500}
-                                    object-fit="cover"
-                                    className="w-full cursor-pointer border-2"
-                                    onClick={() => handleChangeImage(source)}
-                                    priority
-                                />
-                            ))}
-                    </div> */}
                     <Image
                         src={product.imageURL}
                         alt="thumbnail"

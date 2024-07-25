@@ -1,5 +1,5 @@
 import { BACKEND_BASE_URL } from '@/lib/contants';
-import { CartType } from '@/types/product.type';
+import { CartType, CartRequestType } from '@/types/product.type';
 
 const BASE_API_URL = BACKEND_BASE_URL;
 export async function fetchUserCart(username: string): Promise<CartType[]> {
@@ -9,14 +9,29 @@ export async function fetchUserCart(username: string): Promise<CartType[]> {
     return res;
 }
 
-export async function fetchAddProductToCart(username: string, payload: any) {
-    const url = BACKEND_BASE_URL + '/cart/'+ username + '/add';
+export async function fetchAddProductToCart(
+    username: string,
+    item: CartRequestType
+) {
+    const url = BACKEND_BASE_URL + '/cart/' + username + '/add';
     const response = await fetch(url, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify({...payload})
+        body: JSON.stringify({ ...item }),
+    });
+    return response.json();
+}
+
+export async function fetchRemoveCartItem(username: string, productID: string) {
+    const url = BACKEND_BASE_URL + '/cart/' + username + '/delete';
+    const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ productID }),
     });
     return response.json();
 }

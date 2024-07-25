@@ -44,3 +44,14 @@ export function useLogin() {
         },
     });
 }
+
+export function useLogout() {
+    const { setIsLogin } = useUserStore();
+    const { replace } = useRouter();
+    const logout = () => {
+        setIsLogin(false);
+        replace('/');
+        Cookies.remove('access_token');
+    };
+    return { logout };
+}

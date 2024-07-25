@@ -46,16 +46,16 @@ export function CartSheetSide({ side }: SheetSideProps) {
                     <ShoppingCartIcon className="h-[1.2rem] w-[1.2rem] text-light" />
                 </Button>
             </SheetTrigger>
-            <SheetContent side={side} aria-describedby={undefined}>
+            <SheetContent side={side} aria-describedby={undefined} className='pr-0'>
                 <SheetHeader>
                     <SheetTitle>Cart</SheetTitle>
                 </SheetHeader>
-                <div className="min-h-[80vh] pt-5">
+                <div className="max-h-[80vh] overflow-y-scroll pt-5 pr-5">
                     <CartList />
                 </div>
-                <SheetFooter>
+                <SheetFooter className='absolute bottom-0 left-0 right-0 bg-white h-[10vh]'>
                     <SheetClose asChild>
-                        <Button type="submit" className="w-full">
+                        <Button type="submit" className="w-full mx-5">
                             Checkout
                         </Button>
                     </SheetClose>

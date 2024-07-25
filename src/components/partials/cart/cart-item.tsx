@@ -1,11 +1,17 @@
+import { AlertDelete } from '@/components/common/alert-delete';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { CartType, ProductType } from '@/types/product.type';
+import { useUpdateCartItemQuantity } from '@/hooks/useCart';
+import { CartType } from '@/types/product.type';
+import { Trash } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
 
 export default function CartItem({ data }: { data?: CartType }) {
     const [quantity, setQuantity] = useState(data?.quantity || 1);
+    const { mutate: addToCart } = useUpdateCartItemQuantity();
+
     const product = data?.product;
 
     if (!product) {
@@ -21,39 +27,60 @@ export default function CartItem({ data }: { data?: CartType }) {
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         const newQuantity = parseInt(event.target.value);
+        const item = {
+            productID: event.target.name,
+            quantity: (newQuantity - quantity).toString(),
+        };
+        addToCart(item);
+
         setQuantity(newQuantity);
     };
+
+    
     return (
-        <div className="flex gap-4 mb-5">
-            <Image
-                src={`${product?.imageURL}`}
-                width={100}
-                height={100}
-                alt={`${product?.productTitle}`}
-                className="w-16 h-16 object-cover bg-slate-400"
-            ></Image>
-            <div className="flex-auto grid grid-cols-1">
-                <Link
-                    href={`/${product?.category}/${product?.productID}`}
-                    className="max-w-full truncate font-semibold"
-                >
-                    {product?.productTitle}
-                </Link>
-                <div className="flex justify-between items-center">
-                    <div className="flex gap-2">
-                        <span className="text-destructive font-bold text-lg">
-                            $
-                            {(Number(priceAfterDiscount) * quantity).toFixed(2)}
-                        </span>
-                        <span className="line-through">
-                            ${(Number(price) * quantity).toFixed(2)}
-                        </span>
-                        <span className="text-destructive text-sm font-bold">
-                            -{product.discount}%
-                        </span>
+        <div className="mb-5 border-b pb-2">
+            <div className="flex gap-4">
+                <Image
+                    src={`${product?.imageURL}`}
+                    width={100}
+                    height={100}
+                    alt={`${product?.productTitle}`}
+                    className="w-16 h-16 object-cover bg-slate-400"
+                ></Image>
+
+                <div className="flex-auto grid grid-cols-1">
+                    <Link
+                        href={`/${product?.category}/${product?.productID}`}
+                        className="max-w-full truncate font-semibold"
+                    >
+                        {product?.productTitle}
+                    </Link>
+                    <div className="flex justify-between items-center">
+                        <div className="flex gap-2">
+                            <span className="text-destructive font-bold text-lg">
+                                $
+                                {(
+                                    Number(priceAfterDiscount) * quantity
+                                ).toFixed(2)}
+                            </span>
+                            <div className="relative">
+                                <span className="line-through">
+                                    ${(Number(price) * quantity).toFixed(2)}
+                                </span>
+                                <span className="absolute -top-1 -right-6 text-destructive text-[10px] font-bold">
+                                    -{product.discount}%
+                                </span>
+                            </div>
+                        </div>
                     </div>
+                </div>
+            </div>
+            <div className="flex w-full gap-2 justify-end">
+                <div className="flex gap-2 items-center">
+                    <span>Quantity: </span>
                     <Input
                         type="number"
+                        name={product.productID}
                         className="max-w-[70px] p-2"
                         defaultValue={quantity}
                         min={1}
@@ -61,6 +88,7 @@ export default function CartItem({ data }: { data?: CartType }) {
                         onChange={handleChangeQuantity}
                     />
                 </div>
+                <AlertDelete id={product.productID}/>
             </div>
         </div>
     );
