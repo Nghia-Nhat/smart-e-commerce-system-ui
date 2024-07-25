@@ -13,9 +13,10 @@ import {
     SheetTitle,
     SheetTrigger,
 } from '@/components/ui/sheet';
-import { ShoppingCartIcon } from '../icons/common';
+import { ShoppingCartIcon } from '../../icons/common';
 import useUserStore from '@/store/user.store';
-import { AlertLogin } from '../common/alert-login';
+import { AlertLogin } from '../../common/alert-login';
+import CartList from './cart-list';
 
 const SHEET_SIDES = ['top', 'right', 'bottom', 'left'] as const;
 
@@ -29,7 +30,13 @@ export function CartSheetSide({ side }: SheetSideProps) {
     const { isLogin } = useUserStore();
 
     if (!isLogin) {
-        return <AlertLogin/>;
+        return (
+            <AlertLogin>
+                <Button variant="ghost" size="icon">
+                    <ShoppingCartIcon className="h-[1.2rem] w-[1.2rem] text-light" />
+                </Button>
+            </AlertLogin>
+        );
     }
 
     return (
@@ -39,15 +46,16 @@ export function CartSheetSide({ side }: SheetSideProps) {
                     <ShoppingCartIcon className="h-[1.2rem] w-[1.2rem] text-light" />
                 </Button>
             </SheetTrigger>
-            <SheetContent side={side}>
+            <SheetContent side={side} aria-describedby={undefined} className='pr-0'>
                 <SheetHeader>
                     <SheetTitle>Cart</SheetTitle>
-                    <SheetDescription>Empty</SheetDescription>
                 </SheetHeader>
-                <div className="min-h-[80vh]"></div>
-                <SheetFooter>
+                <div className="max-h-[80vh] overflow-y-scroll pt-5 pr-5">
+                    <CartList />
+                </div>
+                <SheetFooter className='absolute bottom-0 left-0 right-0 bg-white h-[10vh]'>
                     <SheetClose asChild>
-                        <Button type="submit" className="w-full">
+                        <Button type="submit" className="w-full mx-5">
                             Checkout
                         </Button>
                     </SheetClose>

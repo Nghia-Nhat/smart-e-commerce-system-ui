@@ -38,8 +38,7 @@ export default function ProfilePage() {
                                 <Input
                                     id="name"
                                     placeholder="Enter your name"
-                                    defaultValue="Catherine Grant"
-                                    value={user.name}
+                                    defaultValue={user.name}
                                 />
                             </div>
                             <div>
@@ -48,7 +47,7 @@ export default function ProfilePage() {
                                     id="email"
                                     placeholder="Enter your email"
                                     type="email"
-                                    value={user.email}
+                                    defaultValue={user.email}
                                 />
                             </div>
                             <div>

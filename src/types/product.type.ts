@@ -1,5 +1,5 @@
 export type ProductType = {
-    productID: number;
+    productID: string;
     imageURL: string;
     productTitle: string;
     price: number;
@@ -21,4 +21,15 @@ export type ProductsResponseType = {
     currentPage: number;
     lastPage: number;
     totalProducts: number;
+}
+
+
+export type CartType = {
+    product: ProductType;
+    quantity: number;
+}
+
+export type CartRequestType = {
+    productID: string;
+    quantity: string;
 }

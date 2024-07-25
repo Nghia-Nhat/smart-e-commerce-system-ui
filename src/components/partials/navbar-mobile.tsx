@@ -1,7 +1,7 @@
 import React from 'react';
 import { SearchDialog } from './search/search-dialog';
 import { ChatbotSheetSide } from './chatbot-sheet-side';
-import { CartSheetSide } from './cart-sheet-side';
+import { CartSheetSide } from './cart/cart-sheet-side';
 import { NavSheetSide } from './nav-sheet-side';
 
 const NavbarMobile = () => {

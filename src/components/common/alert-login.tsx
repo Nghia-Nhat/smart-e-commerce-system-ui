@@ -9,18 +9,22 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { ShoppingCartIcon } from '../icons/common';
+import { usePathname, useRouter } from 'next/navigation';
 
-export function AlertLogin() {
+export function AlertLogin({
+    children,
+}: Readonly<{
+    children: React.ReactNode;
+}>) {
+    const { push } = useRouter();
+
+    const handleRedirectLogin = () => {
+        push('/login')
+    }
+
     return (
         <AlertDialog>
-            <AlertDialogTrigger asChild>
-                <Button variant="ghost" size="icon">
-                    <ShoppingCartIcon className="h-[1.2rem] w-[1.2rem] text-light" />
-                </Button>
-            </AlertDialogTrigger>
+            <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>
@@ -32,9 +36,7 @@ export function AlertLogin() {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction>
-                        <Link href={'/login'}>Login</Link>
-                    </AlertDialogAction>
+                    <AlertDialogAction onClick={handleRedirectLogin}>Login</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

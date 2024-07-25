@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { base64ToFile } from '@/components/utils/image.util';
+import { base64ToFile } from '@/lib/image.util';
 import { Camera } from 'lucide-react';
 import React, { useRef } from 'react';
 import Webcam from 'react-webcam';

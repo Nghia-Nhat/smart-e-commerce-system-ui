@@ -1,44 +1,29 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { isValidJwt } from './components/utils/jwt.util';
 
-// Define protected routes
-const protectedRoutes = ['/profile'];
+// Define the paths that should be protected and the login path
+const protectedPaths = ['/profile'];
+const loginPath = '/login';
 
-export function middleware(req: NextRequest) {
-    const url = req.nextUrl.clone();
-    const { pathname } = req.nextUrl;
+export function middleware(request: NextRequest) {
+    const { pathname } = request.nextUrl;
+    const token = request.cookies.get('access_token')?.value;
 
-    // Check for the access token in cookies
-    const accessToken = req.cookies.get('access_token')?.value;
-
-    // Define a function to check if a route matches the pathname
-    const isProtectedRoute = (route: string | RegExp) => {
-        if (typeof route === 'string') {
-            return pathname === route;
-        }
-        if (route instanceof RegExp) {
-            return route.test(pathname);
-        }
-        return false;
-    };
-
-    // If the user is trying to access a protected route without being authenticated, redirect to login
-    if (!accessToken && protectedRoutes.some(isProtectedRoute)) {
-        url.pathname = '/login';
-        return NextResponse.redirect(url);
-    }
-    
-    // If the user is authenticated and tries to access the login page, redirect to dashboard
-    if (accessToken  && pathname === '/login') {
-        url.pathname = '/';
-        return NextResponse.redirect(url);
+    // If the user is trying to access the login page and is already logged in, redirect them to the home page
+    if (pathname === loginPath && token) {
+        return NextResponse.redirect(new URL('/', request.url));
     }
 
-    // Allow the request to proceed
+    // If the user is trying to access a protected page and is not logged in, redirect them to the login page
+    if (protectedPaths.includes(pathname) && !token) {
+        return NextResponse.redirect(new URL(loginPath, request.url));
+    }
+
+    // Continue with the request
     return NextResponse.next();
 }
 
+// Define the matcher to specify which routes should be handled by this middleware
 export const config = {
-    matcher: ['/profile'],
+    matcher: ['/login', '/profile'],
 };
