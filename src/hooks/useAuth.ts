@@ -1,10 +1,10 @@
 'use client';
 
-import { fetchLogin } from '@/apiRequests/auth';
+import { fetchLogin, fetchRegister } from '@/apiRequests/auth';
 import { useToast } from '@/components/ui/use-toast';
 import { MESSAGE } from '@/lib/message';
 import { useRouter } from 'next/navigation';
-import { LoginResponse, LoginRequest } from '@/types/auth.type';
+import { LoginResponse, LoginRequest, RegisterRequest } from '@/types/auth.type';
 import { useMutation } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
 import useUserStore from '@/store/user.store';
@@ -54,4 +54,35 @@ export function useLogout() {
         Cookies.remove('access_token');
     };
     return { logout };
+}
+
+export function useRegister() {
+    const { toast } = useToast();
+    const { mutate: login } = useLogin();
+
+    return useMutation({
+        mutationFn: (credential: RegisterRequest) => fetchRegister(credential),
+        onSuccess: (data: any, credential) => {
+            if (data.statusCode === 409) {
+                throw new Error(data.message)
+            }
+
+            toast({
+                variant: 'success',
+                description: MESSAGE.REGISTER_SUCCESS,
+            });
+            
+            login({
+                username: credential.username,
+                password: credential.password,
+            })
+            
+        },
+        onError: (error) => {
+            toast({
+                variant: 'destructive',
+                description: error.message,
+            });
+        },
+    });
 }

@@ -11,20 +11,20 @@ export default function CartList() {
     const { data: cart } = useCartByUsername(username);
 
     if (!username) {
-        logout()
-    }
-
-    if (!cart) {
-        return <div>Empty</div>;
+        logout();
     }
 
     return (
-        <div >
-            {cart.map((data, index) => (
-                <div key={index} className='flex flex-col gap-5'>
-                    <CartItem data={data} />
-                </div>
-            ))}
-        </div>
+        <>
+            {cart?.length === 0 ? (
+                <div>Empty</div>
+            ) : (
+                cart?.map((data, index) => (
+                    <div key={index} className="flex flex-col gap-5">
+                        <CartItem data={data} />
+                    </div>
+                ))
+            )}
+        </>
     );
 }

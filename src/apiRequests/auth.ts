@@ -1,5 +1,5 @@
 import { BACKEND_BASE_URL } from "@/lib/contants";
-import { LoginRequest, LoginResponse } from "@/types/auth.type";
+import { LoginRequest, LoginResponse, RegisterRequest } from "@/types/auth.type";
 
 export async function fetchLogin(credential: LoginRequest): Promise<LoginResponse> {
     const url = BACKEND_BASE_URL + '/auth/login';
@@ -13,8 +13,8 @@ export async function fetchLogin(credential: LoginRequest): Promise<LoginRespons
     return response.json();
 }
 
-export async function fetchRegister(credential: LoginRequest): Promise<LoginResponse> {
-    const url = BACKEND_BASE_URL + '/auth/login';
+export async function fetchRegister(credential: RegisterRequest): Promise<any> {
+    const url = BACKEND_BASE_URL + '/auth/register';
     const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -24,4 +24,3 @@ export async function fetchRegister(credential: LoginRequest): Promise<LoginResp
     });
     return response.json();
 }
-
