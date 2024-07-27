@@ -50,7 +50,7 @@ export function CartSheetSide({ side }: SheetSideProps) {
                 <SheetHeader>
                     <SheetTitle>Cart</SheetTitle>
                 </SheetHeader>
-                <div className="max-h-[80vh] overflow-y-scroll pt-5 pr-5">
+                <div className="max-h-[80vh] overflow-y-auto pt-5 pr-5">
                     <CartList />
                 </div>
                 <SheetFooter className='absolute bottom-0 left-0 right-0 bg-white h-[10vh]'>

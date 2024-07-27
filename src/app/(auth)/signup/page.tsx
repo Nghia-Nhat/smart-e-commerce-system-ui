@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
@@ -17,8 +16,10 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
+import { useToast } from '@/components/ui/use-toast';
+import { useLogin, useRegister } from '@/hooks/useAuth';
 
-const loginSchema = z
+const signUpSchema = z
     .object({
         full_name: z
             .string()
@@ -44,8 +45,8 @@ const loginSchema = z
     );
 
 function SignUpPage() {
-    const form = useForm<z.infer<typeof loginSchema>>({
-        resolver: zodResolver(loginSchema),
+    const form = useForm<z.infer<typeof signUpSchema>>({
+        resolver: zodResolver(signUpSchema),
         defaultValues: {
             full_name: '',
             username: '',
@@ -54,10 +55,11 @@ function SignUpPage() {
         },
     });
 
-    const { watch, control, handleSubmit } = form;
+    const { control, handleSubmit } = form;
+    const { mutate: register } = useRegister();
 
-    function onSubmit(values: z.infer<typeof loginSchema>) {
-        console.log(values);
+    function onSubmit(data: z.infer<typeof signUpSchema>) {
+        register(data);
     }
 
     return (
@@ -92,10 +94,7 @@ function SignUpPage() {
                                         <FormItem className="grid gap-2 mb-2">
                                             <FormLabel>Full name</FormLabel>
                                             <FormControl>
-                                                <Input
-                                                    type="text"
-                                                    {...field}
-                                                />
+                                                <Input type="text" {...field} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -108,10 +107,7 @@ function SignUpPage() {
                                         <FormItem className="grid gap-2 mb-2">
                                             <FormLabel>Username</FormLabel>
                                             <FormControl>
-                                                <Input
-                                                    type="text"
-                                                    {...field}
-                                                />
+                                                <Input type="text" {...field} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -155,9 +151,7 @@ function SignUpPage() {
                                     Sign up
                                 </Button>
                                 <Button variant={'outline'}>
-                                    <Link href="/login">
-                                        Back to login
-                                    </Link>
+                                    <Link href="/login">Back to login</Link>
                                 </Button>
                             </form>
                         </Form>

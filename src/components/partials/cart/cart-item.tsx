@@ -1,9 +1,8 @@
 import { AlertDelete } from '@/components/common/alert-delete';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useUpdateCartItemQuantity } from '@/hooks/useCart';
+import { useToast } from '@/components/ui/use-toast';
+import { useRemoveCartItem, useUpdateCartItemQuantity } from '@/hooks/useCart';
 import { CartType } from '@/types/product.type';
-import { Trash } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
@@ -11,6 +10,8 @@ import React, { useState } from 'react';
 export default function CartItem({ data }: { data?: CartType }) {
     const [quantity, setQuantity] = useState(data?.quantity || 1);
     const { mutate: addToCart } = useUpdateCartItemQuantity();
+    const { mutate: removeFromCart } = useRemoveCartItem();
+    const [error, setError] = useState(false);
 
     const product = data?.product;
 
@@ -26,17 +27,39 @@ export default function CartItem({ data }: { data?: CartType }) {
     const handleChangeQuantity = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
-        const newQuantity = parseInt(event.target.value);
-        const item = {
-            productID: event.target.name,
-            quantity: (newQuantity - quantity).toString(),
-        };
-        addToCart(item);
+        if (error) {
+            setError(false);
+        }
+        const productID = event.target.name;
+        let newQuantity = parseInt(event.target.value);
+        if (newQuantity > product.stock) {
+            newQuantity = product.stock;
+            setError(true);
+            setTimeout(() => { setError(false); }, 3000)
+        }
 
+        if (newQuantity < 1) {
+            setQuantity(newQuantity);
+            removeFromCart(productID);
+            return;
+        }
+
+        let calcQuantity = newQuantity - quantity;
+
+        if (isNaN(newQuantity)) {
+            return;
+        }
+
+        const item = {
+            productID,
+            quantity: calcQuantity.toString(),
+        };
+
+
+        addToCart(item);
         setQuantity(newQuantity);
     };
 
-    
     return (
         <div className="mb-5 border-b pb-2">
             <div className="flex gap-4">
@@ -83,13 +106,22 @@ export default function CartItem({ data }: { data?: CartType }) {
                         name={product.productID}
                         className="max-w-[70px] p-2"
                         defaultValue={quantity}
-                        min={1}
+                        value={
+                            quantity > product?.stock
+                                ? product?.stock
+                                : quantity
+                        }
                         max={product?.stock}
                         onChange={handleChangeQuantity}
                     />
                 </div>
-                <AlertDelete id={product.productID}/>
+                <AlertDelete id={product.productID} />
             </div>
+            {error && (
+                <span className="flex justify-end text-xs text-destructive mt-2">
+                    Maximum quantity is {product.stock}
+                </span>
+            )}
         </div>
     );
 }
