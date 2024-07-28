@@ -12,11 +12,17 @@ export type ProductType = {
 };
 
 export type ItemProps = {
-    product: ProductType;
+    product: {
+        product: ProductType;
+        category: string;
+    };
 };
 
 export type ProductsResponseType = {
-    products: ProductType[];
+    products: Array<{
+        product: ProductType;
+        category: string;
+    }>;
     totalPages: number;
     currentPage: number;
     lastPage: number;
