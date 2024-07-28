@@ -8,7 +8,7 @@ import Link from 'next/link';
 import React from 'react';
 
 export const Item: React.FC<ItemProps> = ({ product }) => {
-    const { product: productData, category } = product;
+    const { product: productData, category, purchaseCount } = product;
     const discount = productData.discount
     const price = Math.round(productData.price * (1- (discount/100)))   
 
@@ -40,7 +40,7 @@ export const Item: React.FC<ItemProps> = ({ product }) => {
                                 ))}
                                 <span className="ml-1 text-xs">{productData.rating}</span>
                             </div>
-                            <p className="text-xs">Stock: {productData.stock}</p>
+                            <p className="text-xs">Sold: {purchaseCount}</p>
                         </div>
                         <p className="mt-2">
                             <span className="text-xl font-bold text-destructive">

@@ -15,6 +15,7 @@ export type ItemProps = {
     product: {
         product: ProductType;
         category: string;
+        purchaseCount: number;
     };
 };
 
@@ -22,6 +23,7 @@ export type ProductsResponseType = {
     products: Array<{
         product: ProductType;
         category: string;
+        purchaseCount: number;
     }>;
     totalPages: number;
     currentPage: number;
