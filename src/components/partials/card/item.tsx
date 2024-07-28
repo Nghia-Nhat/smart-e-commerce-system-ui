@@ -8,15 +8,16 @@ import Link from 'next/link';
 import React from 'react';
 
 export const Item: React.FC<ItemProps> = ({ product }) => {
-    const discount = product.discount
-    const price = Math.round(product.price * (1- (discount/100)))   
+    const { product: productData, category } = product;
+    const discount = productData.discount
+    const price = Math.round(productData.price * (1- (discount/100)))   
 
     return (
         <div className="relative flex w-full min-w-[200px] max-w-[230px] flex-col overflow-hidden rounded-lg border-gray-100 bg-white shadow-md border-2 hover:border-orange-400 hover:-translate-y-0.5">
-            <Link href={`/${product.category}/${product.productID}`}>
+            <Link href={`/${category}/${productData.productID}`}>
                 <div className="relative flex h-48 overflow-hidden">
                     <Image
-                        src={product.imageURL}
+                        src={productData.imageURL}
                         alt="thumbnail"
                         width={500}
                         height={500}
@@ -29,7 +30,7 @@ export const Item: React.FC<ItemProps> = ({ product }) => {
                 </div>
                 <div className="px-3 pb-3">
                     <h5 className="text-sm tracking-tight text-wrap text-slate-900 truncate line-clamp-2 mt-1 min-h-10">
-                        {product.productTitle}
+                        {productData.productTitle}
                     </h5>
                     <div className="mt-2 flex flex-col">
                         <div className="flex items-center justify-between">
@@ -37,16 +38,16 @@ export const Item: React.FC<ItemProps> = ({ product }) => {
                                 {Array.from({ length: 5 }, (v, i) => (
                                     <StarIcon key={i} className="h-3 w-3" />
                                 ))}
-                                <span className="ml-1 text-xs">{product.rating}</span>
+                                <span className="ml-1 text-xs">{productData.rating}</span>
                             </div>
-                            <p className="text-xs">Stock: {product.stock}</p>
+                            <p className="text-xs">Stock: {productData.stock}</p>
                         </div>
                         <p className="mt-2">
                             <span className="text-xl font-bold text-destructive">
                             ${price}
                             </span>
                             <span className="text-xs line-through text-slate-400">
-                                ${product.price}
+                                ${productData.price}
                             </span>
                         </p>
                     </div>
