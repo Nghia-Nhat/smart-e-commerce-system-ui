@@ -14,19 +14,23 @@ function WebcamComponent({
     setFile,
     setPreview,
     setIsWebcam,
+    onCapture,
 }: {
     setFile: any;
     setPreview: any;
     setIsWebcam: any;
+    onCapture: (file: File) => void;
 }) {
     const webcamRef = useRef<Webcam>(null);
 
     const capture = () => {
         const imageSrc = webcamRef.current?.getScreenshot();
         if (imageSrc) {
+            const file = base64ToFile(imageSrc, 'screenshot.jpg');
             setPreview(imageSrc)
-            setFile(base64ToFile(imageSrc, 'screenshot.jpg'));
+            setFile(file);
             setIsWebcam(false);
+            onCapture(file);  // Call the onCapture function with the file
         } else {
             console.log('Image src not found');
         }
