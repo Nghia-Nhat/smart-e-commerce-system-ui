@@ -12,7 +12,7 @@ export function useCartByUsername(username: string) {
     });
 }
 
-export function useUpdateCartItemQuantity() {
+export function useUpdateCartItemQuantity(isNotify = true) {
     const { toast } = useToast();
     const username = getCurrentUsername();
     const {refetch} = useCartByUsername(username)
@@ -21,7 +21,7 @@ export function useUpdateCartItemQuantity() {
         mutationFn: (item: CartRequestType) =>
             fetchAddProductToCart(username, item),
         onSuccess: () => {
-            toast({
+            isNotify && toast({
                 variant: 'success',
                 description: MESSAGE.SUCCESS,
             });
@@ -45,10 +45,6 @@ export function useRemoveCartItem() {
         mutationFn: (productID: string) =>
             fetchRemoveCartItem(username, productID),
         onSuccess: () => {
-            toast({
-                variant: 'success',
-                description: MESSAGE.SUCCESS,
-            });
             refetch()
         },
         onError: (err) => {

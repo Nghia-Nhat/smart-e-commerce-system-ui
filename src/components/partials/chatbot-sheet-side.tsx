@@ -88,7 +88,7 @@ export function ChatbotSheetSide({ side }: SheetSideProps) {
         const response = await sendMessage(message);
         if (response) {
             setIsLoading(false);
-            const message = `${response.assistantResponse}`;
+            const message = `${response.assistant}`;
 
             setMessageArray((prev) => [
                 ...prev,

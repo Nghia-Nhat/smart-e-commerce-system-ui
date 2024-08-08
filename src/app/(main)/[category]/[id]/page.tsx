@@ -1,6 +1,5 @@
 'use client';
 import { StarIcon } from '@/components/icons/common';
-import ProductNotFound from '@/components/pages/error/product-not-found';
 import ButtonAddToCart from '@/components/pages/product/button-add-to-cart';
 import ProductDetailSkeleton from '@/components/pages/product/product-detail-skeleton';
 import {
@@ -17,8 +16,12 @@ import { useParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useToast } from '@/components/ui/use-toast';
 import { useUpdateCartItemQuantity } from '@/hooks/useCart';
+import PageNotFound from '@/components/pages/error/product-not-found';
+import Navbar from '@/components/partials/navbar';
+import ScrollToTop from '@/components/partials/scroll-to-top';
+import NavbarMobile from '@/components/partials/navbar-mobile';
+import Footer from '@/components/partials/footer';
 
 export default function ProductDetailPage() {
     const params = useParams<{ category: string; id: string }>();
@@ -32,7 +35,7 @@ export default function ProductDetailPage() {
     }
 
     if (isError || !data) {
-        return <ProductNotFound />;
+        return <PageNotFound />;
     }
 
     return <ProductDetail product={data} />;
@@ -62,6 +65,9 @@ export function ProductDetail({ product }: { product: ProductType }) {
     }
 
     return (
+        <>
+        <Navbar />
+        <main className="h-fit min-h-[90vh]">
         <div className="p-6 lg:max-w-6xl max-w-2xl mx-auto">
             <div className="grid items-start grid-cols-1 lg:grid-cols-2 gap-8">
                 <div className="w-full lg:sticky top-0 sm:flex gap-2">
@@ -138,5 +144,11 @@ export function ProductDetail({ product }: { product: ProductType }) {
                 </Form>
             </div>
         </div>
+        </main>
+        {/* Some utils */}
+        <ScrollToTop/>
+        <NavbarMobile />
+        <Footer />
+    </>
     );
 }

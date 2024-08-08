@@ -11,12 +11,13 @@ import { Item } from '@/components/partials/card/item';
 import { useAllProducts } from '@/hooks/useProduct';
 import { useSearchParams, useParams } from 'next/navigation';
 import React from 'react';
+import PageNotFound from '@/components/pages/error/product-not-found';
 
 const Shop = () => {
     const searchParams = useSearchParams();
     const queryParams = searchParams.toString();
     const params = useParams<{ category: string }>();
-    const { data, isLoading, isError } = useAllProducts(
+    const { data, isLoading } = useAllProducts(
         params.category,
         queryParams
     );
@@ -24,9 +25,10 @@ const Shop = () => {
     const currentPage = data?.currentPage;
     const lastPage = data?.lastPage;
 
-    if (isError) {
-        return <h1>Error from server</h1>;
+    if (products?.length === 0) {
+        return <PageNotFound/>;
     }
+    
     return (
         <>
             <Navbar />
