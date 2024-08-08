@@ -9,7 +9,7 @@ import React, { useState } from 'react';
 
 export default function CartItem({ data }: { data?: CartType }) {
     const [quantity, setQuantity] = useState(data?.quantity || 1);
-    const { mutate: addToCart } = useUpdateCartItemQuantity();
+    const { mutate: addToCart } = useUpdateCartItemQuantity(false);
     const { mutate: removeFromCart } = useRemoveCartItem();
     const [error, setError] = useState(false);
 
@@ -106,11 +106,6 @@ export default function CartItem({ data }: { data?: CartType }) {
                         name={product.productID}
                         className="max-w-[70px] p-2"
                         defaultValue={quantity}
-                        value={
-                            quantity > product?.stock
-                                ? product?.stock
-                                : quantity
-                        }
                         max={product?.stock}
                         onChange={handleChangeQuantity}
                     />

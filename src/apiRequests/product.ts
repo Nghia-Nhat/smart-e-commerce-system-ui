@@ -8,7 +8,7 @@ export async function fetchAllProducts(
 ): Promise<ProductsResponseType> {
     const url = BASE_API_URL + '/product' + `/${category}` + `?${queryParams}`;
     const response = await fetch(url);
-    const res = (await response.json()) as ProductsResponseType;
+    const res = await response.json();
     return res;
 }
 

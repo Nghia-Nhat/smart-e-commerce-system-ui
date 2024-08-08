@@ -9,7 +9,7 @@ export async function checkBot() {
 }
 
 export async function sendMessage(prompt: string) {
-    const response = await fetch('http://localhost:5000/llm/generate', {
+    const response = await fetch('http://localhost:5000/llm/ask', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
