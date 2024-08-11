@@ -41,7 +41,7 @@ export async function fetchAllProductsByImage(
 export async function fetchOneProductByCategoryAndId(
     category: string,
     id: string
-): Promise<ProductType> {
+): Promise<any> {
     const url = BASE_API_URL + '/product' + `/${category}` + `/${id}`;
     const response = await fetch(url);
     const res = await response.json();

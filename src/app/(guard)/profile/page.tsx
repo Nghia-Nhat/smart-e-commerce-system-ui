@@ -16,17 +16,11 @@ import {
     FormControl,
     FormMessage,
 } from '@/components/ui/form';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 
 const schema = z.object({
     full_name: z.string().min(1, 'Name is required'),
+    username: z.string().readonly(),
     email: z.string().email('Invalid email address'),
     phone: z.string().optional(),
     address: z.string().optional(),
@@ -35,7 +29,12 @@ const schema = z.object({
 export default function ProfilePage() {
     const { data, isLoading } = useCurrentUser();
 
-    if (isLoading) return <LoaderIcon className="animate-spin mt-10" />;
+    if (isLoading)
+        return (
+            <div className="flex w-full justify-center">
+                <LoaderIcon className="animate-spin mt-10" />
+            </div>
+        );
 
     return <ProfileContentPage user={data} />;
 }
@@ -46,9 +45,10 @@ export function ProfileContentPage({ user }: { user: any }) {
         resolver: zodResolver(schema),
         defaultValues: {
             full_name: user?.name || '',
+            username: user?.username || '',
             email: user?.email || '',
-            phone: user?.phone ||'',
-            address:  user?.address ||'',
+            phone: user?.phone || '',
+            address: user?.address || '',
         },
     });
 
@@ -57,15 +57,29 @@ export function ProfileContentPage({ user }: { user: any }) {
     };
 
     return (
-        <div className="md:max-w-4xl">
+        <div className="md:px-16">
+            <div className="flex md:px-5 mb-10">
+                <div className="flex gap-5 items-center mb-5">
+                    <div className="bg-orange-500 w-2 h-10 rounded-md"></div>
+                    <h2 className="text-orange-500 font-bold text-2xl">
+                        Profile
+                    </h2>
+                </div>
+            </div>
+
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="p-4 space-y-6 md:p-6 md:flex md:gap-20"
+                    className="md:grid grid-cols-4 gap-20 mx-auto"
                 >
-                    <header className="space-y-1.5">
+                    <header className="space-y-1">
                         <div className="flex flex-col items-center space-x-4">
-                            <div className="w-20 h-20 md:w-52 md:h-52 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+                            <Avatar className="h-24 w-24 lg:h-48 lg:w-48">
+                                <AvatarImage
+                                    src="/images/avtUser.png"
+                                    alt="Avatar"
+                                />
+                            </Avatar>
                             <div className="space-y-1.5 text-center mt-4">
                                 <h1 className="text-2xl font-bold italic">
                                     @{user.username}
@@ -73,17 +87,34 @@ export function ProfileContentPage({ user }: { user: any }) {
                             </div>
                         </div>
                     </header>
-                    <div className="space-y-6">
-                        <div className="space-y-2">
+                    <div className="mt-10 md:mt-0 space-y-6 col-span-3">
+                        <div className="space-y-1">
                             <h2 className="text-lg font-semibold">
                                 Personal Information
                             </h2>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div className="flex flex-col lg:grid grid-cols-4 gap-6">
+                                <FormField
+                                    control={form.control}
+                                    name="username"
+                                    render={({ field }) => (
+                                        <FormItem className="col-span-2">
+                                            <FormLabel>Username</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    disabled
+                                                    placeholder="Enter your name"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
                                 <FormField
                                     control={form.control}
                                     name="full_name"
                                     render={({ field }) => (
-                                        <FormItem>
+                                        <FormItem className="col-span-2">
                                             <FormLabel>Name</FormLabel>
                                             <FormControl>
                                                 <Input
@@ -99,7 +130,7 @@ export function ProfileContentPage({ user }: { user: any }) {
                                     control={form.control}
                                     name="email"
                                     render={({ field }) => (
-                                        <FormItem>
+                                        <FormItem className="col-span-2">
                                             <FormLabel>Email</FormLabel>
                                             <Input
                                                 placeholder="Enter your email"
@@ -114,7 +145,7 @@ export function ProfileContentPage({ user }: { user: any }) {
                                     control={form.control}
                                     name="phone"
                                     render={({ field }) => (
-                                        <FormItem>
+                                        <FormItem className="col-span-2">
                                             <FormLabel>Phone</FormLabel>
                                             <Input
                                                 placeholder="Enter your phone"
@@ -149,87 +180,6 @@ export function ProfileContentPage({ user }: { user: any }) {
                     </div>
                 </form>
             </Form>
-
-            <div className="my-10 md:my-20">
-                <div className="text-xl font-bold">History</div>
-                <div className="mt-5">
-                    <TableDemo />
-                </div>
-            </div>
         </div>
-    );
-}
-
-const invoices = [
-    {
-        invoice: 'INV001',
-        paymentStatus: 'Paid',
-        totalAmount: '$250.00',
-        paymentMethod: 'Credit Card',
-    },
-    {
-        invoice: 'INV002',
-        paymentStatus: 'Pending',
-        totalAmount: '$150.00',
-        paymentMethod: 'PayPal',
-    },
-    {
-        invoice: 'INV003',
-        paymentStatus: 'Unpaid',
-        totalAmount: '$350.00',
-        paymentMethod: 'Bank Transfer',
-    },
-    {
-        invoice: 'INV004',
-        paymentStatus: 'Paid',
-        totalAmount: '$450.00',
-        paymentMethod: 'Credit Card',
-    },
-    {
-        invoice: 'INV005',
-        paymentStatus: 'Paid',
-        totalAmount: '$550.00',
-        paymentMethod: 'PayPal',
-    },
-    {
-        invoice: 'INV006',
-        paymentStatus: 'Pending',
-        totalAmount: '$200.00',
-        paymentMethod: 'Bank Transfer',
-    },
-    {
-        invoice: 'INV007',
-        paymentStatus: 'Unpaid',
-        totalAmount: '$300.00',
-        paymentMethod: 'Credit Card',
-    },
-];
-
-export function TableDemo() {
-    return (
-        <Table>
-            <TableHeader>
-                <TableRow>
-                    <TableHead className="w-[100px]">Invoice</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Method</TableHead>
-                    <TableHead className="text-right">Amount</TableHead>
-                </TableRow>
-            </TableHeader>
-            <TableBody>
-                {invoices.map((invoice) => (
-                    <TableRow key={invoice.invoice}>
-                        <TableCell className="font-medium">
-                            {invoice.invoice}
-                        </TableCell>
-                        <TableCell>{invoice.paymentStatus}</TableCell>
-                        <TableCell>{invoice.paymentMethod}</TableCell>
-                        <TableCell className="text-right">
-                            {invoice.totalAmount}
-                        </TableCell>
-                    </TableRow>
-                ))}
-            </TableBody>
-        </Table>
     );
 }

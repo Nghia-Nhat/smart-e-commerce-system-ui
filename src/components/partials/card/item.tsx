@@ -6,18 +6,19 @@ import { ItemProps } from '@/types/product.type';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import RatingStar from '../rating-star';
 
 export const Item: React.FC<ItemProps> = ({ product }) => {
     const { product: productData, category, purchaseCount } = product;
-    const discount = productData.discount
-    const price = Math.round(productData.price * (1- (discount/100)))   
+    const discount = productData?.discount
+    const priceBeforeDiscount = ( productData?.price * (1 + (discount/100))).toFixed(2) 
 
     return (
         <div className="relative flex w-full min-w-[200px] max-w-[230px] flex-col overflow-hidden rounded-lg border-gray-100 bg-white shadow-md border-2 hover:border-orange-400 hover:-translate-y-0.5">
-            <Link href={`/${category}/${productData.productID}`}>
+            <Link href={`/${category}/${productData?.productID}`}>
                 <div className="relative flex h-48 overflow-hidden">
                     <Image
-                        src={productData.imageURL}
+                        src={productData?.imageURL}
                         alt="thumbnail"
                         width={500}
                         height={500}
@@ -30,24 +31,21 @@ export const Item: React.FC<ItemProps> = ({ product }) => {
                 </div>
                 <div className="px-3 pb-3">
                     <h5 className="text-sm tracking-tight text-wrap text-slate-900 truncate line-clamp-2 mt-1 min-h-10">
-                        {productData.productTitle}
+                        {productData?.productTitle}
                     </h5>
                     <div className="mt-2 flex flex-col">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center">
-                                {Array.from({ length: 5 }, (v, i) => (
-                                    <StarIcon key={i} className="h-3 w-3" />
-                                ))}
-                                <span className="ml-1 text-xs">{productData.rating}</span>
+                                <RatingStar number={productData?.rating}/>
                             </div>
                             <p className="text-xs">Sold: {purchaseCount}</p>
                         </div>
                         <p className="mt-2">
-                            <span className="text-xl font-bold text-destructive">
-                            ${price}
+                            <span className="text-xl font-bold text-destructive mr-2">
+                            ${productData?.price}
                             </span>
                             <span className="text-xs line-through text-slate-400">
-                                ${productData.price}
+                                ${priceBeforeDiscount}
                             </span>
                         </p>
                     </div>

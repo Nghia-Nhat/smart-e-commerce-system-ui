@@ -34,6 +34,24 @@ export const Catalog = () => {
             id: 4,
             src: '/images/icon_4.png',
             name: 'International goods',
+            nextItem: true,
+        },
+        {
+            id: 5,
+            src: '/images/icon_5.png',
+            name: 'Vouchers',
+            nextItem: true,
+        },
+        {
+            id: 6,
+            src: '/images/icon_6.png',
+            name: 'Choice',
+            nextItem: true,
+        },
+        {
+            id: 7,
+            src: '/images/icon_7.png',
+            name: 'Phone services',
             nextItem: false,
         },
     ];

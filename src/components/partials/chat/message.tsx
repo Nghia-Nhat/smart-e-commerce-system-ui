@@ -1,4 +1,4 @@
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { MessageType } from '@/types/chatbot';
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
@@ -13,7 +13,6 @@ const Message = ({ msg }: { msg: MessageType }) => {
                             src="https://github.com/shadcn.png"
                             alt="@shadcn"
                         />
-                        <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                     <span className='text-sm font-bold'>Assistant</span>
                 </div>

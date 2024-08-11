@@ -8,7 +8,7 @@ import { CartSheetSide } from './cart/cart-sheet-side';
 import { SubNavbar } from './sub-navbar';
 import Logo from '../common/logo';
 import useUserStore from '@/store/user.store';
-import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
+import { Avatar, AvatarImage } from '../ui/avatar';
 import {
     DropdownMenu,
     DropdownMenuSeparator,
@@ -101,10 +101,9 @@ export const AvatarComponent = () => {
                 >
                     <Avatar>
                         <AvatarImage
-                            src="https://github.com/shadcn.png"
-                            alt="@shadcn"
+                            src="/images/avtUser.png"
+                            alt="Avatar"
                         />
-                        <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                 </Button>
             </DropdownMenuTrigger>

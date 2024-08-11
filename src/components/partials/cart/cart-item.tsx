@@ -68,7 +68,7 @@ export default function CartItem({ data }: { data?: CartType }) {
                     width={100}
                     height={100}
                     alt={`${product?.productTitle}`}
-                    className="w-16 h-16 object-cover bg-slate-400"
+                    className="w-16 h-16 object-cover"
                 ></Image>
 
                 <div className="flex-auto grid grid-cols-1">
