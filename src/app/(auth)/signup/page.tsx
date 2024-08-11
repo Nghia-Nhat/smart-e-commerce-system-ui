@@ -150,7 +150,7 @@ function SignUpPage() {
                                 <Button className="w-full" type="submit">
                                     Sign up
                                 </Button>
-                                <Button variant={'outline'}>
+                                <Button variant={'outline'} onClick={(e: any) => e.preventDefault()}>
                                     <Link href="/login">Back to login</Link>
                                 </Button>
                             </form>

@@ -84,7 +84,6 @@ export function ChatbotSheetSide({ side }: SheetSideProps) {
     };
 
     async function handleSubmitMessage() {
-        console.log(message);
         const response = await sendMessage(message);
         if (response) {
             setIsLoading(false);
@@ -138,15 +137,14 @@ export function ChatbotSheetSide({ side }: SheetSideProps) {
 
                     <SheetFooter>
                         <div className="mb-5 md:mb-0 flex w-full items-end space-x-2 px-4">
-                            {!isLoading && (
-                                <Textarea
-                                    className="scrollbar-hide resize-none"
-                                    placeholder="Typing something..."
-                                    value={message}
-                                    onChange={handleMessageChange}
-                                    onKeyDown={handleKeyDown}
-                                />
-                            )}
+                            <Textarea
+                                className="scrollbar-hide resize-none"
+                                placeholder="Typing something..."
+                                value={message}
+                                onChange={handleMessageChange}
+                                onKeyDown={handleKeyDown}
+                                disabled={isLoading}
+                            />
                             {message && (
                                 <Button
                                     type="submit"

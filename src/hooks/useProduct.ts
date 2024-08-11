@@ -27,7 +27,7 @@ export function useAllProductsByImage(file: File , queryParams: string) {
 
 export function useOneProductByCategoryAndId(category: string, id: string) {
     return useQuery({
-        queryKey: ['products', category, id],
+        queryKey: ['product', category, id],
         queryFn: () => fetchOneProductByCategoryAndId(category, id),
     });
 }
