@@ -75,7 +75,7 @@ const SearchResult = ({ imageFile }: { imageFile: File }) => {
     <>
       <div className="grid grid-cols-2 md:grid-cols-4 justify-center gap-2 md:gap-4">
         {products?.map((product, index) => (
-          <Item key={index} product={product} />
+          <Item key={index} productData={product} />
         ))}
       </div>
       <div className="my-10 flex justify-center">

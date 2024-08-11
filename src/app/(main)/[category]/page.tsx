@@ -43,7 +43,7 @@ const Shop = () => {
                                     <ItemSkeleton key={index} />
                                 ))}
                             {products?.map((product, index) => (
-                                <Item key={index} product={product} />
+                                <Item key={index} productData={product} />
                             ))}
                         </div>
                         <div className="my-10 flex justify-center">

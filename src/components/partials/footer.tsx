@@ -1,3 +1,4 @@
+import Logo from "../common/logo";
 import { ArrowRightIcon, FacebookIcon, InstagramIcon, LinkedinIcon, QrCodeIcon } from "../icons/common";
 import { Button } from "../ui/button";
 
@@ -6,7 +7,9 @@ export default function Footer() {
         <div className="bg-secondary p-10 pb-32 md:pb-5">
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
                 <div>
-                    <h3 className="font-bold text-lg mb-4">Exclusive</h3>
+                    <h3 className="font-bold text-lg mb-4">
+                        <Logo/>
+                    </h3>
                     <p className="mb-4">Subscribe</p>
                     <p className="mb-6">Get 10% off your first order</p>
                     <div className="flex items-center space-x-4">
@@ -19,9 +22,9 @@ export default function Footer() {
                 <div>
                     <h3 className="font-bold text-lg mb-4">Support</h3>
                     <p className="mb-2">
-                        111 Bijoy Sarani, Dhaka, DH 1515, Bangladesh.
+                        111 Main Street, US.
                     </p>
-                    <p className="mb-2">exclusive@gmail.com</p>
+                    <p className="mb-2">help@triplee.com</p>
                     <p>+88015-88888-9999</p>
                 </div>
                 <div>
@@ -30,7 +33,6 @@ export default function Footer() {
                         <li className="mb-2">My Account</li>
                         <li className="mb-2">Login / Register</li>
                         <li className="mb-2">Cart</li>
-                        <li className="mb-2">Wishlist</li>
                         <li>Shop</li>
                     </ul>
                 </div>
@@ -56,7 +58,7 @@ export default function Footer() {
                 </div>
             </div>
             <div className="text-center mt-10">
-                <p>© Copyright RimeL 2022. All right reserved</p>
+                <p>© Copyright Triplee E-commerce 2024. All right reserved</p>
             </div>
         </div>
     );

@@ -11,17 +11,18 @@ export default function RelatedProduct({
     products,
     isLoading,
 }: RelatedProductProps) {
-    
-    console.log(products);
     return (
         <>
             {isLoading &&
                 Array.from({ length: 8 }, (value, index) => (
                     <ItemSkeleton key={index} />
                 ))}
-            {/* {products?.map((data, index) => (
-                <Item key={index} product={data} />
-            ))} */}
+            {products?.map((data, index) => (
+                <Item
+                    key={index}
+                    productData={data}
+                />
+            ))}
         </>
     );
 }

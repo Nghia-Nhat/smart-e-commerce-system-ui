@@ -4,7 +4,7 @@ import ItemSkeleton from '../shop/item-skeleton';
 import { Item } from '@/components/partials/card/item';
 
 export default function FlashSaleSection() {
-    const { data, isLoading, isError } = useAllProducts('footwear', 'limit=8');
+    const { data, isLoading, isError } = useAllProducts('footwear', 'limit=10');
 
     const products = data?.products;
 
@@ -15,11 +15,11 @@ export default function FlashSaleSection() {
     return (
         <>
             {isLoading &&
-                Array.from({ length: 8}, (value, index) => (
+                Array.from({ length: 5}, (value, index) => (
                     <ItemSkeleton key={index} />
                 ))}
             {products?.map((product, index) => (
-                <Item key={index} product={product} />
+                <Item key={index} productData={product} />
             ))}
         </>
     );

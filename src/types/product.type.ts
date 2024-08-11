@@ -7,16 +7,14 @@ export type ProductType = {
     stock: number;
     discount: number;
     images?: Array<string>;
-    description? : string;
-    category? : string;
+    description?: string;
+    category?: string;
 };
 
 export type ItemProps = {
-    product: {
-        product: ProductType;
-        category: string;
-        purchaseCount: number;
-    };
+    product: ProductType;
+    category: string;
+    purchaseCount: number;
 };
 
 export type ProductsResponseType = {
@@ -29,15 +27,14 @@ export type ProductsResponseType = {
     currentPage: number;
     lastPage: number;
     totalProducts: number;
-}
-
+};
 
 export type CartType = {
     product: ProductType;
     quantity: number;
-}
+};
 
 export type CartRequestType = {
     productID: string;
     quantity: string;
-}
+};

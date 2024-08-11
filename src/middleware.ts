@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 // Define the paths that should be protected and the login path
-const protectedPaths = ['/profile', '/orders'];
+const protectedPaths = ['/profile', '/orders', '/checkout'];
 const loginPath = '/login';
 
 export function middleware(request: NextRequest) {
@@ -25,5 +25,5 @@ export function middleware(request: NextRequest) {
 
 // Define the matcher to specify which routes should be handled by this middleware
 export const config = {
-    matcher: ['/login', '/profile', '/orders'],
+    matcher: ['/login', '/profile', '/orders', '/checkout'],
 };
