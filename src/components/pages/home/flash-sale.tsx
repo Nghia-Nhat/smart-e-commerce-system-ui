@@ -9,7 +9,7 @@ export default function FlashSaleSection() {
     const products = data?.products;
 
     if (isError) {
-        return <h1>Error from server</h1>;
+        return <div>Error from server</div>;
     }
 
     return (

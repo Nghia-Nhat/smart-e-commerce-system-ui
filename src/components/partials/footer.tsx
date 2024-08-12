@@ -7,9 +7,9 @@ export default function Footer() {
         <div className="bg-secondary p-10 pb-32 md:pb-5">
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
                 <div>
-                    <h3 className="font-bold text-lg mb-4">
+                    <div className="font-bold text-lg mb-4">
                         <Logo/>
-                    </h3>
+                    </div>
                     <p className="mb-4">Subscribe</p>
                     <p className="mb-6">Get 10% off your first order</p>
                     <div className="flex items-center space-x-4">
