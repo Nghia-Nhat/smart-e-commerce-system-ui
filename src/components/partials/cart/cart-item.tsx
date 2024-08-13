@@ -5,15 +5,18 @@ import { useRemoveCartItem, useUpdateCartItemQuantity } from '@/hooks/useCart';
 import { CartType } from '@/types/product.type';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function CartItem({ data }: { data?: CartType }) {
-    const [quantity, setQuantity] = useState(data?.quantity || 1);
+    const [quantity, setQuantity] = useState(Number(data?.quantity));
     const { mutate: addToCart } = useUpdateCartItemQuantity(false);
     const { mutate: removeFromCart } = useRemoveCartItem();
-    const [error, setError] = useState(false);
 
     const product = data?.product;
+
+    useEffect(() => {
+        setQuantity(Number(data?.quantity))
+    }, [data?.quantity])
 
     if (!product) {
         return;
@@ -27,16 +30,9 @@ export default function CartItem({ data }: { data?: CartType }) {
     const handleChangeQuantity = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
-        if (error) {
-            setError(false);
-        }
+        
         const productID = event.target.name;
         let newQuantity = parseInt(event.target.value);
-        if (newQuantity > product.stock) {
-            newQuantity = product.stock;
-            setError(true);
-            setTimeout(() => { setError(false); }, 3000)
-        }
 
         if (newQuantity < 1) {
             setQuantity(newQuantity);
@@ -64,13 +60,12 @@ export default function CartItem({ data }: { data?: CartType }) {
         <div className="mb-5 border-b pb-2">
             <div className="flex gap-4">
                 <Image
-                    src={`${product?.imageURL}`}
+                    src={product?.imageURL}
                     width={100}
                     height={100}
-                    alt={`${product?.productTitle}`}
+                    alt={product?.productTitle}
                     className="w-16 h-16 object-cover"
-                ></Image>
-
+                />
                 <div className="flex-auto grid grid-cols-1">
                     <Link
                         href={`/${product?.category}/${product?.productID}`}
@@ -105,18 +100,13 @@ export default function CartItem({ data }: { data?: CartType }) {
                         type="number"
                         name={product.productID}
                         className="max-w-[70px] p-2"
-                        defaultValue={quantity}
-                        max={product?.stock}
+                        defaultValue={data?.quantity}
+                        value={quantity}
                         onChange={handleChangeQuantity}
                     />
                 </div>
                 <AlertDelete id={product.productID} />
             </div>
-            {error && (
-                <span className="flex justify-end text-xs text-destructive mt-2">
-                    Maximum quantity is {product.stock}
-                </span>
-            )}
         </div>
     );
 }

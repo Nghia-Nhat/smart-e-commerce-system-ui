@@ -15,7 +15,7 @@ export default function FlashSaleSection() {
     return (
         <>
             {isLoading &&
-                Array.from({ length: 5}, (value, index) => (
+                Array.from({ length: 10}, (value, index) => (
                     <ItemSkeleton key={index} />
                 ))}
             {products?.map((product, index) => (
