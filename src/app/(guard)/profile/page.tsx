@@ -1,6 +1,6 @@
 "use client";
 import { useCurrentUser, useUpdateProfile } from "@/hooks/useUser";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -18,6 +18,25 @@ import {
 } from "@/components/ui/form";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
+export default function ProfilePage() {
+  const { data: user, isLoading } = useCurrentUser();
+  if (isLoading)
+    return (
+      <div className="flex w-full justify-center">
+        <LoaderIcon className="animate-spin mt-10" />
+      </div>
+    );
+  return <ProfileContentPage user={user} />;
+}
+
+interface UserProps {
+  name: string;
+  username: string;
+  email: string;
+  phone: string;
+  address: string;
+}
+
 const schema = z.object({
   full_name: z.string().min(1, "Name is required"),
   username: z.string().readonly(),
@@ -26,27 +45,19 @@ const schema = z.object({
   address: z.string().optional(),
 });
 
-export default function ProfilePage() {
+function ProfileContentPage( { user } : { user: UserProps}) {
   const { mutate: updateProfile } = useUpdateProfile();
-  const { data: user, isLoading } = useCurrentUser();
-  
+
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
-      full_name: user?.name || "",
-      username: user?.username || "",
-      email: user?.email || "",
-      phone: user?.phone || "",
-      address: user?.address || "",
+      full_name: user?.name,
+      username: user?.username,
+      email: user?.email,
+      phone: user?.phone,
+      address: user?.address,
     },
   });
-
-  if (isLoading)
-    return (
-      <div className="flex w-full justify-center">
-        <LoaderIcon className="animate-spin mt-10" />
-      </div>
-    );
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
     updateProfile(data);

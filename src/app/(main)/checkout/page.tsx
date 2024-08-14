@@ -105,7 +105,7 @@ export default function CheckoutPage() {
     }
   }, [total, setValue]);
   const onSubmit = async (data: z.infer<typeof schema>) => {
-    console.log(data);
+    console.log(cart, data);
   };
 
   return (
