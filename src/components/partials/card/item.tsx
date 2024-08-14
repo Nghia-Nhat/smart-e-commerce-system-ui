@@ -17,7 +17,7 @@ export const Item = ({ productData } : { productData: ItemProps}) => {
             <Link href={`/${category}/${product?.productID}`}>
                 <div className="relative flex h-48 overflow-hidden">
                     <Image
-                        src={product?.imageURL}
+                        src={product?.imageURL || "/svg/cat404.svg"}
                         alt="thumbnail"
                         width={500}
                         height={500}

@@ -47,3 +47,12 @@ export async function fetchOneProductByCategoryAndId(
     const res = await response.json();
     return res;
 }
+
+export async function fetchFindProductsByTitle(
+    queryParams: string
+): Promise<ProductsResponseType> {
+    const url = BASE_API_URL + '/product/search?' + `${queryParams}`;
+    const response = await fetch(url);
+    const res = await response.json();
+    return res;
+}

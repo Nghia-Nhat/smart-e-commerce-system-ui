@@ -57,10 +57,10 @@ export const Catalog = () => {
     ];
 
     return (
-        <div className="flex w-full h-fit items-center space-x-4 text-sm my-6 md:mx-10">
+        <div className="grid grid-cols-4 lg:grid-cols-7 w-full h-fit items-center space-x-4 text-sm my-6 md:mx-10 gap-4">
             {list.map((item) => (
-                <div key={item.id} className='w-full flex justify-evenly items-center'>
-                    <div className="flex-1 h-20 p-1 md:p-2 text-center">
+                <div key={item.id} className='flex justify-evenly items-center '>
+                    <div className="h-20 p-1 md:p-2 text-center">
                         <Link
                             href="#"
                             className="inline-block hover:text-primary hover:-translate-y-1"
@@ -75,9 +75,6 @@ export const Catalog = () => {
                             <div className="pt-2">{item.name}</div>
                         </Link>
                     </div>
-                    {item.nextItem && (
-                        <Separator className="h-10" orientation="vertical" />
-                    )}
                 </div>
             ))}
         </div>

@@ -23,13 +23,13 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { SearchIcon } from "../../icons/common";
-import { Badge } from "@/components/ui/badge";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Textarea } from "@/components/ui/textarea";
 import ImageSearch from "./image-search";
+import { Search, Camera } from "lucide-react";
+import { useFindProductsByTitle } from "@/hooks/useProduct";
+import { useRouter } from "next/navigation";
 type SearchDialogProps = {
   textColor?: string;
 };
@@ -37,25 +37,35 @@ type SearchDialogProps = {
 export function SearchDialog({ textColor }: SearchDialogProps) {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const [search, setSearch] = React.useState("")
+  const { push } = useRouter()
+
+  
+  const handleSearchChange = (e: any) => {
+    const text = e.target.value;
+    setSearch(text)
+  }
+
+  const handleSubmit = (e: any) => {
+    if (e.keyCode === 13) {
+      push("/search-result?productTitle=" + search)
+    }
+  }
 
   if (isDesktop) {
     return (
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <Button variant="ghost" size="icon">
-            <SearchIcon
-              className={`h-[1.2rem] w-[1.2rem] ${textColor ?? "text-light"}`}
-            />
-          </Button>
-        </DialogTrigger>
-        <DialogContent
-          className="sm:max-w-[720px]"
-          aria-describedby={undefined}
-        >
-          <DialogTitle>Search product</DialogTitle>
-          <SearchComponents setOpen={setOpen} />
-        </DialogContent>
-      </Dialog>
+      <div className="relative ml-auto flex-1 md:grow-0">
+        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+        <Input
+          type="search"
+          placeholder="Search..."
+          onChange={handleSearchChange}
+          onKeyDown={handleSubmit}
+          className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
+        />
+        {/* Search image */}
+        <SearchImage open={open} setOpen={setOpen} />
+      </div>
     );
   }
 
@@ -93,7 +103,6 @@ function SearchComponents({
       <Tabs defaultValue="common">
         <TabsList className="m-4 ml-0 md:ml-0">
           <TabsTrigger value="common">Search</TabsTrigger>
-          <TabsTrigger value="description">Description</TabsTrigger>
           <TabsTrigger value="image">Image</TabsTrigger>
         </TabsList>
         <TabsContent value="common">
@@ -110,20 +119,26 @@ function SearchComponents({
             </Button>
           </form>
         </TabsContent>
-        <TabsContent value="description">
-          <form className={cn("grid items-start gap-4", className)}>
-            <div className="grid gap-2">
-              <Textarea placeholder="Describe product details..." />
-            </div>
-            <Button>
-              <SearchIcon className="mr-2 h-4 w-4" /> Search
-            </Button>
-          </form>
-        </TabsContent>
         <TabsContent value="image">
           <ImageSearch setOpen={setOpen} />
         </TabsContent>
       </Tabs>
     </>
+  );
+}
+
+function SearchImage({ open, setOpen }: { open: boolean; setOpen: any }) {
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+    <DialogTrigger asChild>
+      <Camera className="absolute right-2.5 top-2.5 h-4 w-4 text-muted-foreground cursor-pointer" />
+    </DialogTrigger>
+    <DialogContent className="md:max-w-[600px]" aria-describedby={undefined}>
+      <DialogHeader>
+        <DialogTitle>Search product</DialogTitle>
+      </DialogHeader>
+      <ImageSearch setOpen={setOpen} />
+    </DialogContent>
+  </Dialog>
   );
 }

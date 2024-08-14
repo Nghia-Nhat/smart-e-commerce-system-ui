@@ -1,4 +1,4 @@
-import { fetchAllProducts, fetchAllProductsByImage, fetchAllProductsByDiscount, fetchOneProductByCategoryAndId } from '@/apiRequests/product';
+import { fetchAllProducts, fetchAllProductsByImage, fetchAllProductsByDiscount, fetchOneProductByCategoryAndId, fetchFindProductsByTitle } from '@/apiRequests/product';
 import { useQuery } from '@tanstack/react-query';
 
 export function useAllProducts(category: string, queryParams: string) {
@@ -29,5 +29,12 @@ export function useOneProductByCategoryAndId(category: string, id: string) {
     return useQuery({
         queryKey: ['product', category, id],
         queryFn: () => fetchOneProductByCategoryAndId(category, id),
+    });
+}
+
+export function useFindProductsByTitle(queryParams: string) {
+    return useQuery({
+        queryKey: ['findProducts', queryParams],
+        queryFn: () => fetchFindProductsByTitle(queryParams),
     });
 }
