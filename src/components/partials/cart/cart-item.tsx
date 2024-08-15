@@ -22,10 +22,8 @@ export default function CartItem({ data }: { data?: CartType }) {
         return;
     }
 
-    const price = product.price;
-    const priceAfterDiscount = Math.round(
-        product.price * (1 - product.discount / 100)
-    );
+    const discount = product?.discount;
+    const priceBeforeDiscount = (product?.price * (1 + discount / 100)).toFixed(2);
 
     const handleChangeQuantity = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -78,12 +76,12 @@ export default function CartItem({ data }: { data?: CartType }) {
                             <span className="text-destructive font-bold text-lg">
                                 $
                                 {(
-                                    Number(priceAfterDiscount) * quantity
+                                    product?.price * quantity
                                 ).toFixed(2)}
                             </span>
                             <div className="relative">
                                 <span className="line-through">
-                                    ${(Number(price) * quantity).toFixed(2)}
+                                    ${Number(priceBeforeDiscount) * quantity}
                                 </span>
                                 <span className="absolute -top-1 -right-6 text-destructive text-[10px] font-bold">
                                     -{product.discount}%

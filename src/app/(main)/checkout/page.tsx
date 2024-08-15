@@ -37,6 +37,8 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
+import { usePayOS, usePayPal } from "@/hooks/usePayment";
+import { PaymentData } from "@/types/product.type";
 
 const schema = z.object({
   total: z.number(),
@@ -62,14 +64,17 @@ export default function CheckoutPage() {
     },
   });
 
+  const { mutate: payOS } = usePayOS();
+  const { mutate: payPal } = usePayPal();
+
   const { setValue } = form;
-  
+
   useEffect(() => {
-    if(user){
-        setValue('username', user.username)
-        setValue('name', user.name)
-        setValue('email', user.email)
-        setValue('address', user.address)
+    if (user) {
+      setValue("username", user.username);
+      setValue("name", user.name);
+      setValue("email", user.email);
+      setValue("address", user.address);
     }
   }, [user, setValue]);
 
@@ -83,10 +88,8 @@ export default function CheckoutPage() {
   let subTotal = 0;
 
   const cart = data?.map((item) => {
-    const priceAfterDiscount = Math.round(
-      item.product.price * (1 - item.product.discount / 100),
-    );
-    const price = priceAfterDiscount * item.quantity;
+    const price = item.product.price * item.quantity;
+
     subTotal += price;
     return {
       image: item.product.imageURL,
@@ -100,12 +103,36 @@ export default function CheckoutPage() {
   const shippingFee = 5;
   const total = subTotal + shippingFee + tax;
   useEffect(() => {
-    if(total){
-        setValue('total', total)
+    if (total) {
+      setValue("total", total);
     }
   }, [total, setValue]);
+
   const onSubmit = async (data: z.infer<typeof schema>) => {
-    console.log(cart, data);
+    if (!cart) return;
+
+    const methodPayment = data.methodPayment;
+
+    // Mapping data before sending to pay
+    // PayOS
+    const paymentData: PaymentData = {
+      amount: 1000,
+      description: "Thanh toan don hang",
+      items: cart.map((item) => {
+        return {
+            name: item.productTitle,
+            quantity: item.quantity,
+            price: item.price,
+          }
+        }),
+    };
+
+    if(methodPayment==="payOS") {
+      payOS(paymentData)
+      return;
+    }
+    payPal(paymentData)
+
   };
 
   return (
@@ -252,8 +279,8 @@ export default function CheckoutPage() {
                             className="grid gap-2"
                           >
                             <div className="flex items-center gap-2">
-                              <RadioGroupItem value="card" id="card" />
-                              <Label htmlFor="card">Credit/Debit Card</Label>
+                              <RadioGroupItem value="payOS" id="payOS" />
+                              <Label htmlFor="card">PayOS</Label>
                             </div>
                             <div className="flex items-center gap-2">
                               <RadioGroupItem value="paypal" id="paypal" />
