@@ -80,9 +80,11 @@ const SearchImageResult = ({ imageFile }: { imageFile: File }) => {
   const products = data?.products;
   const currentPage = data?.currentPage;
   const lastPage = data?.lastPage;
+
   useEffect(() => {
     refetch();
   }, [imageFile])
+  
   if (isLoading) {
     return (
       <>
