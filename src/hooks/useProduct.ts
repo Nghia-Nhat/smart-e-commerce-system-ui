@@ -1,4 +1,4 @@
-import { fetchAllProducts, fetchAllProductsByImage, fetchAllProductsByDiscount, fetchOneProductByCategoryAndId, fetchFindProductsByTitle } from '@/apiRequests/product';
+import { fetchAllProducts, fetchAllProductsByImage, fetchAllProductsByDiscount, fetchOneProductByCategoryAndId, fetchFindProductsByTitle, fetchFlashSaleProducts } from '@/apiRequests/product';
 import { useQuery } from '@tanstack/react-query';
 
 export function useAllProducts(category: string, queryParams: string) {
@@ -36,5 +36,12 @@ export function useFindProductsByTitle(queryParams: string) {
     return useQuery({
         queryKey: ['findProducts', queryParams],
         queryFn: () => fetchFindProductsByTitle(queryParams),
+    });
+}
+
+export function useFlashSaleProducts() {
+    return useQuery({
+        queryKey: ['flash-sale-products'],
+        queryFn: () => fetchFlashSaleProducts(),
     });
 }

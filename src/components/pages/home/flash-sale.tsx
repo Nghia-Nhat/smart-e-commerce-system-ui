@@ -1,10 +1,10 @@
-import { useAllProducts } from '@/hooks/useProduct';
+import { useFlashSaleProducts } from '@/hooks/useProduct';
 import React from 'react';
 import ItemSkeleton from '../shop/item-skeleton';
 import { Item } from '@/components/partials/card/item';
 
 export default function FlashSaleSection() {
-    const { data, isLoading, isError } = useAllProducts('footwear', 'limit=10');
+    const { data, isLoading, isError } = useFlashSaleProducts();
 
     const products = data?.products;
 

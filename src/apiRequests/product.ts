@@ -56,3 +56,11 @@ export async function fetchFindProductsByTitle(
     const res = await response.json();
     return res;
 }
+
+export async function fetchFlashSaleProducts(
+): Promise<ProductsResponseType> {
+    const url = BASE_API_URL + '/product/flash-sale';
+    const response = await fetch(url);
+    const res = await response.json();
+    return res;
+}
