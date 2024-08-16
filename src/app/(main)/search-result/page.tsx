@@ -82,9 +82,11 @@ const SearchImageResult = ({ imageFile }: { imageFile: File }) => {
   const lastPage = data?.lastPage;
 
   useEffect(() => {
-    refetch();
-  }, [imageFile])
-  
+    if(imageFile) {
+      refetch();
+    }
+  }, [imageFile, refetch])
+
   if (isLoading) {
     return (
       <>

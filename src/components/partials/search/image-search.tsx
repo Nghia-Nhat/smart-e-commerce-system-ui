@@ -70,19 +70,21 @@ function ImageSearch({
   };
 
   const detectObjects = async (file: File) => {
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      const url = BASE_API_URL + "/detect_objects";
-      const response = await fetch(url, {
-        method: "POST",
-        body: formData,
-      });
-      const data = await response.json();
-      setObjects(data.objects);
-    } catch (error) {
-      console.error("Error detecting objects:", error);
+    if(isWebcam) {
+      const formData = new FormData();
+      formData.append("file", file);
+  
+      try {
+        const url = BASE_API_URL + "/detect_objects";
+        const response = await fetch(url, {
+          method: "POST",
+          body: formData,
+        });
+        const data = await response.json();
+        setObjects(data.objects);
+      } catch (error) {
+        console.error("Error detecting objects:", error);
+      }
     }
   };
 
