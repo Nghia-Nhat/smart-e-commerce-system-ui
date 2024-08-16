@@ -73,14 +73,16 @@ const SearchImage = () => {
 const SearchImageResult = ({ imageFile }: { imageFile: File }) => {
   const searchParams = useSearchParams();
   const queryParams = searchParams.toString();
-  const { data, isLoading, isError } = useAllProductsByImage(
+  const { data, isLoading, isError, refetch } = useAllProductsByImage(
     imageFile,
     queryParams,
   );
   const products = data?.products;
   const currentPage = data?.currentPage;
   const lastPage = data?.lastPage;
-
+  useEffect(() => {
+    refetch();
+  }, [imageFile])
   if (isLoading) {
     return (
       <>
