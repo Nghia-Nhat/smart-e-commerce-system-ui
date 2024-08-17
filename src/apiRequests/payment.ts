@@ -13,7 +13,7 @@ export async function fetchPayOS(
         },
         body: JSON.stringify(item),
     });
-    const result =  await response.json();
+    const result = await response.json();
     window.location.href = result.checkoutUrl;
 }
 

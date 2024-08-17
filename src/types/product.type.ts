@@ -39,6 +39,7 @@ export type CartRequestType = {
   quantity: string;
 };
 export interface PaymentData {
+  username: string;
   amount: number;
   description: string;
   items: Array<{

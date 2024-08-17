@@ -116,6 +116,7 @@ export default function CheckoutPage() {
     // Mapping data before sending to pay
     // PayOS
     const paymentData: PaymentData = {
+      username: username,
       amount: 1000,
       description: "Thanh toan don hang",
       items: cart.map((item) => {
