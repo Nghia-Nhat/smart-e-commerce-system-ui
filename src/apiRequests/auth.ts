@@ -1,4 +1,4 @@
-import { BACKEND_BASE_URL } from "@/lib/contants";
+import { BACKEND_BASE_URL } from "@/lib/constants";
 import { LoginRequest, LoginResponse, RegisterRequest } from "@/types/auth.type";
 
 export async function fetchLogin(credential: LoginRequest): Promise<LoginResponse> {

@@ -1,4 +1,4 @@
-import { BACKEND_BASE_URL } from '@/lib/contants';
+import { BACKEND_BASE_URL } from '@/lib/constants';
 import { CartType, CartRequestType } from '@/types/product.type';
 
 const BASE_API_URL = BACKEND_BASE_URL;

@@ -1,5 +1,4 @@
-import { BACKEND_BASE_URL } from '@/lib/contants';
-import { CartType, CartRequestType } from '@/types/product.type';
+import { BACKEND_BASE_URL } from '@/lib/constants';
 
 export async function fetchAllOrders(
     username: string

@@ -1,7 +1,6 @@
 "use client";
-import { useCurrentUser } from "@/hooks/useUser";
-import React, { use } from "react";
-import { LoaderIcon } from "lucide-react";
+
+import React from "react";
 import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
@@ -12,16 +11,86 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useOrders } from "@/hooks/usePayment";
 import { getCurrentUsername } from "@/lib/user.util";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Loader } from "lucide-react";
+import { PaymentData } from "@/types/product.type";
+import { usePayOS, usePayPal } from "@/hooks/usePayment";
+import { formatDate } from "@/lib/date.util";
+
+type OrderItemType = {
+  orderId: string;
+  status: string;
+  total?: number;
+  createdAt: string;
+  expiredAt: string;
+  product: {
+    productTitle: string;
+    price: number;
+    quantity: number;
+    imageURL: string;
+  }[];
+};
 
 export default function OrderContentPage() {
   const username = getCurrentUsername();
-  const { data: orders } = useOrders(username)
-  
+  const { data: orders } = useOrders(username);
+
+  const paidOrders: OrderItemType[] = [];
+  const unpaidOrders: OrderItemType[] = [];
+  const canceledOrders: OrderItemType[] = [];
+
+  if (!orders) return;
+
+  for (let index = 0; index < orders.length; index++) {
+    const temp = orders[index];
+
+    const total = temp.product.reduce((acc: number, product: any) => {
+      return acc + product.price * product.quantity;
+    }, 0);
+
+    const order = {
+      ...temp,
+      total,
+    };
+
+    if (order.status === "paid") {
+      paidOrders.push(order);
+    }
+
+    if (order.status === "unpaid") {
+      const currentDate = new Date().toISOString();
+
+      // TODO: Reset Status at DB
+      if (currentDate > order.expiredAt) {
+        canceledOrders.push({
+          ...order,
+          status: "canceled",
+        });
+        continue;
+      }
+      unpaidOrders.push(order);
+      
+    }
+
+    if (order.status === "canceled") {
+      canceledOrders.push(order);
+    }
+  }
+
   return (
     <div className="md:max-w-4xl">
       <div className="flex md:px-5">
@@ -31,148 +100,49 @@ export default function OrderContentPage() {
         </div>
       </div>
 
-      <div className="px-5">
-        <OrdersComponent />
+      <div className="md:px-5">
+        <OrdersComponent
+          paidOrders={paidOrders}
+          unpaidOrders={unpaidOrders}
+          canceledOrders={canceledOrders}
+        />
       </div>
     </div>
   );
 }
 
-export function OrdersComponent() {
+export function OrdersComponent({
+  paidOrders,
+  unpaidOrders,
+  canceledOrders,
+}: {
+  paidOrders: OrderItemType[];
+  unpaidOrders: OrderItemType[];
+  canceledOrders: OrderItemType[];
+}) {
   const [activeTab, setActiveTab] = useState("paid");
-  const [selectedOrder, setSelectedOrder] = useState(null);
-  const paidOrders = [
-    {
-      id: "ORD001",
-      total: 250.99,
-      status: "Paid",
-      date: "2023-05-01",
-      products: [
-        {
-          id: "PROD001",
-          name: "Product A",
-          price: 99.99,
-          quantity: 2,
-        },
-        {
-          id: "PROD002",
-          name: "Product B",
-          price: 75.0,
-          quantity: 1,
-        },
-      ],
-    },
-    {
-      id: "ORD002",
-      total: 149.99,
-      status: "Paid",
-      date: "2023-04-15",
-      products: [
-        {
-          id: "PROD003",
-          name: "Product C",
-          price: 49.99,
-          quantity: 3,
-        },
-      ],
-    },
-    {
-      id: "ORD003",
-      total: 399.99,
-      status: "Paid",
-      date: "2023-03-30",
-      products: [
-        {
-          id: "PROD004",
-          name: "Product D",
-          price: 199.99,
-          quantity: 2,
-        },
-        {
-          id: "PROD005",
-          name: "Product E",
-          price: 99.99,
-          quantity: 1,
-        },
-      ],
-    },
-  ];
-  const unpaidOrders = [
-    {
-      id: "ORD004",
-      total: 75.0,
-      status: "Unpaid",
-      date: "2023-06-01",
-      products: [
-        {
-          id: "PROD006",
-          name: "Product F",
-          price: 25.0,
-          quantity: 3,
-        },
-      ],
-    },
-    {
-      id: "ORD005",
-      total: 199.99,
-      status: "Unpaid",
-      date: "2023-05-20",
-      products: [
-        {
-          id: "PROD007",
-          name: "Product G",
-          price: 99.99,
-          quantity: 2,
-        },
-      ],
-    },
-  ];
-  const canceledOrders = [
-    {
-      id: "ORD006",
-      customer: "Emily Chen",
-      total: 50.0,
-      status: "Canceled",
-      date: "2023-04-10",
-      products: [
-        {
-          id: "PROD008",
-          name: "Product H",
-          price: 25.0,
-          quantity: 2,
-        },
-      ],
-    },
-    {
-      id: "ORD007",
-      customer: "Alex Nguyen",
-      total: 150.0,
-      status: "Canceled",
-      date: "2023-03-25",
-      products: [
-        {
-          id: "PROD009",
-          name: "Product I",
-          price: 50.0,
-          quantity: 3,
-        },
-      ],
-    },
-  ];
+  const [selectedOrder, setSelectedOrder] = useState<any>(null);
+
   const handleOrderClick = (order: any) => {
     setSelectedOrder(order);
   };
   return (
-    <div className="container mx-auto py-8">
+    <div className=" mx-auto py-8">
       <Tabs
         defaultValue={activeTab}
         onValueChange={setActiveTab}
         className="w-full max-w-4xl mx-auto"
       >
         <TabsList className="flex border-b">
-          <TabsTrigger value="paid" onClick={()=>setSelectedOrder(null)}>Paid</TabsTrigger>
-          <TabsTrigger value="unpaid" onClick={()=>setSelectedOrder(null)}>Unpaid</TabsTrigger>
-          <TabsTrigger value="canceled" onClick={()=>setSelectedOrder(null)}>Canceled</TabsTrigger>
+          <TabsTrigger value="paid" onClick={() => setSelectedOrder(null)}>
+            Paid
+          </TabsTrigger>
+          <TabsTrigger value="unpaid" onClick={() => setSelectedOrder(null)}>
+            Unpaid
+          </TabsTrigger>
+          <TabsTrigger value="canceled" onClick={() => setSelectedOrder(null)}>
+            Canceled
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="paid">
           <Table>
@@ -181,22 +151,24 @@ export function OrdersComponent() {
                 <TableHead>Order #</TableHead>
                 <TableHead>Total</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Purchased at</TableHead>
+                <TableHead>Created at</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {paidOrders.map((order) => (
                 <TableRow
-                  key={order.id}
+                  key={order.orderId}
                   onClick={() => handleOrderClick(order)}
                   className="cursor-pointer hover:bg-muted/50"
                 >
-                  <TableCell>{order.id}</TableCell>
-                  <TableCell>${order.total.toFixed(2)}</TableCell>
+                  <TableCell>{order.orderId}</TableCell>
+                  <TableCell>${order.total?.toFixed(2) || 0}</TableCell>
                   <TableCell>
-                    <Badge className="bg-green-400 text-white hover:bg-green-400">{order.status}</Badge>
+                    <Badge className="bg-green-400 text-white hover:bg-green-400">
+                      {order.status && "Paid"}
+                    </Badge>
                   </TableCell>
-                  <TableCell>{order.date}</TableCell>
+                  <TableCell>{formatDate(order.createdAt)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -209,7 +181,7 @@ export function OrdersComponent() {
                 <TableHead>Order #</TableHead>
                 <TableHead>Total</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Purchased at</TableHead>
+                <TableHead>Created at</TableHead>
                 <TableHead>Expired at</TableHead>
                 <TableHead>Action</TableHead>
               </TableRow>
@@ -217,17 +189,19 @@ export function OrdersComponent() {
             <TableBody>
               {unpaidOrders.map((order) => (
                 <TableRow
-                  key={order.id}
+                  key={order.orderId}
                   onClick={() => handleOrderClick(order)}
                   className="cursor-pointer hover:bg-muted/50"
                 >
-                  <TableCell>{order.id}</TableCell>
-                  <TableCell>${order.total.toFixed(2)}</TableCell>
+                  <TableCell>{order.orderId}</TableCell>
+                  <TableCell>${order.total?.toFixed(2)}</TableCell>
                   <TableCell>
-                    <Badge variant="outline">{order.status}</Badge>
+                    <Badge className="bg-slate-500 hover:bg-slate-500">
+                      {order.status && "Unpaid"}
+                    </Badge>
                   </TableCell>
-                  <TableCell>{order.date}</TableCell>
-                  <TableCell>{order.date}</TableCell>
+                  <TableCell>{formatDate(order.createdAt)}</TableCell>
+                  <TableCell>{formatDate(order.expiredAt)}</TableCell>
                   <TableCell>
                     <Button variant={"outline"}>Repaid</Button>
                   </TableCell>
@@ -243,22 +217,24 @@ export function OrdersComponent() {
                 <TableHead>Order #</TableHead>
                 <TableHead>Total</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Purchased at</TableHead>
+                <TableHead>Created at</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {canceledOrders.map((order) => (
                 <TableRow
-                  key={order.id}
+                  key={order.orderId}
                   onClick={() => handleOrderClick(order)}
                   className="cursor-pointer hover:bg-muted/50"
                 >
-                  <TableCell>{order.id}</TableCell>
-                  <TableCell>${order.total.toFixed(2)}</TableCell>
+                  <TableCell>{order.orderId}</TableCell>
+                  <TableCell>${order.total?.toFixed(2) || 0}</TableCell>
                   <TableCell>
-                    <Badge className="bg-destructive text-destructive-foreground hover:bg-destructive">{order.status}</Badge>
+                    <Badge className="bg-destructive text-destructive-foreground hover:bg-destructive">
+                      {order.status && "Canceled"}
+                    </Badge>
                   </TableCell>
-                  <TableCell>{order.date}</TableCell>
+                  <TableCell>{formatDate(order.createdAt)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -268,8 +244,10 @@ export function OrdersComponent() {
       {selectedOrder && (
         <div className="mt-8">
           <div className="flex justify-between">
-              <h2 className="text-2xl font-bold mb-4">Order #{selectedOrder.id}</h2>
-              {activeTab === "unpaid" && <Button variant={"default"} onClick={() => alert("What'sup")}>Pay now</Button>}
+            <h2 className="text-2xl font-bold mb-4">
+              Order #{selectedOrder.orderId}
+            </h2>
+            {activeTab === "unpaid" && <PaymentDialog order={selectedOrder} />}
           </div>
           <Table>
             <TableHeader>
@@ -286,18 +264,20 @@ export function OrdersComponent() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {selectedOrder.products.map((product) => (
-                <TableRow key={product.id}>
+              {selectedOrder.product.map((product: any, index: number) => (
+                <TableRow key={index}>
                   <TableCell className="hidden sm:table-cell">
                     <Image
                       alt="Product image"
                       className="aspect-square rounded-md object-cover"
                       height="64"
-                      src="/svg/cat404.svg"
+                      src={product.imageURL || "/svg/cat404.svg"}
                       width="64"
                     />
                   </TableCell>
-                  <TableCell className="font-medium">{product.name}</TableCell>
+                  <TableCell className="font-medium max-w-md truncate">
+                    {product.productTitle}
+                  </TableCell>
                   <TableCell className="hidden md:table-cell">
                     ${product.price.toFixed(2)}
                   </TableCell>
@@ -311,5 +291,85 @@ export function OrdersComponent() {
         </div>
       )}
     </div>
+  );
+}
+
+function PaymentDialog({ order }: { order: any }) {
+  const [selectedMethod, setSelectedMethod] = useState("paypal");
+  const [isSubmit, setIsSubmit] = useState(false);
+  const username = getCurrentUsername();
+  const { mutate: payOS } = usePayOS();
+  const { mutate: payPal } = usePayPal();
+
+  console.log(order);
+  const onChange = (value: string) => {
+    setSelectedMethod(value);
+    console.log("Selected payment method:", value);
+  };
+
+  const onSubmit = () => {
+    setIsSubmit(true);
+    const methodPayment = selectedMethod;
+
+    const paymentData: PaymentData = {
+      orderId: order.orderId,
+      username,
+      amount: methodPayment === "payOS" ? 1000 : order.total,
+      description: "Checkout orders",
+      items: order.product.map((item: any) => {
+        return {
+          name: item.productTitle,
+          quantity: item.quantity,
+          price: item.price,
+        };
+      }),
+    };
+
+    if (methodPayment === "payOS") {
+      payOS(paymentData);
+      return;
+    }
+    payPal(paymentData);
+  };
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button>Pay now</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]" aria-describedby={undefined}>
+        <DialogHeader>
+          <DialogTitle>Payment</DialogTitle>
+        </DialogHeader>
+        <div className="gap-4">
+          <Label htmlFor="username" className="text-right">
+            Choose a method
+          </Label>
+          <RadioGroup
+            value={selectedMethod}
+            onValueChange={onChange}
+            className="flex mt-4 px-4 gap-10"
+          >
+            <div className="flex items-center gap-2">
+              <RadioGroupItem value="payOS" id="payOS" />
+              <Label htmlFor="payOS">PayOS</Label>
+            </div>
+            <div className="flex items-center gap-2">
+              <RadioGroupItem value="paypal" id="paypal" />
+              <Label htmlFor="paypal">PayPal</Label>
+            </div>
+          </RadioGroup>
+        </div>
+        <DialogFooter>
+          <Button
+            className="w-full flex gap-2 items-center mt-2"
+            disabled={isSubmit}
+            onClick={onSubmit}
+          >
+            {isSubmit && <Loader className="animate-spin" />}Pay
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

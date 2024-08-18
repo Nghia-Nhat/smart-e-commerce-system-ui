@@ -1,5 +1,5 @@
 import { parseJwt } from '@/lib/jwt.util';
-import { BACKEND_BASE_URL } from '@/lib/contants';
+import { BACKEND_BASE_URL } from '@/lib/constants';
 import Cookies from 'js-cookie';
 
 const BASE_API_URL = BACKEND_BASE_URL;

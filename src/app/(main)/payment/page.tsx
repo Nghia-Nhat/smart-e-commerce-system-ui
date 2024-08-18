@@ -76,13 +76,22 @@ export function SuccessComponent() {
             <span className="font-medium">1234567890</span>
           </div>
         </div>
-        <Link
-          href="/"
-          className="mt-6 inline-flex items-center justify-center h-10 px-4 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          prefetch={false}
-        >
-          Return to Homepage
-        </Link>
+        <div className="flex flex-col">
+          <Link
+            href="/orders"
+            className="mt-6 inline-flex items-center justify-center h-10 px-4 text-sm font-medium text-white bg-orange-400 rounded-md hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+            prefetch={false}
+          >
+            Check your order
+          </Link>
+          <Link
+            href="/"
+            className="mt-2 inline-flex items-center justify-center h-10 px-4 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            prefetch={false}
+          >
+            Return to Homepage
+          </Link>
+        </div>
       </main>
     </div>
   );

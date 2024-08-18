@@ -101,9 +101,7 @@ export default function CheckoutPage() {
     };
   });
 
-  const tax = subTotal * 0.08;
-  const shippingFee = 5;
-  const total = subTotal + shippingFee + tax;
+  const total = subTotal;
   useEffect(() => {
     if (total) {
       setValue("total", total);
@@ -195,19 +193,6 @@ export default function CheckoutPage() {
                 </Table>
                 <Separator className="my-4" />
                 <div className="flex justify-between font-medium">
-                  <span>Subtotal</span>
-                  <span>${subTotal.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between font-medium">
-                  <span>Shipping</span>
-                  <span>$5.00</span>
-                </div>
-                <div className="flex justify-between font-medium">
-                  <span>Tax</span>
-                  <span>${tax.toFixed(2)}</span>
-                </div>
-                <Separator className="my-4" />
-                <div className="flex justify-between font-medium">
                   <span>Total</span>
                   <span>${total.toFixed(2)}</span>
                 </div>
@@ -290,7 +275,7 @@ export default function CheckoutPage() {
                             >
                               <div className="flex items-center gap-2">
                                 <RadioGroupItem value="payOS" id="payOS" />
-                                <Label htmlFor="card">PayOS</Label>
+                                <Label htmlFor="payOS">PayOS</Label>
                               </div>
                               <div className="flex items-center gap-2">
                                 <RadioGroupItem value="paypal" id="paypal" />

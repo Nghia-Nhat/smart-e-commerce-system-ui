@@ -29,7 +29,6 @@ export function usePayPal() {
 }
 
 export function useOrders(username: string) {
-    console.log("useOrders", username);
     return useQuery({
         queryKey: ['orders'],
         queryFn: () => fetchAllOrders(username)

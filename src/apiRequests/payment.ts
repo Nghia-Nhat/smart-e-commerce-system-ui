@@ -1,4 +1,4 @@
-import { BACKEND_BASE_URL } from '@/lib/contants';
+import { BACKEND_BASE_URL } from '@/lib/constants';
 import { PaymentData } from '@/types/product.type';
 
 export async function fetchPayOS(
