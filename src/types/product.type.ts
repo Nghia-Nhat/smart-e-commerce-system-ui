@@ -9,6 +9,8 @@ export type ProductType = {
   images?: Array<string>;
   description?: string;
   category?: string;
+  location?: string;
+  purchaseCount?: string;
 };
 
 export type ItemProps = {

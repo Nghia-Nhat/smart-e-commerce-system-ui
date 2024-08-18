@@ -1,5 +1,5 @@
 "use client";
-import { StarIcon } from "@/components/icons/common";
+import { LocationIcon, StarIcon } from "@/components/icons/common";
 import ButtonAddToCart from "@/components/pages/product/button-add-to-cart";
 import ProductDetailSkeleton from "@/components/pages/product/product-detail-skeleton";
 import { Form, FormField, FormMessage } from "@/components/ui/form";
@@ -67,6 +67,7 @@ export function ProductDetail({
   const { mutate: addToCart } = useUpdateCartItemQuantity();
   const [quantity, setQuantity] = useState(1);
   const [image, setImage] = useState("");
+
   // After get data
   const discount = product?.discount;
   const priceBeforeDiscount = (product?.price * (1 + discount / 100)).toFixed(
@@ -175,7 +176,14 @@ export function ProductDetail({
                     <Separator orientation="vertical" />
                     <span className="font-semibold text-sm">5k Reviewer</span>
                     <Separator orientation="vertical" />
-                    <span className="font-semibold text-sm">1.2k Sold</span>
+                    <span className="font-semibold text-sm">
+                      {product.purchaseCount} Sold
+                    </span>
+                    <Separator orientation="vertical" />
+                    <div className="flex h-5 items-center gap-2 font-semibold text-sm">
+                      <LocationIcon className="h-5 w-5" />
+                      <span>{product.location}</span>
+                    </div>
                   </div>
                   <div className="flex h-5 items-center flex-wrap gap-2 mt-4">
                     <span className="text-2xl font-bold text-destructive">
@@ -192,8 +200,7 @@ export function ProductDetail({
                       In stock
                     </span>
                   </div>
-                  <div>{}</div>
-                  <div className="flex h-5 items-center flex-wrap gap-10 mt-6">
+                  <div className="flex h-5 items-center flex-wrap gap-10 mt-4">
                     <h3 className="text-lg font-bold text-gray-800">
                       Promotion
                     </h3>
