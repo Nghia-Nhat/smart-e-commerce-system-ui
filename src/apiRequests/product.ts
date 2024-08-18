@@ -6,7 +6,7 @@ export async function fetchAllProducts(
     category: string,
     queryParams: string
 ): Promise<ProductsResponseType> {
-    const url = BASE_API_URL + '/product' + `/${category}` + `?${queryParams}`;
+    const url = BASE_API_URL + '/product/search' + `?${queryParams}`;
     const response = await fetch(url);
     const res = await response.json();
     return res;
@@ -15,7 +15,7 @@ export async function fetchAllProducts(
 export async function fetchAllProductsByDiscount(
     queryParams: string
 ): Promise<ProductsResponseType> {
-    const url = BASE_API_URL + '/product/discount' + `?${queryParams}`;
+    const url = BASE_API_URL + '/product/search' + `?${queryParams}`;
     const response = await fetch(url);
     const res = (await response.json()) as ProductsResponseType;
     return res;

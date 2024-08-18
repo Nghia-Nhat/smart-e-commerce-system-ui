@@ -36,9 +36,10 @@ import {
 } from "@/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePayOS, usePayPal } from "@/hooks/usePayment";
 import { PaymentData } from "@/types/product.type";
+import { Loader } from "lucide-react";
 
 const schema = z.object({
   total: z.number(),
@@ -66,6 +67,7 @@ export default function CheckoutPage() {
 
   const { mutate: payOS } = usePayOS();
   const { mutate: payPal } = usePayPal();
+  const [isSubmit, setIsSubmit] = useState(false);
 
   const { setValue } = form;
 
@@ -110,6 +112,7 @@ export default function CheckoutPage() {
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
     if (!cart) return;
+    setIsSubmit(true);
 
     const methodPayment = data.methodPayment;
 
@@ -117,23 +120,22 @@ export default function CheckoutPage() {
     // PayOS
     const paymentData: PaymentData = {
       username: username,
-      amount: 1000,
-      description: "Thanh toan don hang",
+      amount: methodPayment === "payOS" ? 1000 : total,
+      description: "Checkout orders",
       items: cart.map((item) => {
         return {
-            name: item.productTitle,
-            quantity: item.quantity,
-            price: item.price,
-          }
-        }),
+          name: item.productTitle,
+          quantity: item.quantity,
+          price: item.price,
+        };
+      }),
     };
 
-    if(methodPayment==="payOS") {
-      payOS(paymentData)
+    if (methodPayment === "payOS") {
+      payOS(paymentData);
       return;
     }
-    payPal(paymentData)
-
+    payPal(paymentData);
   };
 
   return (
@@ -144,166 +146,179 @@ export default function CheckoutPage() {
           Review your order and complete the purchase.
         </p>
       </div>
-      <main className="flex-1 grid md:grid-cols-2 gap-8 p-4 sm:p-6 md:p-8">
-        <div>
-          <Card>
-            <CardHeader>
-              <CardTitle>Order Summary</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead></TableHead>
-                    <TableHead>Product name</TableHead>
-                    <TableHead>Qty</TableHead>
-                    <TableHead>Price</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {cart?.length === 0 ? (
-                    <div>Empty</div>
-                  ) : (
-                    cart?.map((item, index) => (
-                      <TableRow key={index}>
-                        <TableCell>
-                          <Image
-                            width={40}
-                            height={40}
-                            src={item.image}
-                            alt={item.productTitle}
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <div className="font-medium">{item.productTitle}</div>
-                        </TableCell>
-                        <TableCell>{item.quantity}</TableCell>
-                        <TableCell>${item.price}</TableCell>
-                      </TableRow>
-                    ))
-                  )}
-                </TableBody>
-              </Table>
-              <Separator className="my-4" />
-              <div className="flex justify-between font-medium">
-                <span>Subtotal</span>
-                <span>${subTotal.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between font-medium">
-                <span>Shipping</span>
-                <span>$5.00</span>
-              </div>
-              <div className="flex justify-between font-medium">
-                <span>Tax</span>
-                <span>${tax.toFixed(2)}</span>
-              </div>
-              <Separator className="my-4" />
-              <div className="flex justify-between font-medium">
-                <span>Total</span>
-                <span>${total.toFixed(2)}</span>
-              </div>
-            </CardContent>
-          </Card>
+      {data?.length === 0 ? (
+        <div className="flex-1 grid md:grid-cols-2 gap-8 p-4 sm:p-6 md:p-8">
+          Your cart is empty
         </div>
-        <div>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Checkout</CardTitle>
-                </CardHeader>
-                <CardContent className="grid gap-4">
-                  <div className="grid gap-2">
-                    <FormField
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem className="col-span-2">
-                          <FormLabel>Name</FormLabel>
-                          <FormControl>
-                            <Input placeholder="John Doe" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="grid gap-2">
-                    <FormField
-                      control={form.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem className="col-span-2">
-                          <FormLabel>Email</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="email"
-                              placeholder="john@example.com"
-                              {...field}
+      ) : (
+        <main className="flex-1 grid md:grid-cols-2 gap-8 p-4 sm:p-6 md:p-8">
+          <div>
+            <Card>
+              <CardHeader>
+                <CardTitle>Order Summary</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead></TableHead>
+                      <TableHead>Product name</TableHead>
+                      <TableHead>Qty</TableHead>
+                      <TableHead>Price</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {cart?.length === 0 ? (
+                      <div>Empty</div>
+                    ) : (
+                      cart?.map((item, index) => (
+                        <TableRow key={index}>
+                          <TableCell>
+                            <Image
+                              width={40}
+                              height={40}
+                              src={item.image}
+                              alt={item.productTitle}
                             />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="grid gap-2">
-                    <FormField
-                      control={form.control}
-                      name="address"
-                      render={({ field }) => (
-                        <FormItem className="col-span-2">
-                          <FormLabel>Address</FormLabel>
-                          <FormControl>
-                            <Textarea
-                              id="address"
-                              placeholder="123 Main St, Anytown USA"
-                              rows={3}
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="grid gap-2">
-                    <FormField
-                      control={form.control}
-                      name="methodPayment"
-                      render={({ field }) => (
-                        <FormItem className="col-span-2">
-                          <FormLabel>Payment Method</FormLabel>
-                          <RadioGroup
-                            value={field.value}
-                            onValueChange={field.onChange}
-                            className="grid gap-2"
-                          >
-                            <div className="flex items-center gap-2">
-                              <RadioGroupItem value="payOS" id="payOS" />
-                              <Label htmlFor="card">PayOS</Label>
+                          </TableCell>
+                          <TableCell>
+                            <div className="font-medium">
+                              {item.productTitle}
                             </div>
-                            <div className="flex items-center gap-2">
-                              <RadioGroupItem value="paypal" id="paypal" />
-                              <Label htmlFor="paypal">PayPal</Label>
-                            </div>
-                          </RadioGroup>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Button type="submit" className="w-full">
-                    Place Order
-                  </Button>
-                </CardFooter>
-              </Card>
-            </form>
-          </Form>
-        </div>
-      </main>
+                          </TableCell>
+                          <TableCell>{item.quantity}</TableCell>
+                          <TableCell>${item.price}</TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
+                </Table>
+                <Separator className="my-4" />
+                <div className="flex justify-between font-medium">
+                  <span>Subtotal</span>
+                  <span>${subTotal.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between font-medium">
+                  <span>Shipping</span>
+                  <span>$5.00</span>
+                </div>
+                <div className="flex justify-between font-medium">
+                  <span>Tax</span>
+                  <span>${tax.toFixed(2)}</span>
+                </div>
+                <Separator className="my-4" />
+                <div className="flex justify-between font-medium">
+                  <span>Total</span>
+                  <span>${total.toFixed(2)}</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+          <div>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Checkout</CardTitle>
+                  </CardHeader>
+                  <CardContent className="grid gap-4">
+                    <div className="grid gap-2">
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem className="col-span-2">
+                            <FormLabel>Name</FormLabel>
+                            <FormControl>
+                              <Input placeholder="John Doe" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem className="col-span-2">
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="email"
+                                placeholder="john@example.com"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <FormField
+                        control={form.control}
+                        name="address"
+                        render={({ field }) => (
+                          <FormItem className="col-span-2">
+                            <FormLabel>Address</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                id="address"
+                                placeholder="123 Main St, Anytown USA"
+                                rows={3}
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <FormField
+                        control={form.control}
+                        name="methodPayment"
+                        render={({ field }) => (
+                          <FormItem className="col-span-2">
+                            <FormLabel>Payment Method</FormLabel>
+                            <RadioGroup
+                              value={field.value}
+                              onValueChange={field.onChange}
+                              className="grid gap-2"
+                            >
+                              <div className="flex items-center gap-2">
+                                <RadioGroupItem value="payOS" id="payOS" />
+                                <Label htmlFor="card">PayOS</Label>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <RadioGroupItem value="paypal" id="paypal" />
+                                <Label htmlFor="paypal">PayPal</Label>
+                              </div>
+                            </RadioGroup>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </CardContent>
+                  <CardFooter>
+                    <Button
+                      type="submit"
+                      className="w-full flex gap-2 items-center"
+                      disabled={isSubmit}
+                    >
+                      {isSubmit && <Loader className="animate-spin" />}
+                      Place Order
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </form>
+            </Form>
+          </div>
+        </main>
+      )}
     </div>
   );
 }

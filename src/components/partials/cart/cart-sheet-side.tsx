@@ -18,6 +18,8 @@ import useUserStore from '@/store/user.store';
 import { AlertLogin } from '../../common/alert-login';
 import CartList from './cart-list';
 import { useRouter } from 'next/navigation';
+import { Loader } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 const SHEET_SIDES = ['top', 'right', 'bottom', 'left'] as const;
 
@@ -30,6 +32,7 @@ type SheetSideProps = {
 export function CartSheetSide({ side }: SheetSideProps) {
     const { isLogin } = useUserStore();
     const { push } = useRouter();
+    const [isSubmit, setIsSubmit] = useState(false)
 
     if (!isLogin) {
         return (
@@ -41,10 +44,15 @@ export function CartSheetSide({ side }: SheetSideProps) {
         );
     }
 
+    const handleSubmit = () => {
+        setIsSubmit(true)
+        push('/checkout')
+    }
+
     return (
         <Sheet>
             <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" onClick={() => setIsSubmit(false)}>
                     <ShoppingCartIcon className="h-[1.2rem] w-[1.2rem] text-light" />
                 </Button>
             </SheetTrigger>
@@ -62,9 +70,11 @@ export function CartSheetSide({ side }: SheetSideProps) {
                 <SheetFooter className="absolute bottom-0 left-0 right-0 bg-white h-[10vh]">
                     <SheetClose asChild>
                         <Button
-                            className="w-full mx-5"
-                            onClick={() => push('/checkout')}
+                            disabled={isSubmit}
+                            className="w-full mx-5 flex gap-2 items-center"
+                            onClick={handleSubmit}
                         >
+                            {isSubmit && <Loader className="animate-spin"/>}
                             Checkout
                         </Button>
                     </SheetClose>

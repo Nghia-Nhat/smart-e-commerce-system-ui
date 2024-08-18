@@ -8,7 +8,7 @@ import React from 'react';
 import RatingStar from '../rating-star';
 
 export const Item = ({ productData } : { productData: ItemProps}) => {
-    const { product, category, purchaseCount } = productData;
+    const { product, category, purchaseCount, location } = productData;
     const discount = product?.discount
     const priceBeforeDiscount = ( product?.price * (1 + (discount/100))).toFixed(2) 
 
@@ -51,7 +51,7 @@ export const Item = ({ productData } : { productData: ItemProps}) => {
                 </div>
                 <div className="px-3 pb-2 text-xs flex items-center gap-1">
                     <LocationIcon className="h-3 w-3" />
-                    <span>Ho Chi Minh</span>
+                    <span>{location}</span>
                 </div>
             </Link>
         </div>

@@ -5,7 +5,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { HeartIcon } from "../icons/common"
 
 export function ToastSimple({className, description} : any) {
-  const { toast } = useToast()
+  const { toast  } = useToast()
 
   return (
     <Button

@@ -37,33 +37,44 @@ type SearchDialogProps = {
 export function SearchDialog({ textColor }: SearchDialogProps) {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const [search, setSearch] = React.useState("")
-  const { push } = useRouter()
+  const [search, setSearch] = React.useState("");
+  const { push } = useRouter();
 
-  
   const handleSearchChange = (e: any) => {
     const text = e.target.value;
-    setSearch(text)
-  }
+    setSearch(text);
+  };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmitWithEnter = (e: any) => {
+    if (e.keyCode === 32) return;
     if (e.keyCode === 13) {
-      push("/search-result?productTitle=" + search)
+      push("/search-result?productTitle=" + search);
+      return;
     }
-  }
+  };
+  const handleSubmit = (e: any) => {
+    if (e.keyCode === 32) return;
+    push("/search-result?productTitle=" + search);
+  };
 
   if (isDesktop) {
     return (
       <div className="relative ml-auto flex-1 md:grow-0">
-        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
           placeholder="Search..."
           onChange={handleSearchChange}
-          onKeyDown={handleSubmit}
-          className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
+          onKeyDown={handleSubmitWithEnter}
+          className="w-full rounded-lg bg-background pl-4 md:w-[200px] lg:w-[336px]"
         />
         {/* Search image */}
-        <SearchImage open={open} setOpen={setOpen} />
+        {search ? (
+          <Search
+            className="absolute right-2.5 top-2.5 h-4 w-4 text-muted-foreground cursor-pointer"
+            onClick={handleSubmit}
+          />
+        ) : (
+          <SearchImage open={open} setOpen={setOpen} />
+        )}
       </div>
     );
   }
@@ -129,15 +140,15 @@ function SearchComponents({
 function SearchImage({ open, setOpen }: { open: boolean; setOpen: any }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-    <DialogTrigger asChild>
-      <Camera className="absolute right-2.5 top-2.5 h-4 w-4 text-muted-foreground cursor-pointer" />
-    </DialogTrigger>
-    <DialogContent className="md:max-w-[600px]" aria-describedby={undefined}>
-      <DialogHeader>
-        <DialogTitle>Search product</DialogTitle>
-      </DialogHeader>
-      <ImageSearch setOpen={setOpen} />
-    </DialogContent>
-  </Dialog>
+      <DialogTrigger asChild>
+        <Camera className="absolute right-2.5 top-2.5 h-4 w-4 text-muted-foreground cursor-pointer" />
+      </DialogTrigger>
+      <DialogContent className="md:max-w-[600px]" aria-describedby={undefined}>
+        <DialogHeader>
+          <DialogTitle>Search product</DialogTitle>
+        </DialogHeader>
+        <ImageSearch setOpen={setOpen} />
+      </DialogContent>
+    </Dialog>
   );
 }

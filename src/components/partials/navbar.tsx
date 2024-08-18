@@ -109,7 +109,7 @@ export const AvatarComponent = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
                 <DropdownMenuLabel>
-                    <Link href={'profile'}>My Account</Link>
+                    <Link href={'/profile'}>My Account</Link>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Settings</DropdownMenuItem>

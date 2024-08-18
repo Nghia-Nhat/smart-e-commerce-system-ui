@@ -81,7 +81,7 @@ export default function CartItem({ data }: { data?: CartType }) {
                             </span>
                             <div className="relative">
                                 <span className="line-through">
-                                    ${Number(priceBeforeDiscount) * quantity}
+                                    ${(Number(priceBeforeDiscount) * quantity).toFixed(2)}
                                 </span>
                                 <span className="absolute -top-1 -right-6 text-destructive text-[10px] font-bold">
                                     -{product.discount}%

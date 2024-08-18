@@ -18,7 +18,7 @@ import Navbar from "@/components/partials/navbar";
 import ScrollToTop from "@/components/partials/scroll-to-top";
 import NavbarMobile from "@/components/partials/navbar-mobile";
 import Footer from "@/components/partials/footer";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { WrapSection } from "@/components/utils/wrap-section";
 import RelatedProduct from "@/components/partials/related-products";
 import RatingStar from "@/components/partials/rating-star";
@@ -66,7 +66,7 @@ export function ProductDetail({
 }) {
   const { mutate: addToCart } = useUpdateCartItemQuantity();
   const [quantity, setQuantity] = useState(1);
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState("");
   // After get data
   const discount = product?.discount;
   const priceBeforeDiscount = (product?.price * (1 + discount / 100)).toFixed(
@@ -121,23 +121,38 @@ export function ProductDetail({
       <main className="h-fit min-h-[90vh]">
         <div className="p-6 lg:max-w-6xl max-w-2xl mx-auto">
           <div className="grid items-start grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="w-full lg:sticky top-0 sm:flex gap-2">
+            <div className="w-full lg:sticky top-0 flex flex-col-reverse sm:flex-row gap-2">
               {/* List of images */}
               <div className="sm:space-y-3 w-16 max-sm:flex max-sm:mb-4 max-sm:gap-4">
-                {images &&
-                  images.map((source, index) => (
-                    <Image
-                      key={index}
-                      src={source}
-                      alt="Product"
-                      width={500}
-                      height={500}
-                      object-fit="cover"
-                      className="w-full min-w-16 cursor-pointer border-2"
-                      onClick={() => handleChangeImage(source)}
-                      priority
-                    />
-                  ))}
+                {images && (
+                  <>
+                    {product.imageURL && (
+                      <Image
+                        src={product.imageURL}
+                        alt="Product"
+                        width={500}
+                        height={500}
+                        object-fit="cover"
+                        className="w-full min-w-16 cursor-pointer border-2"
+                        onClick={() => handleChangeImage(product.imageURL)}
+                        priority
+                      />
+                    )}
+                    {images.map((source, index) => (
+                      <Image
+                        key={index}
+                        src={source}
+                        alt="Product"
+                        width={500}
+                        height={500}
+                        object-fit="cover"
+                        className="w-full min-w-16 cursor-pointer border-2"
+                        onClick={() => handleChangeImage(source)}
+                        priority
+                      />
+                    ))}
+                  </>
+                )}
               </div>
               <Image
                 src={image || product.imageURL}
@@ -177,6 +192,7 @@ export function ProductDetail({
                       In stock
                     </span>
                   </div>
+                  <div>{}</div>
                   <div className="flex h-5 items-center flex-wrap gap-10 mt-6">
                     <h3 className="text-lg font-bold text-gray-800">
                       Promotion

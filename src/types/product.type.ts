@@ -15,6 +15,7 @@ export type ItemProps = {
   product: ProductType;
   category: string;
   purchaseCount: number;
+  location?: string;
 };
 
 export type ProductsResponseType = {

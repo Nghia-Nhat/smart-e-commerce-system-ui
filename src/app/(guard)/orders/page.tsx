@@ -1,6 +1,6 @@
 "use client";
 import { useCurrentUser } from "@/hooks/useUser";
-import React from "react";
+import React, { use } from "react";
 import { LoaderIcon } from "lucide-react";
 import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -15,53 +15,13 @@ import {
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-
-const invoices = [
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-];
+import { useOrders } from "@/hooks/usePayment";
+import { getCurrentUsername } from "@/lib/user.util";
 
 export default function OrderContentPage() {
+  const username = getCurrentUsername();
+  const { data: orders } = useOrders(username)
+  
   return (
     <div className="md:max-w-4xl">
       <div className="flex md:px-5">
@@ -84,7 +44,6 @@ export function OrdersComponent() {
   const paidOrders = [
     {
       id: "ORD001",
-      customer: "John Doe",
       total: 250.99,
       status: "Paid",
       date: "2023-05-01",
@@ -105,7 +64,6 @@ export function OrdersComponent() {
     },
     {
       id: "ORD002",
-      customer: "Jane Smith",
       total: 149.99,
       status: "Paid",
       date: "2023-04-15",
@@ -120,7 +78,6 @@ export function OrdersComponent() {
     },
     {
       id: "ORD003",
-      customer: "Michael Johnson",
       total: 399.99,
       status: "Paid",
       date: "2023-03-30",

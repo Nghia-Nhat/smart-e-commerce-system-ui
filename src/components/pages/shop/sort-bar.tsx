@@ -57,24 +57,24 @@ const SortBar = () => {
                 Relevance
             </Button>
             <Button
-                variant={isActive === 'latest' ? 'default' : 'outline'}
-                onClick={() => handleChangeQueryParams('sortBy', 'latest')}
+                variant={isActive === 'rating_desc' ? 'default' : 'outline'}
+                onClick={() => handleChangeQueryParams('sortBy', 'rating_desc')}
             >
-                Latest
+                Rating
             </Button>
             <Button
-                variant={isActive === 'sales' ? 'default' : 'outline'}
-                onClick={() => handleChangeQueryParams('sortBy', 'sales')}
+                variant={isActive === 'purchased_desc' ? 'default' : 'outline'}
+                onClick={() => handleChangeQueryParams('sortBy', 'purchased_desc')}
             >
                 Top Sales
             </Button>
-            <Select onValueChange={handleOnChange} defaultValue={checkIfExists(['asc', 'desc'], isActive)}>
-                <SelectTrigger className={`bg-background w-[220px] ${['asc', 'desc'].find((e) => e === isActive) ? 'text-primary' : ''}`}>
+            <Select onValueChange={handleOnChange} defaultValue={checkIfExists(['price_asc', 'price_desc'], isActive)}>
+                <SelectTrigger className={`bg-background w-[220px] ${['price_asc', 'price_desc'].find((e) => e === isActive) ? 'text-primary' : ''}`}>
                     <SelectValue placeholder="Price"/>
                 </SelectTrigger>
                 <SelectContent>
-                    <SelectItem value="asc">Price: From low to high</SelectItem>
-                    <SelectItem value="desc">
+                    <SelectItem value="price_asc">Price: From low to high</SelectItem>
+                    <SelectItem value="price_desc">
                         Price: From high to low
                     </SelectItem>
                 </SelectContent>

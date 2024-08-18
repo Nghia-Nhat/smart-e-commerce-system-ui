@@ -82,10 +82,10 @@ const SearchImageResult = ({ imageFile }: { imageFile: File }) => {
   const lastPage = data?.lastPage;
 
   useEffect(() => {
-    if(imageFile) {
+    if (imageFile) {
       refetch();
     }
-  }, [imageFile, refetch])
+  }, [imageFile, refetch]);
 
   if (isLoading) {
     return (
@@ -100,29 +100,19 @@ const SearchImageResult = ({ imageFile }: { imageFile: File }) => {
   }
 
   if (isError) {
-    return (
-      <div className="flex h-[50vh] md:h-[90vh] justify-center items-center">
-        <Image
-          src="/images/404.png"
-          width={500}
-          height={500}
-          alt="Product not found"
-          draggable="false"
-          className="select-none"
-        />
-      </div>
-    );
+    return <ImageNotFound/>;
   }
 
   return (
     <>
+      {products?.length === 0 && <ImageNotFound/>}
       <div className="grid grid-cols-2 md:grid-cols-4 justify-center gap-2 md:gap-4">
         {products?.map((product, index) => (
           <Item key={index} productData={product} />
         ))}
       </div>
       <div className="my-10 flex justify-center">
-        {data && (
+        {products?.length !== 0 && (
           <MyPagination
             currentPage={currentPage || 1}
             lastPage={lastPage || 0}
@@ -140,30 +130,13 @@ const SearchProductTitle = () => {
   const productTitle = searchParams.get("productTitle");
 
   if (productTitle === null) {
-    return (
-      <div className="flex h-[50vh] md:h-[90vh] justify-center items-center">
-        <Image
-          src="/images/404.png"
-          width={500}
-          height={500}
-          alt="Product not found"
-          draggable="false"
-          className="select-none"
-        />
-      </div>
-    );
+    return <ImageNotFound/>;
   }
   return <SearchProductTitleResult queryParams={queryParams} />;
 };
 
-const SearchProductTitleResult = ({
-  queryParams,
-}: {
-  queryParams: string;
-}) => {
-  const { data, isLoading, isError } = useFindProductsByTitle(
-    queryParams
-  );
+const SearchProductTitleResult = ({ queryParams }: { queryParams: string }) => {
+  const { data, isLoading, isError } = useFindProductsByTitle(queryParams);
   const products = data?.products;
   const currentPage = data?.currentPage;
   const lastPage = data?.lastPage;
@@ -181,29 +154,19 @@ const SearchProductTitleResult = ({
   }
 
   if (isError) {
-    return (
-      <div className="flex h-[50vh] md:h-[90vh] justify-center items-center">
-        <Image
-          src="/images/404.png"
-          width={500}
-          height={500}
-          alt="Product not found"
-          draggable="false"
-          className="select-none"
-        />
-      </div>
-    );
+    return <ImageNotFound/>;
   }
 
   return (
     <>
+      {products?.length === 0 && <ImageNotFound/>}
       <div className="grid grid-cols-2 md:grid-cols-4 justify-center gap-2 md:gap-4">
         {products?.map((product, index) => (
           <Item key={index} productData={product} />
         ))}
       </div>
       <div className="my-10 flex justify-center">
-        {data && (
+        {products?.length !== 0 && (
           <MyPagination
             currentPage={currentPage || 1}
             lastPage={lastPage || 0}
@@ -211,6 +174,21 @@ const SearchProductTitleResult = ({
         )}
       </div>
     </>
+  );
+};
+
+const ImageNotFound = () => {
+  return (
+    <div className="flex h-[50vh] md:h-[90vh] justify-center items-center">
+      <Image
+        src="/images/404.png"
+        width={500}
+        height={500}
+        alt="Product not found"
+        draggable="false"
+        className="select-none"
+      />
+    </div>
   );
 };
 

@@ -40,7 +40,7 @@ export async function fetchUpdateProfile(data: UpdateProfileType) {
         console.log('Access token not found')
         return;
     }
-    console.log(data);
+
     const payload = parseJwt(accessToken)
     const url = BASE_API_URL + '/users' + `/${payload.username}`;
     const headers = {

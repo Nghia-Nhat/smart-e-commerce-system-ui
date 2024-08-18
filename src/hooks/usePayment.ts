@@ -1,6 +1,7 @@
+import { fetchAllOrders } from "@/apiRequests/order";
 import { fetchPayOS, fetchPayPal } from "@/apiRequests/payment";
 import { PaymentData } from "@/types/product.type";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
 export function usePayOS() {
@@ -24,5 +25,13 @@ export function usePayPal() {
         onError: () => {
             console.log("Pay failed");
         },
+    });
+}
+
+export function useOrders(username: string) {
+    console.log("useOrders", username);
+    return useQuery({
+        queryKey: ['orders'],
+        queryFn: () => fetchAllOrders(username)
     });
 }

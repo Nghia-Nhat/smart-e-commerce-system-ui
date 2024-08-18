@@ -23,7 +23,7 @@ export function useUpdateCartItemQuantity(isNotify = true) {
         onSuccess: () => {
             isNotify && toast({
                 variant: 'success',
-                description: MESSAGE.SUCCESS,
+                description: MESSAGE.CART_SUCCESS,
             });
             refetch()
         },

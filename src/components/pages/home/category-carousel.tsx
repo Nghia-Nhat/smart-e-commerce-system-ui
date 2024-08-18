@@ -9,7 +9,7 @@ export function CategoryCarousel() {
             {categories.map((category, index) => (
             <Link
                 key={index}
-                href={`/${category.category}`}
+                href={`/search?category=${category.category}`}
                 className="w-20 h-20 md:w-24 md:h-24 border rounded-md flex justify-center items-center hover:text-primary hover:border-2 hover:border-primary"
             >
                 <div>
