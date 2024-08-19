@@ -11,6 +11,7 @@ export type ProductType = {
   category?: string;
   location?: string;
   purchaseCount?: string;
+  reviews?: string;
 };
 
 export type ItemProps = {

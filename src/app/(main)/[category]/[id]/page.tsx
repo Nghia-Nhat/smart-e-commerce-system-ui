@@ -25,6 +25,7 @@ import RatingStar from "@/components/partials/rating-star";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Minus, Plus } from "lucide-react";
+import Review from "@/components/partials/review";
 
 export default function ProductDetailPage() {
   const params = useParams<{ category: string; id: string }>();
@@ -284,6 +285,20 @@ export function ProductDetail({
             </div>
           </div>
         </div>
+
+        <WrapSection
+          disableClassName={true}
+          background={false}
+          title="Evaluate product"
+          subtitle="Review"
+          button={false}
+          countdown={false}
+        >
+          <div className="mx-10">
+            <Review reviews={product.reviews}/>
+          </div>
+        </WrapSection>
+
         <WrapSection
           background={false}
           title="Find more"
@@ -291,7 +306,7 @@ export function ProductDetail({
           button={false}
           countdown={false}
         >
-          <div className="flex flex-wrap max-w-screen gap-5 md:ml-10 py-2">
+          <div className="flex flex-wrap justify-evenly max-w-screen gap-5 md:ml-10 py-2">
             <RelatedProduct products={relatedProducts} isLoading={isLoading} />
           </div>
         </WrapSection>
