@@ -1,5 +1,5 @@
-import { fetchAllProducts, fetchAllProductsByImage, fetchAllProductsByDiscount, fetchOneProductByCategoryAndId, fetchFindProductsByTitle, fetchFlashSaleProducts } from '@/apiRequests/product';
-import { useQuery } from '@tanstack/react-query';
+import { fetchAllProducts, fetchAllProductsByImage, fetchAllProductsByDiscount, fetchOneProductByCategoryAndId, fetchFindProductsByTitle, fetchFlashSaleProducts, fetchRecommendProducts } from '@/apiRequests/product';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 export function useAllProducts(category: string, queryParams: string) {
     const defineParams = queryParams? queryParams: 'page=1'
@@ -43,5 +43,12 @@ export function useFlashSaleProducts() {
     return useQuery({
         queryKey: ['flash-sale-products'],
         queryFn: () => fetchFlashSaleProducts(),
+    });
+}
+
+export function useRecommendProducts(username: string) {
+    return useQuery({
+        queryKey: ['recommend-products'],
+        queryFn: () => fetchRecommendProducts(username),
     });
 }
