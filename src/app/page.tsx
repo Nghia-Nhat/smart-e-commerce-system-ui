@@ -73,7 +73,7 @@ const Home = () => {
                     button={false}
                     countdown={true}
                 >
-                    <div className="flex flex-wrap max-w-screen gap-5 md:ml-10 py-2">
+                    <div className="flex flex-wrap justify-evenly  max-w-screen gap-5 md:ml-10 py-2">
                         <FlashSaleSection />
                     </div>
                 </WrapSection>

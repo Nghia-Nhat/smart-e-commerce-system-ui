@@ -5,7 +5,7 @@ import { categories } from './category.constant';
 
 export function CategoryCarousel() {
     return (
-        <div className="flex flex-wrap justify-evenly gap-2 md:gap-10">
+        <div className="grid grid-cols-4 md:grid-cols-8 justify-evenly gap-5 md:gap-10 mt-4">
             {categories.map((category, index) => (
             <Link
                 key={index}
