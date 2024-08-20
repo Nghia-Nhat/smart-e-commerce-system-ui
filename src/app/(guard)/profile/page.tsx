@@ -1,12 +1,12 @@
 "use client";
 import { useCurrentUser, useUpdateProfile } from "@/hooks/useUser";
-import React, { useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { LoaderIcon } from "lucide-react";
+import { Edit, LoaderIcon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
@@ -17,6 +17,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { useSaveAvatar } from "@/hooks/useAuth";
+import { getCurrentUsername } from "@/lib/user.util";
 
 export default function ProfilePage() {
   const { data: user, isLoading } = useCurrentUser();
@@ -35,6 +37,7 @@ interface UserProps {
   email: string;
   phone: string;
   address: string;
+  avatar?: string;
 }
 
 const schema = z.object({
@@ -45,8 +48,9 @@ const schema = z.object({
   address: z.string().optional(),
 });
 
-function ProfileContentPage( { user } : { user: UserProps}) {
+function ProfileContentPage({ user }: { user: UserProps }) {
   const { mutate: updateProfile } = useUpdateProfile();
+  const { mutate: saveAvatar } = useSaveAvatar();
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -61,6 +65,34 @@ function ProfileContentPage( { user } : { user: UserProps}) {
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
     updateProfile(data);
+  };
+
+  const [avatar, setAvatar] = useState(null);
+  const [base64, setBase64] = useState("");
+  const fileInputRef = useRef(null);
+  const username = getCurrentUsername()
+
+  const handleImageUpload = (event: any) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setBase64(reader.result);
+        setAvatar(URL.createObjectURL(file));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  
+  useEffect(() => {
+    if (base64) {
+      saveAvatar({avatar: base64, username })
+
+    }
+  }, [base64, username, saveAvatar]);
+
+  const handleEditClick = () => {
+    fileInputRef.current?.click();
   };
 
   return (
@@ -78,10 +110,28 @@ function ProfileContentPage( { user } : { user: UserProps}) {
           className="md:grid grid-cols-4 gap-20 mx-auto"
         >
           <header className="space-y-1">
-            <div className="flex flex-col items-center space-x-4">
+            <div className="relative flex flex-col items-center space-x-4">
+              <div
+                className=" absolute top-0 -right-2 cursor-pointer"
+                title="Change avatar"
+                onClick={handleEditClick}
+              >
+                <Edit className="h-5 w-5" />
+              </div>
               <Avatar className="h-24 w-24 lg:h-48 lg:w-48">
-                <AvatarImage src="/images/avtUser.png" alt="Avatar" />
+                <AvatarImage
+                  src={user?.avatar || "/images/avtUser.png"}
+                  alt="Avatar"
+                  className="object-cover"
+                />
               </Avatar>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+              />
               <div className="space-y-1.5 text-center mt-4">
                 <h1 className="text-2xl font-bold italic">@{user.username}</h1>
               </div>

@@ -18,7 +18,8 @@ import {
     DropdownMenuItem,
 } from '../ui/dropdown-menu';
 import Cookies from 'js-cookie';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useCurrentUser } from '@/hooks/useUser';
 
 export default function Navbar() {
     const [isVisible, setIsVisible] = useState(false);
@@ -75,13 +76,22 @@ export default function Navbar() {
 }
 
 export const NotLogin = () => {
+    const router = useRouter()
+    const pathname = usePathname()
+    const searchParams = useSearchParams()
+
+    const handleRedirect = (e: any) => {
+        const url = e.target.href;
+        router.push(`${url}?returnURL=${pathname}?${searchParams.toString()}`)
+    }
+
     return (
         <>
-            <Button asChild variant="secondary">
+            <Button variant="secondary" onClick={handleRedirect}>
                 <Link href="/login">Login</Link>
             </Button>
-            <Button asChild>
-                <Link href="/signup">Sign up</Link>
+            <Button onClick={handleRedirect}>
+                <Link href="/signup">Sign Up</Link>
             </Button>
         </>
     );
@@ -89,6 +99,8 @@ export const NotLogin = () => {
 
 export const AvatarComponent = () => {
     const { setIsLogin } = useUserStore();
+    const { data: user, isLoading } = useCurrentUser();
+
     const { replace } = useRouter();
 
     return (
@@ -101,7 +113,8 @@ export const AvatarComponent = () => {
                 >
                     <Avatar>
                         <AvatarImage
-                            src="/images/avtUser.png"
+                            className='object-cover'
+                            src={user?.avatar || "/images/avtUser.png"}
                             alt="Avatar"
                         />
                     </Avatar>

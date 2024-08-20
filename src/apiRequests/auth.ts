@@ -24,3 +24,15 @@ export async function fetchRegister(credential: RegisterRequest): Promise<any> {
     });
     return response.json();
 }
+
+export async function fetchSaveAvatar(avatar: string, username: string) {
+    const url = BACKEND_BASE_URL + '/auth/save-avatar';
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({avatar, username})
+    });
+    return response.json();
+}
