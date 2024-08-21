@@ -11,6 +11,7 @@ import {
 import useProductStore from "@/store/product.store";
 import { useSearchParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
+import { useCurrentUser } from "@/hooks/useUser";
 
 const SearchResultPage = () => {
   const searchParams = useSearchParams();
@@ -27,6 +28,7 @@ const SearchResultPage = () => {
 const SearchImage = () => {
   const { imageFile } = useProductStore();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const { data: user } = useCurrentUser();
 
   useEffect(() => {
     if (imageFile) {
@@ -65,17 +67,19 @@ const SearchImage = () => {
           />
         </div>
       )}
-      <SearchImageResult imageFile={imageFile} />
+      <SearchImageResult imageFile={imageFile} currentUser={user}/>
     </>
   );
 };
 
-const SearchImageResult = ({ imageFile }: { imageFile: File }) => {
+const SearchImageResult = ({ imageFile, currentUser }: { imageFile: File, currentUser: any }) => {
   const searchParams = useSearchParams();
   const queryParams = searchParams.toString();
+
   const { data, isLoading, isError, refetch } = useAllProductsByImage(
     imageFile,
     queryParams,
+    currentUser.username
   );
   const products = data?.products;
   const currentPage = data?.currentPage;

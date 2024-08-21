@@ -24,9 +24,11 @@ export async function fetchAllProductsByDiscount(
 export async function fetchAllProductsByImage(
   file: File,
   queryParams: string,
+  currentUser: any
 ): Promise<ProductsResponseType> {
   const formData = new FormData();
   formData.append("image", file);
+  formData.append("user", currentUser);
   const response = await fetch(
     BASE_API_URL + "/product/search-image" + `?${queryParams}`,
     {

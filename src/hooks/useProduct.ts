@@ -17,11 +17,11 @@ export function useAllProductsByDiscount(queryParams: string) {
     });
 }
 
-export function useAllProductsByImage(file: File , queryParams: string) {
+export function useAllProductsByImage(file: File , queryParams: string, currentUser: any) {
     const defineParams = queryParams? queryParams: 'page=1'
     return useQuery({
         queryKey: ['productsByImage', [file, defineParams]],
-        queryFn: () => fetchAllProductsByImage(file, queryParams)
+        queryFn: () => fetchAllProductsByImage(file, queryParams, currentUser)
     });
 }
 
