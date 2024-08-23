@@ -7,7 +7,7 @@ import { HomeCarousel } from "@/components/pages/home/home-carousel";
 import Navbar from "@/components/partials/navbar";
 import NavbarMobile from "@/components/partials/navbar-mobile";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import Services from "@/components/pages/home/services";
 import KeepInTouch from "@/components/pages/home/keep-in-touch";
 import { Catalog } from "@/components/partials/catalog";
@@ -15,6 +15,11 @@ import ScrollToTop from "@/components/partials/scroll-to-top";
 import FlashSaleSection from "@/components/pages/home/flash-sale";
 
 const Home = () => {
+  const [isViewMore, setViewMore] = useState(false);
+
+  const handleViewMore = () => {
+    setViewMore(true);
+  }
   return (
     <>
       <div className="min-h-[100vh] h-fit pb-20">
@@ -53,14 +58,11 @@ const Home = () => {
         <WrapSection
           title="Categories"
           subtitle="🔍 Browse By Category"
-          button={false}
+          button={true}
+          handleOnClick={handleViewMore}
         >
-          <CategoryCarousel />
+          <CategoryCarousel isViewMore={isViewMore} />
         </WrapSection>
-
-        <section className="mt-4 flex gap-1 p-2 bg-secondary">
-          <Catalog />
-        </section>
 
         {/* Hint */}
         {/* Hot deals */}

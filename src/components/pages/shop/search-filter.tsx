@@ -17,6 +17,7 @@ const SearchFilter = () => {
   const [maxPrice, setMaxPrice] = useState("");
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [error, setError] = useState(false);
+  const defaultSearch = searchParams.get("category")
   
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -172,7 +173,7 @@ const SearchFilter = () => {
         </div>
         <Separator className="mt-6" />
       </div>
-      <Button className="w-full mt-4" onClick={() => router.push(pathname)}>Clear all</Button>
+      <Button className="w-full mt-4" onClick={() => router.push(pathname + `?category=${defaultSearch}`)}>Clear all</Button>
     </aside>
   );
 };

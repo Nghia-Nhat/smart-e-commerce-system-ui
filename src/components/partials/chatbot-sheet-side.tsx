@@ -20,6 +20,7 @@ import Message from "./chat/message";
 import Link from "next/link";
 import { sendMessage } from "@/apiRequests/bot";
 import { MessageType } from "@/types/chatbot";
+import MessageSkeleton from "./chat/message-skeleton";
 
 const SHEET_SIDES = ["top", "right", "bottom", "left"] as const;
 
@@ -84,18 +85,27 @@ export function ChatbotSheetSide({ side }: SheetSideProps) {
   };
 
   async function handleSubmitMessage() {
-    const response = await sendMessage(message);
-    if (response) {
-      setIsLoading(false);
-      const message = `${response.assistant}`;
+    try {
+      const response = await sendMessage(message);
+      if (response) {
+        setIsLoading(false);
+        const message = `${response.assistant}`;
 
-      setMessageArray((prev) => [
-        ...prev,
-        {
-          isBot: true,
-          message,
-        },
-      ]);
+        setMessageArray((prev) => [
+          ...prev,
+          {
+            isBot: true,
+            message,
+          },
+        ]);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setMessageArray((prev) => [...prev, {
+        isBot: true,
+        message: "Something went wrong! Please contact to our customer service at **support@triplee.com**.",
+      }]);
+      console.log(error);
     }
   }
 
@@ -131,8 +141,9 @@ export function ChatbotSheetSide({ side }: SheetSideProps) {
                 className="max-h-[80vh] overflow-y-auto p-4 pb-9 scrollbar-hide"
               >
                 {messageArray.map((msg, index) => (
-                  <Message key={index} msg={msg} />
+                  <Message key={index} msg={msg}/>
                 ))}
+                {isLoading && <MessageSkeleton/>}
               </div>
             </div>
   
