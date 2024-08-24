@@ -21,6 +21,7 @@ import Link from "next/link";
 import { sendMessage } from "@/apiRequests/bot";
 import { MessageType } from "@/types/chatbot";
 import MessageSkeleton from "./chat/message-skeleton";
+import useMessageStore from "@/store/chatbot.store";
 
 const SHEET_SIDES = ["top", "right", "bottom", "left"] as const;
 
@@ -33,14 +34,15 @@ type SheetSideProps = {
 export function ChatbotSheetSide({ side }: SheetSideProps) {
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { messages, addMessage } = useMessageStore();
 
   const defaultMessage = {
     isBot: true,
     message: "Hello, how can I help you?",
   };
-  const [messageArray, setMessageArray] = useState<MessageType[]>([
-    defaultMessage,
-  ]);
+  const [messageArray, setMessageArray] = useState<MessageType[]>(() =>
+    messages.length !== 0 ? messages : [defaultMessage],
+  );
 
   // Auto scroll when getting a new message
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -51,7 +53,9 @@ export function ChatbotSheetSide({ side }: SheetSideProps) {
         behavior: "smooth",
       });
     }
-  }, [messageArray]);
+
+    addMessage(messageArray);
+  }, [messageArray, addMessage]);
 
   const handleMessageChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>,
@@ -101,10 +105,14 @@ export function ChatbotSheetSide({ side }: SheetSideProps) {
       }
     } catch (error) {
       setIsLoading(false);
-      setMessageArray((prev) => [...prev, {
-        isBot: true,
-        message: "Something went wrong! Please contact to our customer service at **support@triplee.com**.",
-      }]);
+      setMessageArray((prev) => [
+        ...prev,
+        {
+          isBot: true,
+          message:
+            "Something went wrong! Please contact to our customer service at **support@triplee.com**.",
+        },
+      ]);
       console.log(error);
     }
   }
@@ -141,15 +149,15 @@ export function ChatbotSheetSide({ side }: SheetSideProps) {
                 className="max-h-[80vh] overflow-y-auto p-4 pb-9 scrollbar-hide"
               >
                 {messageArray.map((msg, index) => (
-                  <Message key={index} msg={msg}/>
+                  <Message key={index} msg={msg} />
                 ))}
-                {isLoading && <MessageSkeleton/>}
+                {isLoading && <MessageSkeleton />}
               </div>
             </div>
-  
+
             <div className="absolute flex bottom-0 right-0 left-0 m-4 gap-2 items-center">
               <Textarea
-                className="scrollbar-hide resize-none"
+                className="scrollbar-hide resize-none bg-white"
                 placeholder="Typing something..."
                 value={message}
                 onChange={handleMessageChange}

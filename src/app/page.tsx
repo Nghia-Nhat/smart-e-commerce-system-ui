@@ -68,8 +68,8 @@ const Home = () => {
         {/* Hot deals */}
         <WrapSection
           background={false}
-          title="⚡Recommend"
-          subtitle="Just For You"
+          title="Recommend"
+          subtitle="🌟 Just For You"
           button={false}
           countdown={false}
         >

@@ -74,7 +74,8 @@ export function ProductDetail({
   const priceBeforeDiscount = (product?.price * (1 + discount / 100)).toFixed(
     2,
   );
-  const images = product?.images;
+  const imageList = product?.images || [];
+  const images = [product?.imageURL, ...imageList];
   const form = useForm<z.infer<typeof productDetailSchema>>({
     resolver: zodResolver(productDetailSchema),
     defaultValues: {
@@ -123,38 +124,23 @@ export function ProductDetail({
       <main className="h-fit min-h-[90vh]">
         <div className="p-6 lg:max-w-6xl max-w-2xl mx-auto">
           <div className="grid items-start grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="w-full lg:sticky top-0 flex flex-col-reverse sm:flex-row gap-2">
+            <div className="w-full lg:sticky top-0 flex flex-col-reverse gap-2 overflow-hidden">
               {/* List of images */}
-              <div className="sm:space-y-3 w-16 max-sm:flex max-sm:mb-4 max-sm:gap-4">
-                {images && (
-                  <>
-                    {product.imageURL && (
-                      <Image
-                        src={product.imageURL}
-                        alt="Product"
-                        width={500}
-                        height={500}
-                        object-fit="cover"
-                        className="w-full min-w-16 cursor-pointer border-2"
-                        onClick={() => handleChangeImage(product.imageURL)}
-                        priority
-                      />
-                    )}
-                    {images.map((source, index) => (
-                      <Image
-                        key={index}
-                        src={source}
-                        alt="Product"
-                        width={500}
-                        height={500}
-                        object-fit="cover"
-                        className="w-full min-w-16 cursor-pointer border-2"
-                        onClick={() => handleChangeImage(source)}
-                        priority
-                      />
-                    ))}
-                  </>
-                )}
+              <div className="min-w-16 flex max-sm:mb-4 max-sm:gap-4">
+                {images &&
+                  images.map((source, index) => (
+                    <Image
+                      key={index}
+                      src={source}
+                      alt="Product"
+                      width={500}
+                      height={500}
+                      object-fit="cover"
+                      className="w-full min-w-16 cursor-pointer border-2"
+                      onClick={() => handleChangeImage(source)}
+                      priority
+                    />
+                  ))}
               </div>
               <Image
                 src={image || product.imageURL}
@@ -162,7 +148,7 @@ export function ProductDetail({
                 width="0"
                 height="0"
                 sizes="100vw"
-                className="w-full h-auto"
+                className="w-full h-[600px]"
                 priority
               />
             </div>
@@ -295,7 +281,7 @@ export function ProductDetail({
           countdown={false}
         >
           <div className="mx-10">
-            <Review reviews={product.reviews}/>
+            <Review reviews={product.reviews} />
           </div>
         </WrapSection>
 

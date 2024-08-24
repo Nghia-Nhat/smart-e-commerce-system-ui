@@ -9,17 +9,20 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 export function AlertLogin({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const { push } = useRouter();
+    const router = useRouter()
+    const pathname = usePathname()
+    const searchParams = useSearchParams()
 
-    const handleRedirectLogin = () => {
-        push('/login')
+    const handleRedirect = (e: any) => {
+        const url = '/login';
+        router.push(`${url}?returnURL=${pathname}?${searchParams.toString()}`)
     }
 
     return (
@@ -36,7 +39,7 @@ export function AlertLogin({
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleRedirectLogin}>Login</AlertDialogAction>
+                    <AlertDialogAction onClick={handleRedirect}>Login</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

@@ -62,7 +62,7 @@ export function SuccessComponent() {
         <p className="mt-2 text-gray-500 dark:text-gray-400">
           Thank you for your purchase!
         </p>
-        <div className="mt-6 border rounded-lg p-4 w-full max-w-md">
+        {/* <div className="mt-6 border rounded-lg p-4 w-full max-w-md">
           <div className="flex justify-between text-sm">
             <span>Amount Paid:</span>
             <span className="font-medium">$100.00</span>
@@ -75,14 +75,14 @@ export function SuccessComponent() {
             <span>Reference Number:</span>
             <span className="font-medium">1234567890</span>
           </div>
-        </div>
+        </div> */}
         <div className="flex flex-col">
           <Link
             href="/orders"
             className="mt-6 inline-flex items-center justify-center h-10 px-4 text-sm font-medium text-white bg-orange-400 rounded-md hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
             prefetch={false}
           >
-            Check your order
+            Check your orders
           </Link>
           <Link
             href="/"
@@ -106,7 +106,13 @@ export function CanceledComponent() {
         <p className="mt-2 text-gray-500 dark:text-gray-400">
           Continue to shopping!
         </p>
-
+        <Link
+          href="/orders"
+          className="mt-6 inline-flex items-center justify-center h-10 px-4 text-sm font-medium text-white bg-orange-400 rounded-md hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+          prefetch={false}
+        >
+          Check your orders
+        </Link>
         <Link
           href="/"
           className="mt-6 inline-flex items-center justify-center h-10 px-4 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"

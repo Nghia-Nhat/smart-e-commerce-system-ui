@@ -67,7 +67,7 @@ const SearchImage = () => {
           />
         </div>
       )}
-      <SearchImageResult imageFile={imageFile} currentUser={user}/>
+      <SearchImageResult imageFile={imageFile} currentUser={user || ""}/>
     </>
   );
 };
