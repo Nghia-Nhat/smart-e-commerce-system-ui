@@ -27,8 +27,7 @@ import { SearchIcon } from "../../icons/common";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ImageSearch from "./image-search";
-import { Search, Camera } from "lucide-react";
-import { useFindProductsByTitle } from "@/hooks/useProduct";
+import { Search, Camera, InfoIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 type SearchDialogProps = {
   textColor?: string;
@@ -143,8 +142,8 @@ function SearchImage({ open, setOpen }: { open: boolean; setOpen: any }) {
       <DialogTrigger asChild>
         <Camera className="absolute right-2.5 top-2.5 h-4 w-4 text-muted-foreground cursor-pointer" />
       </DialogTrigger>
-      <DialogContent className="md:max-w-[600px]" aria-describedby={undefined}>
-        <DialogHeader>
+      <DialogContent className="md:max-w-[600px]" aria-describedby={undefined} onOpenAutoFocus={(e) => e.preventDefault()}>
+        <DialogHeader className="flex justify-between">
           <DialogTitle>Search product</DialogTitle>
         </DialogHeader>
         <ImageSearch setOpen={setOpen} />

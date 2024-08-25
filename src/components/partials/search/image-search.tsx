@@ -8,6 +8,13 @@ import { Camera, X } from "lucide-react";
 import useProductStore from "@/store/product.store";
 import { useRouter } from "next/navigation";
 import { Rnd } from "react-rnd";
+import { InfoIcon } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const BASE_API_URL = "http://localhost:8000/ai-api";
 
@@ -29,7 +36,10 @@ function ImageSearch({
   const { push } = useRouter();
   const imageRef = useRef<HTMLImageElement>(null);
   const [selectedObjects, setSelectedObjects] = useState<DetectedObject[]>([]);
-  const [imageDimensions, setImageDimensions] = useState<{ width: number; height: number } | null>(null);
+  const [imageDimensions, setImageDimensions] = useState<{
+    width: number;
+    height: number;
+  } | null>(null);
 
   useEffect(() => {
     if (imageRef.current && imageRef.current.complete) {
@@ -70,10 +80,10 @@ function ImageSearch({
   };
 
   const detectObjects = async (file: File) => {
-    if(isWebcam) {
+    if (isWebcam) {
       const formData = new FormData();
       formData.append("file", file);
-  
+
       try {
         const url = BASE_API_URL + "/detect_objects";
         const response = await fetch(url, {
@@ -91,12 +101,13 @@ function ImageSearch({
   const handleContextMenu = (e: React.MouseEvent, obj: DetectedObject) => {
     e.preventDefault();
     setSelectedObjects((prev) =>
-      prev.includes(obj) ? prev.filter((o) => o !== obj) : [...prev, obj]
+      prev.includes(obj) ? prev.filter((o) => o !== obj) : [...prev, obj],
     );
   };
 
   const createFullImageObject = (): DetectedObject => {
-    if (!imageDimensions) return { class: "full_image", coordinates: [0, 0, 0, 0] };
+    if (!imageDimensions)
+      return { class: "full_image", coordinates: [0, 0, 0, 0] };
     return {
       class: "full_image",
       coordinates: [0, 0, imageDimensions.width, imageDimensions.height],
@@ -108,29 +119,37 @@ function ImageSearch({
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
       const img = imageRef.current;
-  
+
       if (img && ctx) {
         const [x, y, width, height] = obj.coordinates;
-        
+
         canvas.width = width - x;
         canvas.height = height - y;
-        
+
         ctx.drawImage(
           img,
-          x, y, width - x, height - y,
-          0, 0, width - x, height - y
+          x,
+          y,
+          width - x,
+          height - y,
+          0,
+          0,
+          width - x,
+          height - y,
         );
-        
+
         canvas.toBlob((blob) => {
           if (blob) {
-            const croppedFile = new File([blob], "cropped_image.jpg", { type: "image/jpeg" });
+            const croppedFile = new File([blob], "cropped_image.jpg", {
+              type: "image/jpeg",
+            });
             resolve(croppedFile);
           }
         }, "image/jpeg");
       }
     });
   };
-  
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (file) {
@@ -142,9 +161,9 @@ function ImageSearch({
       } else {
         objectsToProcess = [createFullImageObject()];
       }
-  
+
       const croppedImages = await Promise.all(objectsToProcess.map(cropImage));
-      
+
       let finalImage: File;
       if (croppedImages.length === 1) {
         finalImage = croppedImages[0];
@@ -157,10 +176,10 @@ function ImageSearch({
         if (ctx) {
           canvas.width = imageDimensions?.width || 0;
           canvas.height = imageDimensions?.height || 0;
-          
+
           const loadPromises = croppedImages.map((img, index) => {
             return new Promise<void>((resolve) => {
-              const imgElement = document.createElement('img');
+              const imgElement = document.createElement("img");
               imgElement.onload = () => {
                 const [x, y] = objectsToProcess[index].coordinates;
                 ctx.drawImage(imgElement, x, y);
@@ -169,12 +188,14 @@ function ImageSearch({
               imgElement.src = URL.createObjectURL(img);
             });
           });
-  
+
           await Promise.all(loadPromises);
-          
+
           canvas.toBlob((blob) => {
             if (blob) {
-              finalImage = new File([blob], "combined_image.jpg", { type: "image/jpeg" });
+              finalImage = new File([blob], "combined_image.jpg", {
+                type: "image/jpeg",
+              });
               setImageFile(finalImage);
               setOpen(false);
               push("/search-result");
@@ -201,12 +222,38 @@ function ImageSearch({
         )}
         <div className="mt-2">
           {isWebcam && (
-            <WebcamComponent
-              setFile={setFile}
-              setPreview={setPreview}
-              setIsWebcam={setIsWebcam}
-              onCapture={detectObjects}
-            />
+            <>
+              <WebcamComponent
+                setFile={setFile}
+                setPreview={setPreview}
+                setIsWebcam={setIsWebcam}
+                onCapture={detectObjects}
+              />
+
+              <div className="mt-2 absolute top-0 right-0 flex gap-2 items-center">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <InfoIcon />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="max-w-[300px] text-justify">
+                      Wait about 3 seconds for the system to detect the object, then right-click to choose the one you want to search.<br></br>
+                      You can drag and resize the box if the system does not recognize the expected object.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                <Button
+                  type="button"
+                  variant={"ghost"}
+                  onClick={() => setIsWebcam(false)}
+                  size={"icon"}
+                >
+                  <X />
+                </Button>
+              </div>
+            </>
           )}
         </div>
         {preview && !isWebcam && (
@@ -273,9 +320,10 @@ function ImageSearch({
                       ? "rgba(255, 0, 0, 0.4)"
                       : "rgba(255, 0, 0, 0.2)",
                   }}
-                  onContextMenu={(e: React.MouseEvent<Element, MouseEvent>) => handleContextMenu(e, obj)}
-                >
-                </Rnd>
+                  onContextMenu={(e: React.MouseEvent<Element, MouseEvent>) =>
+                    handleContextMenu(e, obj)
+                  }
+                ></Rnd>
               ))}
             </div>
           </div>

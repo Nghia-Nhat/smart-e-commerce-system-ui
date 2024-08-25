@@ -60,6 +60,7 @@ export function CartSheetSide({ side }: SheetSideProps) {
                 side={side}
                 aria-describedby={undefined}
                 className="pr-0"
+                onOpenAutoFocus={(e) => e.preventDefault()}
             >
                 <SheetHeader>
                     <SheetTitle>Cart</SheetTitle>
