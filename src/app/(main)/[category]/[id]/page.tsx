@@ -108,7 +108,8 @@ export function ProductDetail({
   };
 
   const handleChangeQuantity = (e: any) => {
-    const value = e.target.value;
+    let value = e.target.value;
+    value = value.replace(/[^0-9]/g, "");
     const qty = value < 1 || !value ? 1 : value;
     setQuantity(qty);
     setValue("quantity", value.toString());
