@@ -9,7 +9,7 @@ import {
   useFindProductsByTitle,
 } from "@/hooks/useProduct";
 import useProductStore from "@/store/product.store";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { useCurrentUser } from "@/hooks/useUser";
 
@@ -29,6 +29,7 @@ const SearchImage = () => {
   const { imageFile } = useProductStore();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const { data: user } = useCurrentUser();
+  const router = useRouter()
 
   useEffect(() => {
     if (imageFile) {
@@ -41,18 +42,8 @@ const SearchImage = () => {
   }, [imageFile]);
 
   if (imageFile === null || imageFile.size === 0) {
-    return (
-      <div className="flex h-[50vh] md:h-[90vh] justify-center items-center">
-        <Image
-          src="/images/404.png"
-          width={500}
-          height={500}
-          alt="Product not found"
-          draggable="false"
-          className="select-none"
-        />
-      </div>
-    );
+    router.replace('/hot-deal')
+    return ""
   }
   return (
     <>

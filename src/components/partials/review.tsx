@@ -35,8 +35,8 @@ export default function Review({ reviews }: { reviews?: string }) {
           <div className="grid gap-6" key={index}>
             <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between">
-                <div className="flex gap-5">
-                  <div className="flex items-center gap-2">
+                <div className="flex md:gap-5">
+                  <div className="flex items-center gap-4">
                     <div
                       className="w-10 h-10 text-sm rounded-full flex items-center justify-center text-white font-bold"
                       style={{ backgroundColor: getRandomColor() }}
@@ -44,17 +44,16 @@ export default function Review({ reviews }: { reviews?: string }) {
                       {getInitials(review.reviewerName)}
                     </div>
                     <div>
-                      <h3 className="font-medium">{review.reviewerName}</h3>
-                      <p className="text-sm text-muted-foreground">
-                        {review.reviewerEmail}
-                      </p>
+                      <h3 className="font-medium mb-1">{review.reviewerName}</h3>
+                      <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-0.5 text-primary">
+                          <StarIcon className="w-5 h-5" />
+                        </div>
+                        <span className="text-sm font-medium">
+                          {Number(review.rating).toFixed(1)}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-0.5 text-primary">
-                      <StarIcon className="w-5 h-5" />
-                    </div>
-                    <span className="text-sm font-medium">{Number(review.rating).toFixed(1)}</span>
                   </div>
                 </div>
                 <span className="text-sm text-muted-foreground">

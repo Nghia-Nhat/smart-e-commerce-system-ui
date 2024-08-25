@@ -31,7 +31,7 @@ const Shop = () => {
         <section className="col-span-5 md:col-span-4">
           <SortBar />
           <main className="h-fit min-h-[90vh]">
-            <div className="grid grid-cols-2 md:grid-cols-4 justify-center gap-2 md:gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
               {isLoading &&
                 Array.from({ length: 8 }, (value, index) => (
                   <ItemSkeleton key={index} />

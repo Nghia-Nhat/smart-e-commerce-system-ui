@@ -34,23 +34,23 @@ export function NavSheetSide({ side }: SheetSideProps) {
         },
         {
             id: 2,
-            name: 'Shop',
+            name: '🔥 Hot deals',
             href: '/hot-deal',
         },
         {
             id: 3,
             name: 'Mall',
-            href: '#',
+            href: '/coming-soon',
         },
         {
             id: 4,
             name: 'Collections',
-            href: '#',
+            href: '/coming-soon',
         },
         {
             id: 5,
             name: 'Seller',
-            href: '#',
+            href: '/coming-soon',
         },
     ];
     return (

@@ -71,7 +71,7 @@ export function CartSheetSide({ side }: SheetSideProps) {
                     <SheetClose asChild>
                         <Button
                             disabled={isSubmit}
-                            className="w-full mx-5 flex gap-2 items-center"
+                            className="w-full mb-2 md:mx-5 md:mb-0"
                             onClick={handleSubmit}
                         >
                             {isSubmit && <Loader className="animate-spin"/>}

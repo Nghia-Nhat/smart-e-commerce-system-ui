@@ -24,7 +24,7 @@ import RelatedProduct from "@/components/partials/related-products";
 import RatingStar from "@/components/partials/rating-star";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Minus, Plus } from "lucide-react";
+import { ArrowLeft, ArrowRight, Minus, Plus } from "lucide-react";
 import Review from "@/components/partials/review";
 
 export default function ProductDetailPage() {
@@ -118,29 +118,61 @@ export function ProductDetail({
     setImage(source);
   };
 
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleNext = () => {
+    if (currentIndex < 1) {
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentIndex >= 1) {
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
+
   return (
     <>
       <Navbar />
       <main className="h-fit min-h-[90vh]">
         <div className="p-6 lg:max-w-6xl max-w-2xl mx-auto">
           <div className="grid items-start grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="w-full lg:sticky top-0 flex flex-col-reverse gap-2 overflow-hidden">
+            <div className="w-full lg:sticky top-0 flex flex-col-reverse gap-2">
               {/* List of images */}
-              <div className="min-w-16 flex max-sm:mb-4 max-sm:gap-4">
-                {images &&
-                  images.map((source, index) => (
-                    <Image
-                      key={index}
-                      src={source}
-                      alt="Product"
-                      width={500}
-                      height={500}
-                      object-fit="cover"
-                      className="w-full min-w-16 cursor-pointer border-2"
-                      onClick={() => handleChangeImage(source)}
-                      priority
-                    />
-                  ))}
+              <div className="relative flex items-center">
+                <button
+                  onClick={handlePrevious}
+                  className="absolute -left-5 z-10 border rounded-full p-1 hover:bg-slate-300"
+                >
+                  <ArrowLeft/>
+                </button>
+
+                <div className="overflow-hidden">
+                  <div
+                    className="flex transition-transform duration-300 gap-4"
+                    style={{ transform: `translateX(-${currentIndex * 50}%)` }}
+                  >
+                    {images &&
+                      images.map((source, index) => (
+                        <Image
+                          key={index}
+                          src={source}
+                          alt="Product"
+                          width={500}
+                          height={500}
+                          object-fit="cover"
+                          className="w-full min-w-16 cursor-pointer border-2"
+                          onClick={() => handleChangeImage(source)}
+                          priority
+                        />
+                      ))}
+                  </div>
+                </div>
+
+                <button onClick={handleNext} className="absolute -right-5 z-10 border rounded-full p-1 hover:bg-slate-300">
+                    <ArrowRight/>
+                </button>
               </div>
               <Image
                 src={image || product.imageURL}
@@ -158,7 +190,7 @@ export function ProductDetail({
                   <h2 className="text-2xl font-extrabold text-gray-800">
                     {product.productTitle}
                   </h2>
-                  <div className="flex gap-4 h-5 mt-4 items-center">
+                  <div className="flex gap-2 md:gap-4 h-5 mt-4 items-center">
                     <RatingStar number={product.rating} />
                     <Separator orientation="vertical" />
                     <span className="font-semibold text-sm">5k Reviewer</span>
@@ -187,7 +219,7 @@ export function ProductDetail({
                       In stock
                     </span>
                   </div>
-                  <div className="flex h-5 items-center flex-wrap gap-10 mt-4">
+                  <div className="flex h-5 items-center flex-wrap gap-2 md:gap-10 mt-4">
                     <h3 className="text-lg font-bold text-gray-800">
                       Promotion
                     </h3>
@@ -280,7 +312,7 @@ export function ProductDetail({
           button={false}
           countdown={false}
         >
-          <div className="mx-10">
+          <div className="md:mx-10">
             <Review reviews={product.reviews} />
           </div>
         </WrapSection>

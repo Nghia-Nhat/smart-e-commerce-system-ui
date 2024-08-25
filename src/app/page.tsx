@@ -73,7 +73,7 @@ const Home = () => {
           button={false}
           countdown={false}
         >
-          <div className="flex flex-wrap justify-evenly  max-w-screen gap-5 md:ml-10 py-2">
+          <div className="grid grid-cols-2 md:grid-cols-5 justify-center gap-2 md:gap-4">
           <HintSide />
           </div>
         </WrapSection>
@@ -86,7 +86,7 @@ const Home = () => {
           button={false}
           countdown={true}
         >
-          <div className="flex flex-wrap justify-evenly  max-w-screen gap-5 md:ml-10 py-2">
+          <div className="grid grid-cols-2 md:grid-cols-5 justify-center gap-2 md:gap-4">
             <FlashSaleSection />
           </div>
         </WrapSection>

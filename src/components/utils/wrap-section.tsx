@@ -26,7 +26,7 @@ export const WrapSection = ({
 }: WrapSectionProps) => {
   return (
     <section
-      className={`grid grid-cols-1 p-5 md:p-10 justify-center ${background == true ? "bg-secondary" : ""}`}
+      className={`grid grid-cols-1 p-2 md:p-10 justify-center ${background == true ? "bg-secondary" : ""}`}
     >
       <div className="flex justify-between md:px-14">
         <div className="flex gap-5 items-center mb-5">
