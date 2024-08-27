@@ -35,11 +35,16 @@ export function useLogin() {
       Cookies.set("access_token", access_token, {
         expires: expiresIn / 86400,
       });
-
+      
       setIsLogin(true);
 
-      // Back to the previous page before going to login
-      push(returnURL);
+      if (parsedToken.isAdmin) {
+        push('/admin');
+      } else {
+        // Back to the previous page before going to login
+        push(returnURL);
+      }
+
     },
     onError: (error) => {
       toast({

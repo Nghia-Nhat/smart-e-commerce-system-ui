@@ -10,7 +10,8 @@ export async function fetchLogin(credential: LoginRequest): Promise<LoginRespons
         },
         body: JSON.stringify({...credential})
     });
-    return response.json();
+    const result = await response.json();
+    return result;
 }
 
 export async function fetchRegister(credential: RegisterRequest): Promise<any> {
