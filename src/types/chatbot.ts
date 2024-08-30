@@ -1,4 +1,4 @@
 export type MessageType = {
-    message: string;
-    isBot: boolean;
+  message: string;
+  isBot: boolean;
 };

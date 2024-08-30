@@ -29,7 +29,7 @@ const SearchImage = () => {
   const { imageFile } = useProductStore();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const { data: user } = useCurrentUser();
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     if (imageFile) {
@@ -42,8 +42,8 @@ const SearchImage = () => {
   }, [imageFile]);
 
   if (imageFile === null || imageFile.size === 0) {
-    router.replace('/hot-deal')
-    return ""
+    router.replace("/hot-deal");
+    return "";
   }
   return (
     <>
@@ -58,19 +58,25 @@ const SearchImage = () => {
           />
         </div>
       )}
-      <SearchImageResult imageFile={imageFile} currentUser={user || ""}/>
+      <SearchImageResult imageFile={imageFile} currentUser={user || ""} />
     </>
   );
 };
 
-const SearchImageResult = ({ imageFile, currentUser }: { imageFile: File, currentUser: any }) => {
+const SearchImageResult = ({
+  imageFile,
+  currentUser,
+}: {
+  imageFile: File;
+  currentUser: any;
+}) => {
   const searchParams = useSearchParams();
   const queryParams = searchParams.toString();
 
   const { data, isLoading, isError, refetch } = useAllProductsByImage(
     imageFile,
     queryParams,
-    currentUser.username
+    currentUser.username,
   );
   const products = data?.products;
   const currentPage = data?.currentPage;
@@ -95,12 +101,12 @@ const SearchImageResult = ({ imageFile, currentUser }: { imageFile: File, curren
   }
 
   if (isError) {
-    return <ImageNotFound/>;
+    return <ImageNotFound />;
   }
 
   return (
     <>
-      {products?.length === 0 && <ImageNotFound/>}
+      {products?.length === 0 && <ImageNotFound />}
       <div className="grid grid-cols-2 md:grid-cols-4 justify-center gap-2 md:gap-4">
         {products?.map((product, index) => (
           <Item key={index} productData={product} />
@@ -125,7 +131,7 @@ const SearchProductTitle = () => {
   const productTitle = searchParams.get("productTitle");
 
   if (productTitle === null) {
-    return <ImageNotFound/>;
+    return <ImageNotFound />;
   }
   return <SearchProductTitleResult queryParams={queryParams} />;
 };
@@ -149,12 +155,12 @@ const SearchProductTitleResult = ({ queryParams }: { queryParams: string }) => {
   }
 
   if (isError) {
-    return <ImageNotFound/>;
+    return <ImageNotFound />;
   }
 
   return (
     <>
-      {products?.length === 0 && <ImageNotFound/>}
+      {products?.length === 0 && <ImageNotFound />}
       <div className="grid grid-cols-2 md:grid-cols-4 justify-center gap-2 md:gap-4">
         {products?.map((product, index) => (
           <Item key={index} productData={product} />

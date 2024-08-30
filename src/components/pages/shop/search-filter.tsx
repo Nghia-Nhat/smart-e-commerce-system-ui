@@ -17,8 +17,8 @@ const SearchFilter = () => {
   const [maxPrice, setMaxPrice] = useState("");
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [error, setError] = useState(false);
-  const defaultSearch = searchParams.get("category")
-  
+  const defaultSearch = searchParams.get("category");
+
   const createQueryString = useCallback(
     (name: string, value: string) => {
       const params = new URLSearchParams(searchParams.toString());
@@ -48,8 +48,8 @@ const SearchFilter = () => {
 
     if (minPrice > maxPrice) {
       setError(true);
-      return
-    };
+      return;
+    }
     if (minPrice) {
       params.set("minPrice", minPrice.toString());
     }
@@ -73,9 +73,13 @@ const SearchFilter = () => {
 
   useEffect(() => {
     if (selectedLocations.length > 0) {
-      router.push(pathname + "?" + createQueryString("locationId", selectedLocations.join(',')));
+      router.push(
+        pathname +
+          "?" +
+          createQueryString("locationId", selectedLocations.join(",")),
+      );
     }
-  }, [selectedLocations, router, pathname, createQueryString])
+  }, [selectedLocations, router, pathname, createQueryString]);
 
   return (
     <aside className="hidden md:block p-5">
@@ -86,10 +90,26 @@ const SearchFilter = () => {
       <div>
         <h3 className="my-5 font-semibold text-sm">Shipped from</h3>
         <div className="flex flex-col gap-4">
-          <CheckBoxItem value="HCM" label="Ho Chi Minh" onChange={handleLocationChange} />
-          <CheckBoxItem value="HN" label="Ha Noi"  onChange={handleLocationChange} />
-          <CheckBoxItem value="DN" label="Da Nang"  onChange={handleLocationChange} />
-          <CheckBoxItem value="VT" label="Vung Tau" onChange={handleLocationChange} />
+          <CheckBoxItem
+            value="HCM"
+            label="Ho Chi Minh"
+            onChange={handleLocationChange}
+          />
+          <CheckBoxItem
+            value="HN"
+            label="Ha Noi"
+            onChange={handleLocationChange}
+          />
+          <CheckBoxItem
+            value="DN"
+            label="Da Nang"
+            onChange={handleLocationChange}
+          />
+          <CheckBoxItem
+            value="VT"
+            label="Vung Tau"
+            onChange={handleLocationChange}
+          />
         </div>
         <Separator className="my-6" />
       </div>
@@ -114,8 +134,11 @@ const SearchFilter = () => {
               value={maxPrice}
             />
           </div>
-          {error && <div className="text-destructive font-semibold text-xs mt-2 text-center">
-          Max Price must more than Min Price</div>}
+          {error && (
+            <div className="text-destructive font-semibold text-xs mt-2 text-center">
+              Max Price must more than Min Price
+            </div>
+          )}
           <Button className="w-full mt-4" onClick={() => handleApplyPrice()}>
             Apply
           </Button>
@@ -173,7 +196,12 @@ const SearchFilter = () => {
         </div>
         <Separator className="mt-6" />
       </div>
-      <Button className="w-full mt-4" onClick={() => router.push(pathname + `?category=${defaultSearch}`)}>Clear all</Button>
+      <Button
+        className="w-full mt-4"
+        onClick={() => router.push(pathname + `?category=${defaultSearch}`)}
+      >
+        Clear all
+      </Button>
     </aside>
   );
 };

@@ -146,7 +146,7 @@ export function ProductDetail({
                   onClick={handlePrevious}
                   className="absolute -left-5 z-10 border rounded-full p-1 hover:bg-slate-300"
                 >
-                  <ArrowLeft/>
+                  <ArrowLeft />
                 </button>
 
                 <div className="overflow-hidden">
@@ -171,8 +171,11 @@ export function ProductDetail({
                   </div>
                 </div>
 
-                <button onClick={handleNext} className="absolute -right-5 z-10 border rounded-full p-1 hover:bg-slate-300">
-                    <ArrowRight/>
+                <button
+                  onClick={handleNext}
+                  className="absolute -right-5 z-10 border rounded-full p-1 hover:bg-slate-300"
+                >
+                  <ArrowRight />
                 </button>
               </div>
               <Image

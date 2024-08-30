@@ -142,7 +142,11 @@ function SearchImage({ open, setOpen }: { open: boolean; setOpen: any }) {
       <DialogTrigger asChild>
         <Camera className="absolute right-2.5 top-2.5 h-4 w-4 text-muted-foreground cursor-pointer" />
       </DialogTrigger>
-      <DialogContent className="md:max-w-[600px]" aria-describedby={undefined} onOpenAutoFocus={(e) => e.preventDefault()}>
+      <DialogContent
+        className="md:max-w-[600px]"
+        aria-describedby={undefined}
+        onOpenAutoFocus={(e) => e.preventDefault()}
+      >
         <DialogHeader className="flex justify-between">
           <DialogTitle>Search product</DialogTitle>
         </DialogHeader>

@@ -3,11 +3,7 @@ import { MessageType } from "@/types/chatbot";
 import React from "react";
 import ReactMarkdown from "react-markdown";
 
-const Message = ({
-  msg,
-}: {
-  msg: MessageType;
-}) => {
+const Message = ({ msg }: { msg: MessageType }) => {
   if (msg.isBot) {
     return (
       <div>

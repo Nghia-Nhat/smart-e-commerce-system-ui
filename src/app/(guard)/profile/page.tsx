@@ -70,7 +70,7 @@ function ProfileContentPage({ user }: { user: UserProps }) {
   const [avatar, setAvatar] = useState(null);
   const [base64, setBase64] = useState("");
   const fileInputRef = useRef(null);
-  const username = getCurrentUsername()
+  const username = getCurrentUsername();
 
   const handleImageUpload = (event: any) => {
     const file = event.target.files[0];
@@ -83,11 +83,10 @@ function ProfileContentPage({ user }: { user: UserProps }) {
       reader.readAsDataURL(file);
     }
   };
-  
+
   useEffect(() => {
     if (base64) {
-      saveAvatar({avatar: base64, username })
-
+      saveAvatar({ avatar: base64, username });
     }
   }, [base64, username, saveAvatar]);
 

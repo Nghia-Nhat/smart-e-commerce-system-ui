@@ -238,8 +238,11 @@ function ImageSearch({
                     </TooltipTrigger>
                     <TooltipContent>
                       <p className="max-w-[300px] text-justify">
-                      Wait about 3 seconds for the system to detect the object, then right-click to choose the one you want to search.<br></br>
-                      You can drag and resize the box if the system does not recognize the expected object.
+                        Wait about 3 seconds for the system to detect the
+                        object, then right-click to choose the one you want to
+                        search.<br></br>
+                        You can drag and resize the box if the system does not
+                        recognize the expected object.
                       </p>
                     </TooltipContent>
                   </Tooltip>

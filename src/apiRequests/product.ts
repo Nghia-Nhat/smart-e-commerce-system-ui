@@ -24,7 +24,7 @@ export async function fetchAllProductsByDiscount(
 export async function fetchAllProductsByImage(
   file: File,
   queryParams: string,
-  currentUser: any
+  currentUser: any,
 ): Promise<ProductsResponseType> {
   const formData = new FormData();
   formData.append("image", file);
@@ -69,7 +69,7 @@ export async function fetchFlashSaleProducts(): Promise<ProductsResponseType> {
 export async function fetchRecommendProducts(
   username: string,
 ): Promise<ProductsResponseType> {
-  const user = username || "anonymous"
+  const user = username || "anonymous";
   const url = BASE_API_URL + "/product/recommend-api/" + user;
   const response = await fetch(url);
   const res = await response.json();

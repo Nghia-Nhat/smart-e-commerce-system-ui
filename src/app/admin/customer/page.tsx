@@ -1,4 +1,3 @@
 export default function CustomerPage() {
-    return <div>Customer</div>;
-  }
-  
+  return <div>Customer</div>;
+}

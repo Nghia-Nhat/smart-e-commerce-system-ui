@@ -1,3 +1,3 @@
 type SuccessResponse = {
-    success: boolean
-}
+  success: boolean;
+};

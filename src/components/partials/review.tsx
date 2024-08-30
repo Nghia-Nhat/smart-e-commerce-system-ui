@@ -44,7 +44,9 @@ export default function Review({ reviews }: { reviews?: string }) {
                       {getInitials(review.reviewerName)}
                     </div>
                     <div>
-                      <h3 className="font-medium mb-1">{review.reviewerName}</h3>
+                      <h3 className="font-medium mb-1">
+                        {review.reviewerName}
+                      </h3>
                       <div className="flex items-center gap-2">
                         <div className="flex items-center gap-0.5 text-primary">
                           <StarIcon className="w-5 h-5" />

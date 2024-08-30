@@ -37,7 +37,6 @@ export default function DashboardPage({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
@@ -203,7 +202,7 @@ export default function DashboardPage({
               className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
             />
           </div>
-          <AvatarComponent/>
+          <AvatarComponent />
         </header>
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
           {children}

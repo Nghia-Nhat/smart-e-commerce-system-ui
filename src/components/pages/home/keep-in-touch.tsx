@@ -1,6 +1,6 @@
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function KeepInTouch() {
   return (
@@ -13,7 +13,8 @@ export default function KeepInTouch() {
                 Revolutionize Your Email Experience
               </h1>
               <p className="max-w-[600px] md:text-xl mx-auto">
-                Join us and take control of your inbox. Fast, secure, and designed for modern life.
+                Join us and take control of your inbox. Fast, secure, and
+                designed for modern life.
               </p>
             </div>
             <div className="w-full max-w-sm space-y-2 mx-auto">
@@ -23,9 +24,7 @@ export default function KeepInTouch() {
                   placeholder="Enter your email"
                   type="email"
                 />
-                <Button type="submit">
-                  Newsletter
-                </Button>
+                <Button type="submit">Newsletter</Button>
               </form>
               <p className="text-xs">
                 Get ready to redefine your email experience.
@@ -38,5 +37,5 @@ export default function KeepInTouch() {
         </div>
       </div>
     </section>
-  )
+  );
 }

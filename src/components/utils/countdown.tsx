@@ -1,6 +1,6 @@
-"use client"
-import { Separator } from '@radix-ui/react-separator';
-import React, { useState, useEffect } from 'react';
+"use client";
+import { Separator } from "@radix-ui/react-separator";
+import React, { useState, useEffect } from "react";
 
 const Countdown = () => {
   const [days, setDays] = useState(0);
@@ -11,13 +11,22 @@ const Countdown = () => {
   useEffect(() => {
     const calculateTimeLeft = (): void => {
       const today = new Date(); // Get the current date and time
-      const targetDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1, 0, 0, 0); // Set target to midnight of tomorrow
+      const targetDate = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate() + 1,
+        0,
+        0,
+        0,
+      ); // Set target to midnight of tomorrow
 
       const difference = targetDate.getTime() - Date.now();
 
       if (difference > 0) {
         setDays(Math.floor(difference / (1000 * 60 * 60 * 24)));
-        setHours(Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+        setHours(
+          Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        );
         setMinutes(Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)));
         setSeconds(Math.floor((difference % (1000 * 60)) / 1000));
       } else {
@@ -37,19 +46,25 @@ const Countdown = () => {
   return (
     <div className="flex justify-center items-center">
       <div className="flex flex-col items-center mr-2 rounded-lg p-2 border shadow-md">
-        <span className="text-xs md:text-sm font-bold text-destructive">{hours.toString().padStart(2, '0')}</span>
+        <span className="text-xs md:text-sm font-bold text-destructive">
+          {hours.toString().padStart(2, "0")}
+        </span>
       </div>
       <div className="flex flex-col items-center mr-2">
-        <span className='text-sm'>:</span>
+        <span className="text-sm">:</span>
       </div>
       <div className="flex flex-col items-center mr-2 rounded-lg p-2 border shadow-md">
-        <span className="text-xs md:text-sm font-bold text-destructive">{minutes.toString().padStart(2, '0')}</span>
+        <span className="text-xs md:text-sm font-bold text-destructive">
+          {minutes.toString().padStart(2, "0")}
+        </span>
       </div>
       <div className="flex flex-col items-center mr-2">
-        <span className='text-sm'>:</span>
+        <span className="text-sm">:</span>
       </div>
       <div className="flex flex-col items-center rounded-lg p-2 border shadow-md">
-        <span className="text-xs md:text-sm font-bold text-destructive">{seconds.toString().padStart(2, '0')}</span>
+        <span className="text-xs md:text-sm font-bold text-destructive">
+          {seconds.toString().padStart(2, "0")}
+        </span>
       </div>
     </div>
   );

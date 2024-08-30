@@ -19,7 +19,7 @@ const Home = () => {
 
   const handleViewMore = () => {
     setViewMore(true);
-  }
+  };
   return (
     <>
       <div className="min-h-[100vh] h-fit pb-20">
@@ -74,7 +74,7 @@ const Home = () => {
           countdown={false}
         >
           <div className="grid grid-cols-2 md:grid-cols-5 justify-center gap-2 md:gap-4">
-          <HintSide />
+            <HintSide />
           </div>
         </WrapSection>
 

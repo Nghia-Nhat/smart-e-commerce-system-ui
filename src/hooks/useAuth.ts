@@ -35,16 +35,15 @@ export function useLogin() {
       Cookies.set("access_token", access_token, {
         expires: expiresIn / 86400,
       });
-      
+
       setIsLogin(true);
 
       if (parsedToken.isAdmin) {
-        push('/admin');
+        push("/admin");
       } else {
         // Back to the previous page before going to login
         push(returnURL);
       }
-
     },
     onError: (error) => {
       toast({
@@ -109,7 +108,7 @@ export function useSaveAvatar() {
         variant: "success",
         description: "Uploaded your avatar",
       });
-      
+
       window.location.reload();
     },
     onError: (error) => {

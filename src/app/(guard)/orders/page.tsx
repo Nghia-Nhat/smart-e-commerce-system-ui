@@ -83,7 +83,6 @@ export default function OrderContentPage() {
         continue;
       }
       unpaidOrders.push(order);
-      
     }
 
     if (order.status === "canceled") {
