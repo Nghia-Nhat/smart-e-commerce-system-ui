@@ -1,3 +1,4 @@
+import { fetchAdminProducts } from "@/apiRequests/admin";
 import {
   fetchAllProducts,
   fetchAllProductsByImage,
@@ -14,6 +15,14 @@ export function useAllProducts(category: string, queryParams: string) {
   return useQuery({
     queryKey: ["products", defineParams, category],
     queryFn: () => fetchAllProducts(category, queryParams),
+  });
+}
+
+export function useAdminProducts(queryParams: string) {
+  const defineParams = queryParams ? queryParams : "page=1";
+  return useQuery({
+    queryKey: ["adminProducts", defineParams],
+    queryFn: () => fetchAdminProducts(queryParams),
   });
 }
 

@@ -1,74 +1,141 @@
-import React from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+"use client";
+
+import React, { useCallback, useState } from "react";
+import { DataTable } from "./data-table";
+import { columns } from "./columns";
 
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { File, ListFilter, MoreHorizontal, PlusCircle } from "lucide-react";
-import Image from "next/image";
-import { Badge } from "@/components/ui/badge";
+import {
+  ArrowDownUp,
+  PlusCircle,
+  RotateCw,
+  Search,
+} from "lucide-react";
+import { MyPagination } from "@/components/pages/shop/pagination";
+import { useAdminProducts } from "@/hooks/useProduct";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { Input } from "@/components/ui/input";
 
 export default function ProductTab() {
+  const searchParams = useSearchParams();
+  const queryParams = searchParams.toString();
+  const { data, isLoading } = useAdminProducts(queryParams);
+  const products = data?.products;
+  const currentPage = data?.currentPage;
+  const lastPage = data?.lastPage;
+  const totalProducts = data?.totalProducts;
+
+  // Sort
+  const router = useRouter();
+  const pathname = usePathname();
+  const [isActive, setActive] = useState(
+    searchParams.get("sortBy") ?? "relevancy",
+  );
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams],
+  );
+
+  const handleChangeQueryParams = (field: string, value: string) => {
+    router.push(pathname + "?" + createQueryString(field, value));
+    setActive(value);
+  };
+
+  // Search
+  const [search, setSearch] = React.useState("");
+
+  const handleSearchChange = (e: any) => {
+    setSearch(e.target.value)
+  }
+
+  const handleSubmitWithEnter = (e: any) => {
+    if (e.keyCode === 32) return;
+    if (e.keyCode === 13) {
+      handleChangeQueryParams("productTitle", search)
+      return;
+    }
+  };
+
+  const handleRefresh = () => {
+    router.replace("/admin/product")
+    setActive("relevancy")
+    setSearch("")
+  }
+
   return (
-    <Tabs defaultValue="all">
+    <div>
       <div className="flex items-center">
-        <TabsList>
-          <TabsTrigger value="all">All</TabsTrigger>
-          <TabsTrigger value="active">Active</TabsTrigger>
-          <TabsTrigger value="draft">Draft</TabsTrigger>
-          <TabsTrigger value="archived" className="hidden sm:flex">
-            Archived
-          </TabsTrigger>
-        </TabsList>
+        <div className="flex gap-2">
+          <div className="relative ml-auto flex-1 md:grow-0">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="Search..."
+              className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
+              value={search}
+              onChange={handleSearchChange}
+              onKeyDown={handleSubmitWithEnter}
+            />
+          </div>
+          <Button variant="ghost" size="icon" onClick={handleRefresh}>
+            <RotateCw className="h-3.5 w-3.5" />
+          </Button>
+          {products && (
+            <div className="font-bold text-sm py-2">
+              Total {totalProducts} products
+            </div>
+          )}
+        </div>
         <div className="ml-auto flex items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm" className="h-8 gap-1">
-                <ListFilter className="h-3.5 w-3.5" />
+                <ArrowDownUp className="h-3.5 w-3.5" />
                 <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                  Filter
+                  Sort
                 </span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Filter by</DropdownMenuLabel>
+              <DropdownMenuLabel>Sort by</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuCheckboxItem checked>
-                Active
+              <DropdownMenuCheckboxItem
+                checked={isActive === "relevancy"}
+                onClick={() => handleChangeQueryParams("sortBy", "relevancy")}
+              >
+                Updated
               </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem>Draft</DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem>Archived</DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={isActive === "purchased_desc"}
+                onClick={() =>
+                  handleChangeQueryParams("sortBy", "purchased_desc")
+                }
+              >
+                Purchase Count
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={isActive === "rating_desc"}
+                onClick={() => handleChangeQueryParams("sortBy", "rating_desc")}
+              >
+                Rating
+              </DropdownMenuCheckboxItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button size="sm" variant="outline" className="h-8 gap-1">
-            <File className="h-3.5 w-3.5" />
-            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-              Export
-            </span>
-          </Button>
           <Button size="sm" className="h-8 gap-1">
             <PlusCircle className="h-3.5 w-3.5" />
             <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
@@ -77,89 +144,17 @@ export default function ProductTab() {
           </Button>
         </div>
       </div>
-      <TabsContent value="all">
-        <Card x-chunk="dashboard-06-chunk-0">
-          <CardHeader>
-            <CardTitle>Products</CardTitle>
-            <CardDescription>
-              Manage your products and view their sales performance.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="hidden w-[100px] sm:table-cell">
-                    <span className="sr-only">Image</span>
-                  </TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="hidden md:table-cell">Price</TableHead>
-                  <TableHead className="hidden md:table-cell">
-                    Total Sales
-                  </TableHead>
-                  <TableHead className="hidden md:table-cell">
-                    Created at
-                  </TableHead>
-                  <TableHead>
-                    <span className="sr-only">Actions</span>
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow>
-                  <TableCell className="hidden sm:table-cell">
-                    <Image
-                      alt="Product image"
-                      className="aspect-square rounded-md object-cover"
-                      height="64"
-                      src="/placeholder.svg"
-                      width="64"
-                    />
-                  </TableCell>
-                  <TableCell className="font-medium">
-                    Laser Lemonade Machine
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant="outline">Draft</Badge>
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell">
-                    $499.99
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell">25</TableCell>
-                  <TableCell className="hidden md:table-cell">
-                    2023-07-12 10:42 AM
-                  </TableCell>
-                  <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          aria-haspopup="true"
-                          size="icon"
-                          variant="ghost"
-                        >
-                          <MoreHorizontal className="h-4 w-4" />
-                          <span className="sr-only">Toggle menu</span>
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem>Edit</DropdownMenuItem>
-                        <DropdownMenuItem>Delete</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </CardContent>
-          <CardFooter>
-            <div className="text-xs text-muted-foreground">
-              Showing <strong>1-10</strong> of <strong>32</strong> products
-            </div>
-          </CardFooter>
-        </Card>
-      </TabsContent>
-    </Tabs>
+      <div className="mt-2">
+        <DataTable columns={columns} data={products || []} />
+        {!isLoading && (
+          <div className="md:py-6">
+            <MyPagination
+              lastPage={lastPage || 0}
+              currentPage={currentPage || 1}
+            />
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

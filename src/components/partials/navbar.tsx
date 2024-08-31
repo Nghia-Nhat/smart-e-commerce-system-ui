@@ -80,18 +80,17 @@ export const NotLogin = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const handleRedirect = (e: any) => {
-    const url = e.target.href;
+  const handleRedirect = (url: string) => {
     router.push(`${url}?returnURL=${pathname}?${searchParams.toString()}`);
   };
 
   return (
     <>
-      <Button variant="secondary" onClick={handleRedirect}>
-        <Link href="/login">Login</Link>
+      <Button variant="secondary" onClick={() => handleRedirect("/login")}>
+      Login
       </Button>
-      <Button onClick={handleRedirect}>
-        <Link href="/signup">Sign Up</Link>
+      <Button onClick={() => handleRedirect("/signup")}>
+      Sign Up
       </Button>
     </>
   );

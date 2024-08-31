@@ -14,6 +14,14 @@ export type ProductType = {
   reviews?: string;
 };
 
+export type ProductHasPaginate = {
+  products: ProductType[];
+  totalPages: number;
+  currentPage: number;
+  lastPage: number;
+  totalProducts: number;
+};
+
 export type ItemProps = {
   product: ProductType;
   category: string;

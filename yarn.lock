@@ -664,6 +664,18 @@
   dependencies:
     "@tanstack/query-core" "5.49.1"
 
+"@tanstack/react-table@^8.20.5":
+  version "8.20.5"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-table/-/react-table-8.20.5.tgz#19987d101e1ea25ef5406dce4352cab3932449d8"
+  integrity sha512-WEHopKw3znbUZ61s9i0+i9g8drmDo6asTWbrQh8Us63DAk/M0FkmIqERew6P71HI75ksZ2Pxyuf4vvKh9rAkiA==
+  dependencies:
+    "@tanstack/table-core" "8.20.5"
+
+"@tanstack/table-core@8.20.5":
+  version "8.20.5"
+  resolved "https://registry.yarnpkg.com/@tanstack/table-core/-/table-core-8.20.5.tgz#3974f0b090bed11243d4107283824167a395cf1d"
+  integrity sha512-P9dF7XbibHph2PFRz8gfBKEXEY/HJPOhym8CHmjF8y3q5mWpKx9xtZapXQUWCgkqvsK0R46Azuz+VaxD4Xl+Tg==
+
 "@types/debug@^4.0.0":
   version "4.1.12"
   resolved "https://registry.yarnpkg.com/@types/debug/-/debug-4.1.12.tgz#a155f21690871953410df4b6b6f53187f0500917"
@@ -3554,7 +3566,7 @@ slash@^3.0.0:
     react-markdown "^9.0.1"
     react-rnd "^10.4.11"
     react-webcam "^7.2.0"
-    smart-e-commerce-system "file:../../../../AppData/Local/Yarn/Cache/v6/npm-smart-e-commerce-system-0.1.0-0941db1e-f887-4dce-950d-f47a1b2b6cc2-1724944627912/node_modules/smart-e-commerce-system"
+    smart-e-commerce-system "file:C:/Users/DELL/AppData/Local/Yarn/Cache/v6/npm-smart-e-commerce-system-0.1.0-72a4bc5a-9885-4d00-93ca-8f4cd0cc7805-1725112286473/node_modules/smart-e-commerce-system"
     tailwind-merge "^2.2.2"
     tailwindcss-animate "^1.0.7"
     vaul "^0.9.0"
