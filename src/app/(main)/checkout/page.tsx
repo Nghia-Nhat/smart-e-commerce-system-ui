@@ -118,7 +118,7 @@ export default function CheckoutPage() {
     // PayOS
     const paymentData: PaymentData = {
       username: username,
-      amount: methodPayment === "payOS" ? 1000 : total,
+      amount: methodPayment === "payOS" ? 2000 : total,
       description: "Checkout orders",
       items: cart.map((item) => {
         return {

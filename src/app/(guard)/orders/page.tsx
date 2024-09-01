@@ -313,8 +313,8 @@ function PaymentDialog({ order }: { order: any }) {
     const paymentData: PaymentData = {
       orderId: order.orderId,
       username,
-      amount: methodPayment === "payOS" ? 1000 : order.total,
-      description: "Checkout orders",
+      amount: methodPayment === "payOS" ? 2000 : order.total,
+      description: order.orderId,
       items: order.product.map((item: any) => {
         return {
           name: item.productTitle,
