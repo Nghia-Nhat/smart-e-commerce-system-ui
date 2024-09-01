@@ -46,10 +46,10 @@ export function useAllProductsByImage(
   });
 }
 
-export function useOneProductByCategoryAndId(category: string, id: string) {
+export function useOneProductByCategoryAndId(category: string, id: string, currentUser: any) {
   return useQuery({
     queryKey: ["product", category, id],
-    queryFn: () => fetchOneProductByCategoryAndId(category, id),
+    queryFn: () => fetchOneProductByCategoryAndId(category, id, currentUser),
   });
 }
 

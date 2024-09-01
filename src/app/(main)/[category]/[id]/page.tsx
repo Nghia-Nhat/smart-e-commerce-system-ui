@@ -26,12 +26,15 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Minus, Plus } from "lucide-react";
 import Review from "@/components/partials/review";
+import { useCurrentUser } from "@/hooks/useUser";
 
 export default function ProductDetailPage() {
   const params = useParams<{ category: string; id: string }>();
+  const { data: user } = useCurrentUser();
   const { data, isLoading, isError } = useOneProductByCategoryAndId(
     params.category,
     params.id,
+    user.username
   );
 
   if (isLoading) {
