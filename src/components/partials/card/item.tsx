@@ -1,12 +1,11 @@
 import { LocationIcon } from "@/components/icons/common";
-import { ItemProps } from "@/types/product.type";
+import { ProductType } from "@/types/product.type";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import RatingStar from "../rating-star";
 
-export const Item = ({ productData }: { productData: ItemProps }) => {
-  const { product, category, purchaseCount, location } = productData;
+export const Item = ({ product }: { product: ProductType }) => {
   const discount = product?.discount;
   const priceBeforeDiscount = (product?.price * (1 + discount / 100)).toFixed(
     2,
@@ -14,7 +13,7 @@ export const Item = ({ productData }: { productData: ItemProps }) => {
 
   return (
     <div className="relative flex w-full min-w-[200px] max-w-[230px] flex-col overflow-hidden rounded-lg border-gray-100 bg-white shadow-md border-2 hover:border-orange-400 hover:-translate-y-0.5">
-      <Link href={`/${category}/${product?.productID}`}>
+      <Link href={`/${product?.category}/${product?.productID}`}>
         <div className="relative flex h-48 overflow-hidden">
           <Image
             src={product?.imageURL || "/svg/cat404.svg"}
@@ -37,11 +36,11 @@ export const Item = ({ productData }: { productData: ItemProps }) => {
               <div className="flex items-center">
                 <RatingStar number={product?.rating} />
               </div>
-              <p className="text-xs">Sold: {purchaseCount || 0}</p>
+              <p className="text-xs">Sold: {product?.purchaseCount || 0}</p>
             </div>
             <p className="mt-2">
               <span className="text-xl font-bold text-destructive mr-2">
-                ${product?.price.toFixed(2)}
+                ${product?.price}
               </span>
               <span className="text-xs line-through text-slate-400">
                 ${priceBeforeDiscount}
@@ -51,7 +50,7 @@ export const Item = ({ productData }: { productData: ItemProps }) => {
         </div>
         <div className="px-3 pb-2 text-xs flex items-center gap-1">
           <LocationIcon className="h-3 w-3" />
-          <span>{location}</span>
+          <span>{product?.location}</span>
         </div>
       </Link>
     </div>

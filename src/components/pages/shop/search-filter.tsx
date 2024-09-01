@@ -17,7 +17,7 @@ const SearchFilter = () => {
   const [maxPrice, setMaxPrice] = useState("");
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [error, setError] = useState(false);
-  const defaultSearch = searchParams.get("category");
+  const [defaultSearch, setDefaultSearch] = useState("") 
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -80,6 +80,21 @@ const SearchFilter = () => {
       );
     }
   }, [selectedLocations, router, pathname, createQueryString]);
+
+  useEffect(() => {
+    if (searchParams.get("category")) {
+      setDefaultSearch(`?category=` + searchParams.get("category"))
+    }
+    if (searchParams.get("productTitle")) {
+      setDefaultSearch(`?productTitle=` + searchParams.get("productTitle"))
+    }
+  }, [searchParams]);
+
+  const handleClearFilter = () => {
+    console.log(pathname + defaultSearch);
+    setSelectedLocations([])
+    router.replace(pathname + defaultSearch)
+  }
 
   return (
     <aside className="hidden md:block p-5">
@@ -198,7 +213,7 @@ const SearchFilter = () => {
       </div>
       <Button
         className="w-full mt-4"
-        onClick={() => router.push(pathname + `?category=${defaultSearch}`)}
+        onClick={handleClearFilter}
       >
         Clear all
       </Button>

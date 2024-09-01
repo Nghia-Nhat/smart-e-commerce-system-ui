@@ -13,13 +13,14 @@ import { useSearchParams, useParams } from "next/navigation";
 import React from "react";
 import PageNotFound from "@/components/pages/error/product-not-found";
 import ImageNotFound from "@/components/pages/error/not-found";
+import { ProductType } from "@/types/product.type";
 
 const Shop = () => {
   const searchParams = useSearchParams();
   const queryParams = searchParams.toString();
   const params = useParams<{ category: string }>();
   const { data, isLoading } = useAllProducts(params.category, queryParams);
-  const products = data?.products;
+  const products: ProductType[] = data?.products;
   const currentPage = data?.currentPage;
   const lastPage = data?.lastPage;
 
@@ -37,7 +38,7 @@ const Shop = () => {
                   <ItemSkeleton key={index} />
                 ))}
               {products?.map((product, index) => (
-                <Item key={index} productData={product} />
+                <Item key={index} product={product} />
               ))}
             </div>
             {products?.length === 0 && <ImageNotFound />}

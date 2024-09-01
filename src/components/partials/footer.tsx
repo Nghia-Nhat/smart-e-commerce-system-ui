@@ -10,7 +10,7 @@ import { Button } from "../ui/button";
 
 export default function Footer() {
   return (
-    <div className="bg-secondary p-10 pb-32 md:pb-5">
+    <div className="bg-secondary p-10 pb-32 md:pb-5 md:mt-16">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
         <div>
           <div className="font-bold text-lg mb-4">

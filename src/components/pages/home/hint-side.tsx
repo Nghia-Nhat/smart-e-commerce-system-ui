@@ -3,12 +3,13 @@ import React from "react";
 import ItemSkeleton from "../shop/item-skeleton";
 import { Item } from "@/components/partials/card/item";
 import { getCurrentUsername } from "@/lib/user.util";
+import { ProductType } from "@/types/product.type";
 
 export const HintSide = () => {
   const username: string = getCurrentUsername();
   const { data, isLoading, isError } = useRecommendProducts(username || "");
 
-  const products = data?.products;
+  const products: ProductType[] = data?.products;
 
   if (isError) {
     return <div>Error from server</div>;
@@ -21,7 +22,7 @@ export const HintSide = () => {
           <ItemSkeleton key={index} />
         ))}
       {products?.map((product, index) => (
-        <Item key={index} productData={product} />
+        <Item key={index} product={product} />
       ))}
     </>
   );

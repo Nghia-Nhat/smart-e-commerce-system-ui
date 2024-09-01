@@ -22,13 +22,6 @@ export type ProductHasPaginate = {
   totalProducts: number;
 };
 
-export type ItemProps = {
-  product: ProductType;
-  category: string;
-  purchaseCount: number;
-  location?: string;
-};
-
 export type ProductsResponseType = {
   products: Array<{
     product: ProductType;

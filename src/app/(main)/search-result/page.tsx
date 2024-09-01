@@ -12,6 +12,7 @@ import useProductStore from "@/store/product.store";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { useCurrentUser } from "@/hooks/useUser";
+import { ProductType } from "@/types/product.type";
 
 const SearchResultPage = () => {
   const searchParams = useSearchParams();
@@ -78,7 +79,7 @@ const SearchImageResult = ({
     queryParams,
     currentUser.username,
   );
-  const products = data?.products;
+  const products: ProductType[] = data?.products;
   const currentPage = data?.currentPage;
   const lastPage = data?.lastPage;
 
@@ -109,7 +110,7 @@ const SearchImageResult = ({
       {products?.length === 0 && <ImageNotFound />}
       <div className="grid grid-cols-2 md:grid-cols-4 justify-center gap-2 md:gap-4">
         {products?.map((product, index) => (
-          <Item key={index} productData={product} />
+          <Item key={index} product={product} />
         ))}
       </div>
       <div className="my-10 flex justify-center">
@@ -138,7 +139,7 @@ const SearchProductTitle = () => {
 
 const SearchProductTitleResult = ({ queryParams }: { queryParams: string }) => {
   const { data, isLoading, isError } = useFindProductsByTitle(queryParams);
-  const products = data?.products;
+  const products: ProductType[] = data?.products;
   const currentPage = data?.currentPage;
   const lastPage = data?.lastPage;
 
@@ -163,7 +164,7 @@ const SearchProductTitleResult = ({ queryParams }: { queryParams: string }) => {
       {products?.length === 0 && <ImageNotFound />}
       <div className="grid grid-cols-2 md:grid-cols-4 justify-center gap-2 md:gap-4">
         {products?.map((product, index) => (
-          <Item key={index} productData={product} />
+          <Item key={index} product={product} />
         ))}
       </div>
       <div className="my-10 flex justify-center">

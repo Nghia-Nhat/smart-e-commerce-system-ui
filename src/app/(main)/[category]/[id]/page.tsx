@@ -5,7 +5,7 @@ import ProductDetailSkeleton from "@/components/pages/product/product-detail-ske
 import { Form, FormField, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useOneProductByCategoryAndId } from "@/hooks/useProduct";
-import { ItemProps, ProductType } from "@/types/product.type";
+import { ProductType } from "@/types/product.type";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 
@@ -62,7 +62,7 @@ export function ProductDetail({
   isLoading,
 }: {
   product: ProductType;
-  relatedProducts: ItemProps[];
+  relatedProducts: ProductType[];
   isLoading: boolean;
 }) {
   const { mutate: addToCart } = useUpdateCartItemQuantity();
@@ -163,7 +163,7 @@ export function ProductDetail({
                           width={500}
                           height={500}
                           object-fit="cover"
-                          className="w-full min-w-16 cursor-pointer border-2"
+                          className="h-16 w-20 object-cover cursor-pointer border-2"
                           onClick={() => handleChangeImage(source)}
                           priority
                         />

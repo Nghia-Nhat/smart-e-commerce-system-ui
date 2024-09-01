@@ -63,7 +63,7 @@ export function SearchDialog({ textColor }: SearchDialogProps) {
           placeholder="Search..."
           onChange={handleSearchChange}
           onKeyDown={handleSubmitWithEnter}
-          className="w-full rounded-lg bg-background pl-4 md:w-[200px] lg:w-[336px]"
+          className="w-full rounded-lg bg-background pl-4 pr-8 md:w-[200px] lg:w-[336px]"
         />
         {/* Search image */}
         {search ? (
