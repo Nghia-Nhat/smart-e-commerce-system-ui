@@ -34,7 +34,7 @@ export default function ProductDetailPage() {
   const { data, isLoading, isError } = useOneProductByCategoryAndId(
     params.category,
     params.id,
-    user.username
+    user?.username
   );
 
   if (isLoading) {
