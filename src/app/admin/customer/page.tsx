@@ -1,24 +1,15 @@
-import { Payment, columns } from "./columns"
+"use client"
+
+import { columns } from "./columns"
 import { DataTable } from "./data-table"
+import { useAdminUsers } from "@/hooks/useAdmin";
 
-async function getData(): Promise<Payment[]> {
-  return [
-    {
-      id: "728ed52f",
-      amount: 100,
-      status: "pending",
-      email: "m@example.com",
-    },
-    // ...
-  ]
-}
-
-export default async function DemoPage() {
-  const data = await getData()
-
+export default function CustomerPage() {
+  const {data} = useAdminUsers();
+  console.log(data);
   return (
     <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={data} />
+      <DataTable columns={columns} data={data || []} />
     </div>
   )
 }
