@@ -43,12 +43,15 @@ export const columns: ColumnDef<ProductType>[] = [
   {
     accessorKey: "rating",
     header: "Rating",
-    cell: ({ getValue }) => `${getValue<number>().toFixed(1)} / 5`,
+    cell: ({ row }) => {
+      const rating = row.original.rating || 0;
+      return rating + " / 5"
+    },
   },
   {
     accessorKey: "discount",
     header: "Discount",
-    cell: ({ getValue }) => `${getValue<number>()}%`,
+    cell: ({ row }) => row.original.discount || 0,
   },
   {
     accessorKey: "category",

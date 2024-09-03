@@ -4,11 +4,11 @@ import Cookies from "js-cookie";
 const accessToken = Cookies.get("access_token");
 
 const headers = {
-  "Authorization": `Bearer ${accessToken}`,
+  Authorization: `Bearer ${accessToken}`,
   "Content-Type": "application/json",
 };
 
-export async function fetchAdminProducts(queryParams?: string,) {
+export async function fetchAdminProducts(queryParams?: string) {
   const url = BACKEND_BASE_URL + "/admin/product" + `?${queryParams}`;
   const response = await fetch(url, {
     headers,
@@ -17,9 +17,10 @@ export async function fetchAdminProducts(queryParams?: string,) {
   return result;
 }
 
-export async function fetchAdminDashboard(queryParams?: string ) {
+export async function fetchAdminDashboard(queryParams?: string) {
   const defineParams = queryParams ?? "timeRange=P1M";
-  const url = BACKEND_BASE_URL + "/admin/dashboard/product" + `?${defineParams}`;
+  const url =
+    BACKEND_BASE_URL + "/admin/dashboard/product" + `?${defineParams}`;
   const response = await fetch(url, {
     headers,
   });
@@ -27,9 +28,10 @@ export async function fetchAdminDashboard(queryParams?: string ) {
   return result;
 }
 
-export async function fetchAdminDashboardChart(queryParams?: string ) {
+export async function fetchAdminDashboardChart(queryParams?: string) {
   const defineParams = queryParams ?? "timeRange=P1M";
-  const url = BACKEND_BASE_URL + "/admin/dashboard/product/top-five" + `?${defineParams}`;
+  const url =
+    BACKEND_BASE_URL + "/admin/dashboard/product/top-five" + `?${defineParams}`;
   const response = await fetch(url, {
     headers,
   });
@@ -37,10 +39,35 @@ export async function fetchAdminDashboardChart(queryParams?: string ) {
   return result;
 }
 
-export async function fetchAdminUsers(queryParams?: string,) {
+export async function fetchAdminUsers(queryParams?: string) {
   const url = BACKEND_BASE_URL + "/users" + `?${queryParams}`;
   const response = await fetch(url, {
     headers,
+  });
+  const result = await response.json();
+  return result;
+}
+
+export async function fetchAdminUpload(files: File[]) {
+  const formData = new FormData();
+  for (let i = 0; i < files.length; i++) {
+    formData.append('files', files[i]);
+  }
+  const url = BACKEND_BASE_URL + "/admin/uploads";
+  const response = await fetch(url, {
+    method: "POST",
+    body: formData,
+  });
+  const result = await response.json();
+  return result;
+}
+
+export async function fetchAdminCreateProduct(payload: any) {
+  const url = BACKEND_BASE_URL + "/admin/product/add";
+  const response = await fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({...payload}),
   });
   const result = await response.json();
   return result;

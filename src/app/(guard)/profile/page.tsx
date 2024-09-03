@@ -19,6 +19,7 @@ import {
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useSaveAvatar } from "@/hooks/useAuth";
 import { getCurrentUsername } from "@/lib/user.util";
+import { fetchAdminUpload } from "@/apiRequests/admin";
 
 export default function ProfilePage() {
   const { data: user, isLoading } = useCurrentUser();
@@ -67,28 +68,17 @@ function ProfileContentPage({ user }: { user: UserProps }) {
     updateProfile(data);
   };
 
-  const [avatar, setAvatar] = useState(null);
-  const [base64, setBase64] = useState("");
   const fileInputRef = useRef(null);
   const username = getCurrentUsername();
 
-  const handleImageUpload = (event: any) => {
+  const handleImageUpload = async (event: any) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setBase64(reader.result);
-        setAvatar(URL.createObjectURL(file));
-      };
-      reader.readAsDataURL(file);
+      const res = await fetchAdminUpload(file);
+      const avtUrl = res.urls[0]
+      saveAvatar({ avatar: avtUrl, username });
     }
   };
-
-  useEffect(() => {
-    if (base64) {
-      saveAvatar({ avatar: base64, username });
-    }
-  }, [base64, username, saveAvatar]);
 
   const handleEditClick = () => {
     fileInputRef.current?.click();

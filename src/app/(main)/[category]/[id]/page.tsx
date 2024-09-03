@@ -320,7 +320,7 @@ export function ProductDetail({
           countdown={false}
         >
           <div className="md:mx-10">
-            <Review reviews={product.reviews} />
+            {product.reviews ? <Review reviews={product.reviews} /> : "No reviews"}
           </div>
         </WrapSection>
 

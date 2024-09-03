@@ -24,6 +24,7 @@ import { useAdminProducts } from "@/hooks/useProduct";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
+import DialogNewProduct from "@/components/pages/product/dialog-new-product";
 
 export default function ProductTab() {
   const searchParams = useSearchParams();
@@ -136,12 +137,7 @@ export default function ProductTab() {
               </DropdownMenuCheckboxItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button size="sm" className="h-8 gap-1">
-            <PlusCircle className="h-3.5 w-3.5" />
-            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-              Add Product
-            </span>
-          </Button>
+          <DialogNewProduct/>
         </div>
       </div>
       <div className="mt-2">
