@@ -1,27 +1,44 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type Payment = {
-  id: string
-  amount: number
-  status: "pending" | "processing" | "success" | "failed"
-  email: string
-}
-
-export const columns: ColumnDef<Payment>[] = [
+import Image from "next/image"
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
+export const columns: ColumnDef<any>[] = [
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "id",
+    header: "ID",
+  },
+  {
+    accessorKey: "avatar",
+    header: "Avatar",
+    cell: ({ row }) => (
+      <Avatar>
+        <AvatarImage  src={row.original.avatar || "/images/avtUser2.png"} alt="avatar" className="object-cover" />
+      </Avatar>
+    ),
+  },
+  {
+    accessorKey: "full_name",
+    header: "Full name",
+  },
+  {
+    accessorKey: "username",
+    header: "Username",
   },
   {
     accessorKey: "email",
     header: "Email",
   },
   {
-    accessorKey: "amount",
-    header: "Amount",
+    accessorKey: "phone",
+    header: "Phone",
+  },
+  {
+    accessorKey: "address",
+    header: "Address",
   },
 ]

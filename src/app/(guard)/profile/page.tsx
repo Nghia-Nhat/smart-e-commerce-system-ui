@@ -72,7 +72,7 @@ function ProfileContentPage({ user }: { user: UserProps }) {
   const username = getCurrentUsername();
 
   const handleImageUpload = async (event: any) => {
-    const file = event.target.files[0];
+    const file = event.target.files;
     if (file) {
       const res = await fetchAdminUpload(file);
       const avtUrl = res.urls[0]

@@ -80,7 +80,8 @@ export default function ProductTab() {
 
   return (
     <div>
-      <div className="flex items-center">
+      <div className="font-bold text-2xl">Product Management</div>
+      <div className="mt-8 flex items-center">
         <div className="flex gap-2">
           <div className="relative ml-auto flex-1 md:grow-0">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />

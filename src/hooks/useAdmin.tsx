@@ -17,9 +17,10 @@ export function useAdminDashboardChart(queryParams?: string) {
 }
 
 export function useAdminUsers(queryParams?: string) {
+  const defineParams = queryParams ? queryParams : "page=1";
   return useQuery({
-    queryKey: ["useAdminUsers", queryParams],
-    queryFn: () => fetchAdminUsers(queryParams),
+    queryKey: ["useAdminUsers", defineParams],
+    queryFn: () => fetchAdminUsers(defineParams),
   });
 }
 
@@ -27,7 +28,7 @@ export function useAdminProducts(queryParams?: string) {
   const defineParams = queryParams ? queryParams : "page=1";
   return useQuery({
     queryKey: ["adminProducts", defineParams],
-    queryFn: () => fetchAdminProducts(queryParams),
+    queryFn: () => fetchAdminProducts(defineParams),
   });
 }
 

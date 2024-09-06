@@ -40,7 +40,7 @@ export async function fetchAdminDashboardChart(queryParams?: string) {
 }
 
 export async function fetchAdminUsers(queryParams?: string) {
-  const url = BACKEND_BASE_URL + "/users" + `?${queryParams}`;
+  const url = BACKEND_BASE_URL + "/admin/user" + `?${queryParams}`;
   const response = await fetch(url, {
     headers,
   });

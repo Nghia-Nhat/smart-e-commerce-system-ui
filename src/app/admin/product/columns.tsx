@@ -3,8 +3,6 @@
 import { ProductType } from "@/types/product.type";
 import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Pencil } from "lucide-react";
 import { AlertDeleteProduct } from "@/components/common/alert-delete-product";
 import { Separator } from "@/components/ui/separator";
 import DialogEditProduct from "@/components/pages/product/dialog-edit-product";
