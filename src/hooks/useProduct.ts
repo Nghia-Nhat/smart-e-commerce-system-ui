@@ -18,14 +18,6 @@ export function useAllProducts(category: string, queryParams: string) {
   });
 }
 
-export function useAdminProducts(queryParams: string) {
-  const defineParams = queryParams ? queryParams : "page=1";
-  return useQuery({
-    queryKey: ["adminProducts", defineParams],
-    queryFn: () => fetchAdminProducts(queryParams),
-  });
-}
-
 export function useAllProductsByDiscount(queryParams: string) {
   const defineParams = queryParams ? queryParams : "page=1";
   return useQuery({

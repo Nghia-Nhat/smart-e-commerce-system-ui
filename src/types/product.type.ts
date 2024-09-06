@@ -12,6 +12,7 @@ export type ProductType = {
   location?: string;
   purchaseCount?: string;
   reviews?: string;
+  locationId?: string;
 };
 
 export type ProductHasPaginate = {

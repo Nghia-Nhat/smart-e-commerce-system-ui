@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -26,11 +26,16 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { ImageIcon, Loader, Plus, PlusCircle, X } from "lucide-react";
-import { fetchAdminCreateProduct, fetchAdminUpload } from "@/apiRequests/admin";
+import { ImageIcon, Loader, Pencil, Plus, PlusCircle, X } from "lucide-react";
+import {
+  fetchAdminUpdateProduct,
+  fetchAdminProductById,
+  fetchAdminUpload,
+} from "@/apiRequests/admin";
 import { useToast } from "@/components/ui/use-toast";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
+import { ProductType } from "@/types/product.type";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -47,33 +52,59 @@ const formSchema = z.object({
   }),
 });
 
-export default function DialogNewProduct() {
+export default function DialogEditProduct({
+  productID,
+}: {
+  productID: string;
+}) {
+  return <EditProduct productID={productID} />;
+}
+
+function EditProduct({ productID }: { productID: string }) {
+  const [product, setProduct] = useState<ProductType>();
   const [files, setFiles] = useState<File[] | null>(null);
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const [previews, setPreviews] = useState<string[] | null>(null);
+  const [previews, setPreviews] = useState<string[] | null>([]);
+  const [oldImages, setOldImages] = useState<string[] | null>([]);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       price: 0,
-      category: "",
+      category: "apparel",
       locationId: "",
     },
   });
 
+  useEffect(() => {
+    if (product) {
+      form.setValue("name", product?.productTitle);
+      form.setValue("price", product?.price);
+      form.setValue("category", product?.category || "");
+      form.setValue("locationId", product?.locationId || "");
+      setPreviews([product?.imageURL, ...(product?.images ?? [])]);
+      setOldImages([product?.imageURL, ...(product?.images ?? [])]);
+    }
+  }, [product, form]);
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!files) return alert("At least one image");
     setIsLoading(true);
-    const uploadImages = await fetchAdminUpload(files);
+    let uploadImages = {
+      urls: []
+    };
+    if (files && files?.length !== 0) {
+      uploadImages = await fetchAdminUpload(files);
+    }
+    const imagesToUpdate = [...(oldImages ?? []), ...uploadImages.urls];
 
     const formatData = {
       productTitle: values.name,
       price: values.price,
       category: values.category,
-      imageURL: uploadImages.urls[0],
-      images: uploadImages.urls,
+      imageURL: imagesToUpdate[0],
+      images: imagesToUpdate.slice(1),
       productType: null,
       discount: null,
       stock: null,
@@ -82,14 +113,14 @@ export default function DialogNewProduct() {
       subCategory: null,
       locationId: values.locationId,
     };
-    const result = await fetchAdminCreateProduct(formatData);
+    const result = await fetchAdminUpdateProduct(formatData, productID);
     if (result) {
       setOpen(false);
       setFiles(null);
       setPreviews(null);
       toast({
         variant: "success",
-        description: "Create Product successfully",
+        description: "Update Product successfully",
       });
     }
   }
@@ -109,7 +140,7 @@ export default function DialogNewProduct() {
     });
 
     Promise.all(newPreviews).then((results) => {
-      setPreviews(results);
+      setPreviews((prevPreviews) => [...(prevPreviews ?? []), ...results]);
     });
   }, []);
 
@@ -126,17 +157,17 @@ export default function DialogNewProduct() {
     setFiles(null);
     setPreviews(null);
     form.reset();
-  };
-
-  const handleResetForm = (e: any) => {
-    e.preventDefault();
-    setFiles(null);
-    setPreviews(null);
-    form.reset();
+    setIsLoading(false);
   };
 
   const removeImageByIndex = (indexToRemove: number) => {
     setPreviews((prevPreviews) => {
+      if (prevPreviews) {
+        return prevPreviews.filter((_, index) => index !== indexToRemove);
+      }
+      return [];
+    });
+    setOldImages((prevPreviews) => {
       if (prevPreviews) {
         return prevPreviews.filter((_, index) => index !== indexToRemove);
       }
@@ -150,19 +181,33 @@ export default function DialogNewProduct() {
     });
   };
 
+  const handleGetProductById = async () => {
+    const result = await fetchAdminProductById(productID);
+    setProduct(result);
+  };
+
+  const handleResetForm = (e: any) => {
+    e.preventDefault();
+    if (product) {
+      form.setValue("name", product?.productTitle);
+      form.setValue("price", product?.price);
+      form.setValue("category", product?.category || "");
+      form.setValue("locationId", product?.locationId || "");
+      setPreviews([product?.imageURL, ...(product?.images ?? [])]);
+      setOldImages([product?.imageURL, ...(product?.images ?? [])]);
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={handleCloseModal}>
       <DialogTrigger asChild>
-        <Button size="sm" className="h-8 gap-1">
-          <PlusCircle className="h-3.5 w-3.5" />
-          <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-            Add Product
-          </span>
+        <Button variant={"ghost"} size={"icon"} onClick={handleGetProductById}>
+          <Pencil className="h-4 w-4" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px]" aria-describedby={undefined}>
         <DialogHeader>
-          <DialogTitle>Create New Product</DialogTitle>
+          <DialogTitle>Edit Product</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -254,10 +299,6 @@ export default function DialogNewProduct() {
                 )}
               />
             </div>
-            {/* <div>
-              <FormLabel>Images</FormLabel>
-              <Input type="file" multiple onChange={handleChangeFile} />
-            </div> */}
             <div>
               <FormLabel>Images</FormLabel>
               <div className="mt-2 grid grid-cols-5 gap-4">
@@ -278,7 +319,7 @@ export default function DialogNewProduct() {
                     </div>
                   ))}
                 <input {...getInputProps()} />
-                {previews?.length !== 7 && (
+                {previews && previews?.length < 7 && (
                   <div
                     className="border-4 border-dashed flex justify-center items-center rounded-sm aspect-square cursor-pointer"
                     {...getRootProps()}
@@ -299,7 +340,7 @@ export default function DialogNewProduct() {
               </Button>
               <Button type="submit" disabled={isLoading} className="flex gap-2">
                 {isLoading && <Loader className="animate-spin" />}
-                Create
+                Save
               </Button>
             </div>
           </form>

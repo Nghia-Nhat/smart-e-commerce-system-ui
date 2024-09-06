@@ -20,11 +20,11 @@ import {
   Search,
 } from "lucide-react";
 import { MyPagination } from "@/components/pages/shop/pagination";
-import { useAdminProducts } from "@/hooks/useProduct";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import DialogNewProduct from "@/components/pages/product/dialog-new-product";
+import { useAdminProducts } from "@/hooks/useAdmin";
 
 export default function ProductTab() {
   const searchParams = useSearchParams();

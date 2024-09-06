@@ -72,3 +72,33 @@ export async function fetchAdminCreateProduct(payload: any) {
   const result = await response.json();
   return result;
 }
+
+export async function fetchDeleteProduct(productID: string) {
+  const url = BACKEND_BASE_URL + "/admin/product/delete/" + productID;
+  const response = await fetch(url, {
+    method: "DELETE",
+    headers,
+  });
+  const result = await response.json();
+  return result;
+}
+
+export async function fetchAdminProductById(productID: string) {
+  const url = BACKEND_BASE_URL + "/admin/product" + `/${productID}`;
+  const response = await fetch(url, {
+    headers,
+  });
+  const result = await response.json();
+  return result;
+}
+
+export async function fetchAdminUpdateProduct(payload: any, productID: string) {
+  const url = BACKEND_BASE_URL + "/admin/product/update/" + productID;
+  const response = await fetch(url, {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({...payload}),
+  });
+  const result = await response.json();
+  return result;
+}

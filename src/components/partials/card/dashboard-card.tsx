@@ -4,12 +4,14 @@ import { DollarSignIcon, Eye, ShoppingBag } from "lucide-react";
 
 type CardProps = {
   productViewed: any;
-  productAddedToCart: any;
+  productAddToCart: any;
+  totalRevenue: any;
 };
 
 function DashboardCard({ cardData }: { cardData: CardProps }) {
     const productViewed = cardData?.productViewed
-    const productAddedToCart = cardData?.productAddedToCart
+    const productAddedToCart = cardData?.productAddToCart
+    const totalRevenue = cardData?.totalRevenue
 
     const renderStatus = (object: any) => {
         if (object?.changeInfo.status === "increase") {
@@ -59,9 +61,9 @@ function DashboardCard({ cardData }: { cardData: CardProps }) {
             <DollarSignIcon className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{productViewed?.totalCurrent}</div>
+            <div className="text-2xl font-bold">{totalRevenue?.totalCurrent}</div>
             <p className="text-xs text-muted-foreground">
-              {renderStatus(productViewed)} from last month
+              {renderStatus(totalRevenue)} from last month
             </p>
           </CardContent>
         </Card>
