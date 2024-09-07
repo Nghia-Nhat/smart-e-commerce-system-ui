@@ -1,4 +1,12 @@
-import { fetchAdminDashboard, fetchAdminDashboardChart, fetchAdminProductById, fetchAdminProducts, fetchAdminUsers, fetchDeleteProduct } from "@/apiRequests/admin";
+import {
+  fetchAdminDashboard,
+  fetchAdminDashboardChart,
+  fetchAdminProductById,
+  fetchAdminProducts,
+  fetchAdminUsers,
+  fetchDeleteProduct,
+  fetchAdminOrders,
+} from "@/apiRequests/admin";
 import { useToast } from "@/components/ui/use-toast";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -21,6 +29,14 @@ export function useAdminUsers(queryParams?: string) {
   return useQuery({
     queryKey: ["useAdminUsers", defineParams],
     queryFn: () => fetchAdminUsers(defineParams),
+  });
+}
+
+export function useAdminOrders(queryParams?: string) {
+  const defineParams = queryParams ? queryParams : "page=1";
+  return useQuery({
+    queryKey: ["useAdminOrders", defineParams],
+    queryFn: () => fetchAdminOrders(defineParams),
   });
 }
 

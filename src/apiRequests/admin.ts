@@ -48,6 +48,15 @@ export async function fetchAdminUsers(queryParams?: string) {
   return result;
 }
 
+export async function fetchAdminOrders(queryParams?: string) {
+  const url = BACKEND_BASE_URL + "/admin/order" + `?${queryParams}`;
+  const response = await fetch(url, {
+    headers,
+  });
+  const result = await response.json();
+  return result;
+}
+
 export async function fetchAdminUpload(files: File[]) {
   const formData = new FormData();
   for (let i = 0; i < files.length; i++) {
