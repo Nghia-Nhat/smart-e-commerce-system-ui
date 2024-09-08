@@ -3,14 +3,14 @@
 import { MyPagination } from "@/components/pages/shop/pagination";
 import { columns } from "./columns"
 import { DataTable } from "./data-table"
-import { useAdminOrders, useAdminUsers } from "@/hooks/useAdmin";
+import { useAdminAccount } from "@/hooks/useAdmin";
 import { usePathname, useSearchParams } from "next/navigation";
 
-export default function OrderPage() {
+export default function AccountPage() {
   const searchParams = useSearchParams();
   const queryParams = searchParams.toString();
-  const { data, isLoading } = useAdminOrders(queryParams);
-  const users = data?.orders;
+  const { data, isLoading } = useAdminAccount(queryParams);
+  const users = data?.users;
   const currentPage = Number(data?.currentPage);
   const lastPage = data?.lastPage;
   const totalUserCount = data?.totalUserCount;
@@ -18,7 +18,7 @@ export default function OrderPage() {
   return (
 
     <div>
-      <div className="font-bold text-2xl">Orders Management</div>
+      <div className="font-bold text-2xl">Account Management</div>
       <div className="mt-8">
         <DataTable columns={columns} data={users || []} />
         {!isLoading && (

@@ -1,28 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
+  CircleUserRound,
   Home,
-  LineChart,
   Package,
-  Package2,
   PanelLeft,
-  Search,
   Settings,
   ShoppingCart,
   Users2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   Tooltip,
@@ -111,14 +98,14 @@ export default function DashboardPage({
             <Tooltip>
               <TooltipTrigger asChild>
                 <Link
-                  href="/admin/analytic"
+                  href="/admin/account"
                   className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                 >
-                  <LineChart className="h-5 w-5" />
-                  <span className="sr-only">Analytics</span>
+                  <CircleUserRound className="h-5 w-5" />
+                  <span className="sr-only">Accounts</span>
                 </Link>
               </TooltipTrigger>
-              <TooltipContent side="right">Analytics</TooltipContent>
+              <TooltipContent side="right">Accounts</TooltipContent>
             </Tooltip>
           </TooltipProvider>
         </nav>
@@ -127,14 +114,14 @@ export default function DashboardPage({
             <Tooltip>
               <TooltipTrigger asChild>
                 <Link
-                  href="/admin/analytic"
+                  href="/admin/account"
                   className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                 >
                   <Settings className="h-5 w-5" />
-                  <span className="sr-only">Analytics</span>
+                  <span className="sr-only">Accounts</span>
                 </Link>
               </TooltipTrigger>
-              <TooltipContent side="right">Analytics</TooltipContent>
+              <TooltipContent side="right">Accounts</TooltipContent>
             </Tooltip>
           </TooltipProvider>
         </nav>
@@ -185,11 +172,11 @@ export default function DashboardPage({
                   Customers
                 </Link>
                 <Link
-                  href="/admin/analytic"
+                  href="/admin/account"
                   className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                 >
-                  <LineChart className="h-5 w-5" />
-                  Analytics
+                  <CircleUserRound className="h-5 w-5" />
+                  Account
                 </Link>
               </nav>
             </SheetContent>

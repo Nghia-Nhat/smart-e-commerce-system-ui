@@ -57,6 +57,15 @@ export async function fetchAdminOrders(queryParams?: string) {
   return result;
 }
 
+export async function fetchAdminOrderById(orderId: string) {
+  const url = BACKEND_BASE_URL + "/admin/order/" + `${orderId}`;
+  const response = await fetch(url, {
+    headers,
+  });
+  const result = await response.json();
+  return result;
+}
+
 export async function fetchAdminUpload(files: File[]) {
   const formData = new FormData();
   for (let i = 0; i < files.length; i++) {
