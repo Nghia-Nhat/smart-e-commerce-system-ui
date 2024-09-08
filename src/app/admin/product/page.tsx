@@ -29,7 +29,7 @@ import { useAdminProducts } from "@/hooks/useAdmin";
 export default function ProductTab() {
   const searchParams = useSearchParams();
   const queryParams = searchParams.toString();
-  const { data, isLoading } = useAdminProducts(queryParams);
+  const { data, isLoading, refetch } = useAdminProducts(queryParams);
   const products = data?.products;
   const currentPage = data?.currentPage;
   const lastPage = data?.lastPage;
@@ -138,11 +138,11 @@ export default function ProductTab() {
               </DropdownMenuCheckboxItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <DialogNewProduct/>
+          <DialogNewProduct refetch={refetch}/>
         </div>
       </div>
       <div className="mt-2">
-        <DataTable columns={columns} data={products || []} />
+        <DataTable columns={columns} data={products || []}/>
         {!isLoading && (
           <div className="md:py-6">
             <MyPagination

@@ -87,11 +87,9 @@ export const NotLogin = () => {
   return (
     <>
       <Button variant="secondary" onClick={() => handleRedirect("/login")}>
-      Login
+        Login
       </Button>
-      <Button onClick={() => handleRedirect("/signup")}>
-      Sign Up
-      </Button>
+      <Button onClick={() => handleRedirect("/signup")}>Sign Up</Button>
     </>
   );
 };
@@ -124,7 +122,11 @@ export const AvatarComponent = () => {
           <Link href={"/profile"}>My Account</Link>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Settings</DropdownMenuItem>
+        {(user?.role === "SUPER_ADMIN" || user?.role === "ADMIN") && (
+          <DropdownMenuItem>
+            <Link href={"/admin"}>Administrator</Link>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => {

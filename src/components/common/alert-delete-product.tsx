@@ -10,7 +10,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "../ui/button";
-import { Trash, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { useDeleteProduct } from "@/hooks/useAdmin";
 
 export function AlertDeleteProduct({ id, name }: { id: string; name: string }) {

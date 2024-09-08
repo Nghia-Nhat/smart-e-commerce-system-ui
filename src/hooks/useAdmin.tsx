@@ -14,6 +14,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { MESSAGE } from "@/lib/message";
 import { RegisterRequest } from "@/types/auth.type";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
 
 export function useAdminDashboard(queryParams?: string) {
   return useQuery({
@@ -85,10 +86,14 @@ export function useAdminProductById(productID: string) {
 
 export function useDeleteProduct() {
   const { toast } = useToast();
+  const searchParams = useSearchParams();
+  const queryParams = searchParams.toString();
+  const { refetch } = useAdminProducts(queryParams);
 
   return useMutation({
     mutationFn: (productID: string) => fetchDeleteProduct(productID),
     onSuccess: () => {
+      refetch();
       toast({
         variant: "success",
         description: "Delete successfully",
@@ -105,6 +110,9 @@ export function useDeleteProduct() {
 
 export function useAdminRegister() {
   const { toast } = useToast();
+  const searchParams = useSearchParams();
+  const queryParams = "role=true&" + searchParams.toString();
+  const { refetch } = useAdminAccount(queryParams);
 
   return useMutation({
     mutationFn: (credential: RegisterRequest) => fetchRegister(credential),
@@ -112,7 +120,7 @@ export function useAdminRegister() {
       if (data.statusCode === 409) {
         throw new Error(data.message);
       }
-
+      refetch()
       toast({
         variant: "success",
         description: MESSAGE.REGISTER_SUCCESS,

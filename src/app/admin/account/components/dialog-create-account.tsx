@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -6,7 +6,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { PlusCircle } from "lucide-react";
+import { Loader, PlusCircle } from "lucide-react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,17 +22,22 @@ import {
 } from "@/components/ui/form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-    Select,
-    SelectTrigger,
-    SelectValue,
-    SelectContent,
-    SelectItem,
-  } from "@/components/ui/select";
-import { useAdminRegister } from "@/hooks/useAdmin";
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { useAdminAccount, useAdminRegister } from "@/hooks/useAdmin";
 
 export default function DialogCreateAccount() {
+  const [open, setOpen] = useState(false);
+
+  const handleCloseModal = () => {
+    setOpen(!open);
+  };
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={handleCloseModal}>
       <DialogTrigger asChild>
         <Button size="sm" className="h-8 gap-1">
           <PlusCircle className="h-3.5 w-3.5" />
@@ -51,7 +56,7 @@ export default function DialogCreateAccount() {
             <TabsTrigger value="role">Set Role</TabsTrigger>
           </TabsList> */}
           <TabsContent value="create">
-            <CreateTab />
+            <CreateTab setOpen={handleCloseModal} />
           </TabsContent>
           <TabsContent value="role">
             <RoleTab />
@@ -62,7 +67,9 @@ export default function DialogCreateAccount() {
   );
 }
 
-function CreateTab() {
+function CreateTab({ setOpen }: { setOpen: () => void }) {
+  const [isLoading, setIsLoading] = useState(false);
+
   const signUpSchema = z
     .object({
       full_name: z
@@ -105,6 +112,8 @@ function CreateTab() {
 
   function onSubmit(data: z.infer<typeof signUpSchema>) {
     register(data);
+    setOpen();
+    setIsLoading(false);
   }
 
   return (
@@ -138,31 +147,31 @@ function CreateTab() {
             )}
           />
           <FormField
-                control={form.control}
-                name="role"
-                render={({ field }) => (
-                  <FormItem className="grid gap-2 mb-2">
-                    <FormLabel>Role</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      {...field}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select role" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="ADMIN">Admin</SelectItem>
-                        <SelectItem value="SELLER">Seller</SelectItem>
-                        <SelectItem value="USER">User</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            control={form.control}
+            name="role"
+            render={({ field }) => (
+              <FormItem className="grid gap-2 mb-2">
+                <FormLabel>Role</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  {...field}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select role" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="ADMIN">Admin</SelectItem>
+                    <SelectItem value="SELLER">Seller</SelectItem>
+                    <SelectItem value="USER">User</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={control}
             name="password"
@@ -189,7 +198,12 @@ function CreateTab() {
               </FormItem>
             )}
           />
-          <Button className="w-full" type="submit">
+          <Button
+            disabled={isLoading}
+            className="flex gap-2 w-full"
+            type="submit"
+          >
+            {isLoading && <Loader className="animate-spin" />}
             Create
           </Button>
         </form>

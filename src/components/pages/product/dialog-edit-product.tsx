@@ -36,6 +36,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
 import { ProductType } from "@/types/product.type";
+import { useAdminProducts } from "@/hooks/useAdmin";
+import { usePathname, useSearchParams } from "next/navigation";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -61,6 +63,9 @@ export default function DialogEditProduct({
 }
 
 function EditProduct({ productID }: { productID: string }) {
+  const searchParams = useSearchParams();
+  const queryParams = searchParams.toString();
+  const { refetch } = useAdminProducts(queryParams);
   const [product, setProduct] = useState<ProductType>();
   const [files, setFiles] = useState<File[] | null>(null);
   const { toast } = useToast();
@@ -118,6 +123,7 @@ function EditProduct({ productID }: { productID: string }) {
       setOpen(false);
       setFiles(null);
       setPreviews(null);
+      refetch();
       toast({
         variant: "success",
         description: "Update Product successfully",

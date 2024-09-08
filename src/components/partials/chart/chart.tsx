@@ -20,17 +20,9 @@ import {
 export const description = "A bar chart with a custom label"
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
-  },
-  mobile: {
-    label: "Mobile",
-    color: "hsl(var(--chart-2))",
-  },
-  label: {
-    color: "hsl(var(--background))",
-  },
+  purchaseCount: {
+    label: "Quantity: ",
+  }
 } satisfies ChartConfig
 
 export default function MyChart({chartData} : {chartData: any}) {
@@ -69,7 +61,7 @@ export default function MyChart({chartData} : {chartData: any}) {
             <XAxis dataKey="purchaseCount" type="number" hide />
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent indicator="line" />}
+              content={<ChartTooltipContent indicator="line"/>}
             />
             <Bar
               dataKey="purchaseCount"

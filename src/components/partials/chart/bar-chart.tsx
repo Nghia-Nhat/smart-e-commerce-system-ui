@@ -33,9 +33,8 @@ const chartData = [
 ]
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
+  totalProductCreated: {
+    label: <div className="mr-4">Total Product:</div>
   },
 } satisfies ChartConfig
 
@@ -70,9 +69,9 @@ export function MyBarChart({chartData} : {chartData: any}) {
             />
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent hideLabel />}
+              content={<ChartTooltipContent indicator="line"/>}
             />
-            <Bar dataKey="totalProductCreated" fill="#2992d9" radius={8}>
+            <Bar dataKey="totalProductCreated"  fill="#2992d9" radius={8}>
               <LabelList
                 position="top"
                 offset={12}

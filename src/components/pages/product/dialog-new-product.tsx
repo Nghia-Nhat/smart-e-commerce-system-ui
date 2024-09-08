@@ -47,7 +47,7 @@ const formSchema = z.object({
   }),
 });
 
-export default function DialogNewProduct() {
+export default function DialogNewProduct({refetch}: {refetch: () => void}) {
   const [files, setFiles] = useState<File[] | null>(null);
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -87,6 +87,8 @@ export default function DialogNewProduct() {
       setOpen(false);
       setFiles(null);
       setPreviews(null);
+      setIsLoading(false);
+      refetch();
       toast({
         variant: "success",
         description: "Create Product successfully",
@@ -125,6 +127,7 @@ export default function DialogNewProduct() {
     setOpen(!open);
     setFiles(null);
     setPreviews(null);
+    setIsLoading(false);
     form.reset();
   };
 
