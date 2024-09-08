@@ -39,6 +39,17 @@ export async function fetchAdminDashboardChart(queryParams?: string) {
   return result;
 }
 
+export async function fetchAdminDashboardChart2(queryParams?: string) {
+  const defineParams = queryParams ?? "year=2024";
+  const url =
+    BACKEND_BASE_URL + "/admin/dashboard/product/newly-created" + `?${defineParams}`;
+  const response = await fetch(url, {
+    headers,
+  });
+  const result = await response.json();
+  return result;
+}
+
 export async function fetchAdminUsers(queryParams?: string) {
   const url = BACKEND_BASE_URL + "/admin/user" + `?${queryParams}`;
   const response = await fetch(url, {

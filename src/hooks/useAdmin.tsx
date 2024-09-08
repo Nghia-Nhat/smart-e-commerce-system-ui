@@ -7,6 +7,7 @@ import {
   fetchDeleteProduct,
   fetchAdminOrders,
   fetchAdminOrderById,
+  fetchAdminDashboardChart2,
 } from "@/apiRequests/admin";
 import { fetchRegister } from "@/apiRequests/auth";
 import { useToast } from "@/components/ui/use-toast";
@@ -25,6 +26,13 @@ export function useAdminDashboardChart(queryParams?: string) {
   return useQuery({
     queryKey: ["adminDashboardChart", queryParams],
     queryFn: () => fetchAdminDashboardChart(queryParams),
+  });
+}
+
+export function useAdminDashboardChart2(queryParams?: string) {
+  return useQuery({
+    queryKey: ["adminDashboardChart2", queryParams],
+    queryFn: () => fetchAdminDashboardChart2(queryParams),
   });
 }
 
