@@ -35,7 +35,7 @@ function DashboardCard({ cardData }: { cardData: CardProps }) {
           <CardContent>
             <div className="text-2xl font-bold">{productViewed?.totalCurrent}</div>
             <p className="text-xs text-muted-foreground">
-              {renderStatus(productViewed)} from last month
+              {renderStatus(productViewed)} from last data
             </p>
           </CardContent>
         </Card>
@@ -50,7 +50,7 @@ function DashboardCard({ cardData }: { cardData: CardProps }) {
           <CardContent>
             <div className="text-2xl font-bold">{productAddedToCart?.totalCurrent}</div>
             <p className="text-xs text-muted-foreground">
-              {renderStatus(productAddedToCart)} from last month
+              {renderStatus(productAddedToCart)} from last data
             </p>
           </CardContent>
         </Card>
@@ -65,7 +65,7 @@ function DashboardCard({ cardData }: { cardData: CardProps }) {
           <CardContent>
             <div className="text-2xl font-bold">{totalRevenue?.totalCurrent ? "$" : ""}{totalRevenue?.totalCurrent}</div>
             <p className="text-xs text-muted-foreground">
-              {renderStatus(totalRevenue)} from last month
+              {renderStatus(totalRevenue)} from last data
             </p>
           </CardContent>
         </Card>
@@ -80,7 +80,7 @@ function DashboardCard({ cardData }: { cardData: CardProps }) {
           <CardContent>
             <div className="text-2xl font-bold">{totalUser?.totalCurrent}</div>
             <p className="text-xs text-muted-foreground">
-              {renderStatus(totalUser)} from last month
+              {renderStatus(totalUser)} from last data
             </p>
           </CardContent>
         </Card>
