@@ -35,17 +35,17 @@ export default function DashboardPage() {
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="timeRange=P1D">1 day</SelectItem>
-              <SelectItem value="timeRange=P7D">7 days</SelectItem>
-              <SelectItem value="timeRange=P1M">1 month</SelectItem>
-              <SelectItem value="timeRange=P1Y">1 year</SelectItem>
+              <SelectItem value="timeRange=P1D">Day</SelectItem>
+              <SelectItem value="timeRange=P7D">Week</SelectItem>
+              <SelectItem value="timeRange=P1M">Month</SelectItem>
+              <SelectItem value="timeRange=P1Y">Year</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
       </div>
       {/* Section 1 */}
       <div className="flex flex-col md:grid grid-cols-4 justify-between gap-4">
-        <DashboardCard cardData={dashboardCardData} />
+        <DashboardCard cardData={dashboardCardData} duration={duration}/>
       </div>
 
       {/* Section 2 */}

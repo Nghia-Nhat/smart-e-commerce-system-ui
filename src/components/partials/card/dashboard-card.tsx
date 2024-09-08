@@ -9,11 +9,18 @@ type CardProps = {
   totalUser: any;
 };
 
-function DashboardCard({ cardData }: { cardData: CardProps }) {
+function DashboardCard({ duration, cardData }: { duration: string, cardData: CardProps }) {
     const productViewed = cardData?.productViewed
     const productAddedToCart = cardData?.productAddToCart
     const totalRevenue = cardData?.totalRevenue
     const totalUser = cardData?.totalUser
+    const durationNameMap: any = {
+      "timeRange=P1D": "day",
+      "timeRange=P7D": "week",
+      "timeRange=P1M": "month",
+      "timeRange=P1Y": "year",
+    }
+    const durationLabel = durationNameMap[duration]
 
     const renderStatus = (object: any) => {
         if (object?.changeInfo.status === "increase") {
@@ -35,7 +42,7 @@ function DashboardCard({ cardData }: { cardData: CardProps }) {
           <CardContent>
             <div className="text-2xl font-bold">{productViewed?.totalCurrent}</div>
             <p className="text-xs text-muted-foreground">
-              {renderStatus(productViewed)} from last data
+              {renderStatus(productViewed)} from last {durationLabel}
             </p>
           </CardContent>
         </Card>
@@ -50,7 +57,7 @@ function DashboardCard({ cardData }: { cardData: CardProps }) {
           <CardContent>
             <div className="text-2xl font-bold">{productAddedToCart?.totalCurrent}</div>
             <p className="text-xs text-muted-foreground">
-              {renderStatus(productAddedToCart)} from last data
+              {renderStatus(productAddedToCart)} from last {durationLabel}
             </p>
           </CardContent>
         </Card>
@@ -65,7 +72,7 @@ function DashboardCard({ cardData }: { cardData: CardProps }) {
           <CardContent>
             <div className="text-2xl font-bold">{totalRevenue?.totalCurrent ? "$" : ""}{totalRevenue?.totalCurrent}</div>
             <p className="text-xs text-muted-foreground">
-              {renderStatus(totalRevenue)} from last data
+              {renderStatus(totalRevenue)} from last {durationLabel}
             </p>
           </CardContent>
         </Card>
@@ -80,7 +87,7 @@ function DashboardCard({ cardData }: { cardData: CardProps }) {
           <CardContent>
             <div className="text-2xl font-bold">{totalUser?.totalCurrent}</div>
             <p className="text-xs text-muted-foreground">
-              {renderStatus(totalUser)} from last data
+              {renderStatus(totalUser)} from last {durationLabel}
             </p>
           </CardContent>
         </Card>
