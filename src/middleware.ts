@@ -12,6 +12,8 @@ const protectedPaths = [
 ];
 const authPath = ["/login", "/signup"];
 
+const ROLES = ["SUPER_ADMIN", "ADMIN"];
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get("access_token")?.value;
@@ -30,14 +32,14 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  // if (pathname.startsWith("/admin") && token) {
-  //   const base64Url = token?.split(".")[1];
-  //   const base64 = base64Url?.replace("-", "+").replace("_", "/");
-  //   const payload = parseBase64ToJson(base64 || "");
-  //   if (!payload.isAdmin) {
-  //     return NextResponse.redirect(new URL("/", request.url));
-  //   }
-  // }
+  if (pathname.startsWith("/admin") && token) {
+    const base64Url = token?.split(".")[1];
+    const base64 = base64Url?.replace("-", "+").replace("_", "/");
+    const payload = parseBase64ToJson(base64 || "");
+    if (!ROLES.includes(payload.role)) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+  }
 
   // Continue with the request
   return NextResponse.next();

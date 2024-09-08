@@ -8,7 +8,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 
 export default function CustomerPage() {
   const searchParams = useSearchParams();
-  const queryParams = searchParams.toString();
+  const queryParams = "role=false&" + searchParams.toString();
   const { data, isLoading } = useAdminUsers(queryParams);
   const users = data?.users;
   const currentPage = Number(data?.currentPage);

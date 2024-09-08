@@ -8,7 +8,10 @@ import {
   fetchAdminOrders,
   fetchAdminOrderById,
 } from "@/apiRequests/admin";
+import { fetchRegister } from "@/apiRequests/auth";
 import { useToast } from "@/components/ui/use-toast";
+import { MESSAGE } from "@/lib/message";
+import { RegisterRequest } from "@/types/auth.type";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 export function useAdminDashboard(queryParams?: string) {
@@ -87,6 +90,30 @@ export function useDeleteProduct() {
       toast({
         variant: "destructive",
         description: "Something went wrong",
+      });
+    },
+  });
+}
+
+export function useAdminRegister() {
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: (credential: RegisterRequest) => fetchRegister(credential),
+    onSuccess: (data: any, credential) => {
+      if (data.statusCode === 409) {
+        throw new Error(data.message);
+      }
+
+      toast({
+        variant: "success",
+        description: MESSAGE.REGISTER_SUCCESS,
+      });
+    },
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        description: error.message,
       });
     },
   });

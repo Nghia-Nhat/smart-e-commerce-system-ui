@@ -35,10 +35,10 @@ export function useLogin() {
       Cookies.set("access_token", access_token, {
         expires: expiresIn / 86400,
       });
-
+      const ROLES = ["SUPER_ADMIN", "ADMIN"]
       setIsLogin(true);
 
-      if (parsedToken.isAdmin) {
+      if (ROLES.includes(parsedToken.role)) {
         push("/admin");
       } else {
         // Back to the previous page before going to login
