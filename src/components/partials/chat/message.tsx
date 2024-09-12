@@ -13,7 +13,7 @@ const Message = ({ msg }: { msg: MessageType }) => {
           </Avatar>
           <span className="text-sm font-bold">Tripleer</span>
         </div>
-        <div className="max-w-[100%] p-3 text-sm inline-block m-1 rounded-xl text-justify">
+        <div className="max-w-[100%] p-3 text-sm inline-block m-1 rounded-xl">
           <ReactMarkdown>{msg.message}</ReactMarkdown>
         </div>
       </div>

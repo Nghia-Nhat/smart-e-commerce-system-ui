@@ -90,7 +90,8 @@ export function ChatbotSheetSide({ side }: SheetSideProps) {
 
   async function handleSubmitMessage() {
     try {
-      const response = await sendMessage(message);
+      const history = messages.length > 10 ? messages.slice(-10) : messages;
+      const response = await sendMessage(message, history);
       if (response) {
         setIsLoading(false);
         const message = `${response.assistant}`;
@@ -125,7 +126,7 @@ export function ChatbotSheetSide({ side }: SheetSideProps) {
             <DiscordLogoIcon className="h-[1.2rem] w-[1.2rem] text-light" />
           </Button>
         </SheetTrigger>
-        <SheetContent side={side} className="p-0">
+        <SheetContent side={side} className="p-0 lg:min-w-[500px]">
           <SheetHeader>
             <SheetTitle>
               {/* HEADER */}

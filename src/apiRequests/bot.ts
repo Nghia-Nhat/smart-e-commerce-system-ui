@@ -8,7 +8,7 @@ export async function checkBot() {
   console.log(result);
 }
 
-export async function sendMessage(prompt: string) {
+export async function sendMessage(prompt: string, history_messages?: any) {
   const response = await fetch("http://localhost:5000/llm/ask", {
     method: "POST",
     headers: {
@@ -16,6 +16,7 @@ export async function sendMessage(prompt: string) {
     },
     body: JSON.stringify({
       question: prompt,
+      history_messages,
     }),
   });
   const result = await response.json();
